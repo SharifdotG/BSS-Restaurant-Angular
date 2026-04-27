@@ -1,1 +1,117 @@
 /* You can add global styles to this file, and also import other style files */
+@font-face {
+  font-family: 'Overpass';
+  src:
+    url('../public/Overpass-Regular.woff2') format('woff2'),
+    url('../public/Overpass-Regular.woff2') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+  font-family: 'Overpass', sans-serif;
+  ::selection {
+    color: black;
+    background: #c8e6c9;
+  }
+
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+}
+
+:root {
+  --bg-primary-400: #66bb6a;
+  --bg-primary-600: #43a047;
+  --bg-primary-700: #388e3c;
+  --bg-secondary-light: #e8ece7;
+  --bg-secondary-light-100: #c8e6c9;
+  --bg-ternary-light: #f1faf5;
+  --text-primary: white;
+  --text-dark-primary: #424242;
+  --text-dark-secondary: #616161;
+  --bg-warning-50: #ffebee;
+  --bg-warning-100: #ffcdd2;
+  --bg-warning-200: #ef9a9a;
+  --bg-warning-300: #e57373;
+  --bg-warning-400: #ef5350;
+  --bg-warning-600: #e53935;
+  --bg-warning-700: #ff1744;
+}
+
+.drop-down-button {
+  background-color: white;
+  border-radius: 8px;
+  height: 40px;
+  width: 40px;
+  border: none;
+  transition: all 0.3s ease-in-out;
+  span {
+    color: var(--text-dark-primary);
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: 2px;
+  }
+  &:hover {
+    background-color: var(--bg-warning-600);
+    span {
+      color: white;
+    }
+  }
+}
+
+.edit-button {
+  background-color: white;
+  border-radius: 8px;
+  height: 40px;
+  width: 40px;
+  border: none;
+  transition: all 0.3s ease-in-out;
+  span {
+    color: var(--text-dark-primary);
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: 2px;
+  }
+  &:hover {
+    background-color: darkorange;
+    span {
+      color: white;
+    }
+  }
+}
+
+.button-primary {
+  background-color: var(--bg-primary-600);
+  color: var(--text-primary);
+  height: 52px;
+  transition: all 0.3s ease-in-out;
+  &:hover {
+    color: var(--text-primary);
+    background-color: var(--bg-primary-700);
+  }
+}
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+}
+
+.file-upload {
+  border: 1px dashed #ccc;
+  border-radius: 8px;
+}
+
+.anticon-star.anticon-twotone svg path:first-child {
+  fill: white !important;
+}

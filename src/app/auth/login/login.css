@@ -1,0 +1,130 @@
+.login-carousel-item {
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+  pointer-events: none;
+  max-width: 500px;
+  h1 {
+    color: var(--text-dark-primary);
+  }
+  p {
+    color: var(--text-dark-secondary);
+  }
+  img {
+    height: 200px;
+  }
+}
+
+.login-info-container {
+  background-color: var(--bg-ternary-light);
+  border-radius: 10px;
+  box-shadow: 0px 12px 15px -2px rgba(12, 12, 12, 0.5);
+  img {
+    width: 100%;
+    max-width: 240px;
+  }
+}
+
+.login-form-container {
+  width: 540px;
+  padding: 30px 45px;
+  border-radius: 10px;
+  box-shadow: 0px 12px 15px -2px rgba(12, 12, 12, 0.5);
+  transition: all 0.3s ease-in-out;
+  &:hover {
+    transform: translate3d(0px, 3px, 3px);
+    box-shadow: 0px 12px 15px -11px rgba(12, 12, 12, 0.5);
+  }
+}
+
+.login-form-image {
+  height: 130px;
+  width: 130px;
+  max-width: 100%;
+}
+
+.login-form-header p {
+  font-size: 32px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 2px;
+  text-shadow:
+    #2e7d32 2px 0px 0px,
+    #2e7d32 1.75517px 0.958851px 0px,
+    #2e7d32 1.0806px 1.68294px 0px,
+    #2e7d32 0.141474px 1.99499px 0px,
+    #2e7d32 -0.832294px 1.81859px 0px,
+    #2e7d32 -1.60229px 1.19694px 0px,
+    #2e7d32 -1.97998px 0.28224px 0px,
+    #2e7d32 -1.87291px -0.701566px 0px,
+    #2e7d32 -1.30729px -1.5136px 0px,
+    #2e7d32 -0.421592px -1.95506px 0px,
+    #2e7d32 0.567324px -1.91785px 0px,
+    #2e7d32 1.41734px -1.41108px 0px,
+    #2e7d32 1.92034px -0.558831px 0px;
+}
+
+.login-text-input-label {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.login-text-input-field {
+  height: 52px;
+  font-size: 18px;
+  padding: 5px 10px;
+  width: 100%;
+  outline: none;
+  background: #ffffff;
+  color: #000000;
+  border: 1px solid #66bb6a;
+  border-radius: 5px;
+  box-shadow: 3px 3px 6px 1px #e2e2e2;
+  transition: all 0s ease-in-out;
+  &:focus,
+  &:hover {
+    background: #fefefe;
+    border: 2px solid #43a047;
+    border-radius: 7px;
+  }
+}
+
+.blob-image {
+  width: 65%;
+  animation: rotateimg 20s linear 0s infinite;
+}
+
+.bg-table {
+  transform: translateY(-33px) translateX(-10px);
+}
+
+@keyframes rotateimg {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+.right-column {
+  background-color: #e6feed;
+}
+
+.left-column {
+  background: linear-gradient(
+    270deg,
+    #c8e6c9,
+    #cbe7cc,
+    #cee9cf,
+    #d1ead2,
+    #d4ecd5,
+    #d6edd8,
+    #d9eedb,
+    #dcf0dd,
+    #dff1e0,
+    #e2f2e3,
+    #e5f4e6,
+    #e8f5e9
+  );
+}
