@@ -92,10 +92,6 @@ export class Main implements OnInit {
       .observe([Breakpoints.Large])
       .pipe(takeUntilDestroyed())
       .subscribe((result) => this.isCollapsed.set(!result.matches));
-
-    if (this.authService.isAuthenticated()) {
-      this.authService.getUserProfile().subscribe();
-    }
   }
 
   ngOnInit(): void {
@@ -109,7 +105,6 @@ export class Main implements OnInit {
       this.currentRoute.set(path);
     } else {
       this.currentRoute.set('home');
-      this.router.navigate(['dashboard/home']);
     }
   }
 

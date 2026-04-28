@@ -41,7 +41,7 @@ export class Login {
 
   constructor() {
     if (this.authService.isAuthenticated()) {
-      this.router.navigateByUrl('/dashboard');
+      this.router.navigateByUrl('/dashboard/home');
     }
   }
 
@@ -64,7 +64,7 @@ export class Login {
 
       this.authService.login({ userName: email, password: password }).subscribe({
         next: () => {
-          setTimeout(() => this.router.navigateByUrl('/dashboard'), 1000);
+          setTimeout(() => this.router.navigateByUrl('/dashboard/home'), 1000);
         },
         error: (error: unknown) => {
           console.error('Login failed:', error);
