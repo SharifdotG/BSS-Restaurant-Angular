@@ -1,48 +1,240 @@
-/* You can add global styles to this file, and also import other style files */
+/* Import Bootstrap */
+@import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+
+/* Import NgZorro styles */
+@import '../node_modules/ng-zorro-antd/ng-zorro-antd.min.css';
+
+/* Tailwind directives */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Color Variables */
+:root {
+  /* Primary colors (Green theme) */
+  --bg-primary-50: #e8f5e9;
+  --bg-primary-100: #c8e6c9;
+  --bg-primary-200: #a5d6a7;
+  --bg-primary-300: #81c784;
+  --bg-primary-400: #66bb6a;
+  --bg-primary-500: #4caf50;
+  --bg-primary-600: #43a047;
+  --bg-primary-700: #388e3c;
+  --bg-primary-800: #2e7d32;
+  --bg-primary-900: #1b5e20;
+
+  /* Secondary colors */
+  --bg-secondary-light: #f5f5f5;
+  --bg-secondary-dark: #424242;
+
+  /* Ternary colors */
+  --bg-ternary-light: #e8f5e9;
+
+  /* Warning colors */
+  --bg-warning-50: #fff3e0;
+  --bg-warning-100: #ffe0b2;
+  --bg-warning-200: #ffcc80;
+  --bg-warning-300: #ffb74d;
+  --bg-warning-400: #ffa726;
+  --bg-warning-500: #ff9800;
+  --bg-warning-600: #fb8c00;
+
+  /* Text colors */
+  --text-dark-primary: #212121;
+  --text-dark-secondary: #757575;
+  --text-light-primary: #ffffff;
+  --text-light-secondary: #b0bec5;
+
+  /* Other colors */
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-gray-100: #f5f5f5;
+  --color-gray-200: #eeeeee;
+  --color-gray-300: #e0e0e0;
+  --color-gray-400: #bdbdbd;
+  --color-gray-500: #9e9e9e;
+  --color-gray-600: #757575;
+  --color-gray-700: #616161;
+  --color-gray-800: #424242;
+  --color-gray-900: #212121;
+}
+
+/* CRITICAL: Set CSS custom properties for NzZorro theme BEFORE any other styles */
+:root {
+  --ant-primary-color: #66bb6a;
+  --ant-primary-color-hover: #5cb660;
+  --ant-primary-color-active: #4caf50;
+  --ant-primary-color-outline: rgba(102, 187, 106, 0.2);
+  --ant-primary-1: #f0f9f1;
+  --ant-primary-2: #d4efd6;
+  --ant-primary-3: #a5d6a7;
+  --ant-primary-4: #81c784;
+  --ant-primary-5: #66bb6a;
+  --ant-primary-6: #66bb6a;
+  --ant-primary-7: #4caf50;
+}
+
+/* CRITICAL: Override NzZorro primary button color with maximum specificity */
+.ant-btn-primary,
+.ant-btn.ant-btn-primary {
+  font-size: 15px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 44px !important;
+  padding: 12px !important;
+  background: #f1faf5 !important;
+  background-color: #f1faf5 !important;
+  border: #66bb6a 1px solid !important;
+  border-color: #66bb6a !important;
+  border-radius: 8px !important;
+  color: #000 !important;
+}
+
+.ant-btn-primary:hover,
+.ant-btn-primary:focus,
+.ant-btn.ant-btn-primary:hover,
+.ant-btn.ant-btn-primary:focus {
+  background: #d2e6d2 !important;
+  background-color: #d2e6d2 !important;
+  border-color: #66bb6a !important;
+  color: #000 !important;
+}
+
+.ant-btn-primary:active,
+.ant-btn.ant-btn-primary:active {
+  background: #c8e0c8 !important;
+  background-color: #c8e0c8 !important;
+  border-color: #66bb6a !important;
+  color: #000 !important;
+}
+
+.ant-btn-primary:not(:disabled):not(.ant-btn-disabled):hover,
+.ant-btn.ant-btn-primary:not(:disabled):not(.ant-btn-disabled):hover {
+  background: #d2e6d2 !important;
+  background-color: #d2e6d2 !important;
+  border-color: #66bb6a !important;
+  color: #000 !important;
+}
+
+.ant-btn-primary:not(:disabled):not(.ant-btn-disabled):active,
+.ant-btn.ant-btn-primary:not(:disabled):not(.ant-btn-disabled):active {
+  background: #c8e0c8 !important;
+  background-color: #c8e0c8 !important;
+  border-color: #66bb6a !important;
+  color: #000 !important;
+}
+
+/* Danger button (Cancel button) styling */
+.ant-btn-dangerous.ant-btn-default,
+.ant-btn.ant-btn-dangerous.ant-btn-default {
+  font-size: 15px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 44px !important;
+  padding: 12px !important;
+  background: #fff !important;
+  background-color: #fff !important;
+  border-color: #d9d9d9 !important;
+  border-radius: 8px !important;
+  color: rgba(0, 0, 0, 0.88) !important;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.016) !important;
+}
+
+.ant-btn-dangerous.ant-btn-default:hover,
+.ant-btn-dangerous.ant-btn-default:focus,
+.ant-btn.ant-btn-dangerous.ant-btn-default:hover,
+.ant-btn.ant-btn-dangerous.ant-btn-default:focus {
+  background: #ff4d4f !important;
+  background-color: #ff4d4f !important;
+  border-color: #ff4d4f !important;
+  color: #fff !important;
+}
+
+.ant-btn-dangerous.ant-btn-default:active,
+.ant-btn.ant-btn-dangerous.ant-btn-default:active {
+  background: #d9363e !important;
+  background-color: #d9363e !important;
+  border-color: #d9363e !important;
+  color: #fff !important;
+}
+
+/* Font faces */
 @font-face {
   font-family: 'Overpass';
   src:
     url('../public/Overpass-Regular.woff2') format('woff2'),
-    url('../public/Overpass-Regular.woff2') format('woff');
+    url('../public/Overpass-Regular.woff') format('woff');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
 }
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
+/* Global styles */
 * {
   box-sizing: border-box;
   font-family: 'Overpass', sans-serif;
-  ::selection {
-    color: black;
-    background: #c8e6c9;
-  }
-
-  ::-webkit-scrollbar {
-    width: 4px;
-  }
 }
 
-:root {
-  --bg-primary-400: #66bb6a;
-  --bg-primary-600: #43a047;
-  --bg-primary-700: #388e3c;
-  --bg-secondary-light: #e8ece7;
-  --bg-secondary-light-100: #c8e6c9;
-  --bg-ternary-light: #f1faf5;
-  --text-primary: white;
-  --text-dark-primary: #424242;
-  --text-dark-secondary: #616161;
-  --bg-warning-50: #ffebee;
-  --bg-warning-100: #ffcdd2;
-  --bg-warning-200: #ef9a9a;
-  --bg-warning-300: #e57373;
-  --bg-warning-400: #ef5350;
-  --bg-warning-600: #e53935;
-  --bg-warning-700: #ff1744;
+*::selection {
+  color: black;
+  background: #c8e6c9;
+}
+
+*::-webkit-scrollbar {
+  width: 4px;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: 'Overpass', Roboto, 'Helvetica Neue', sans-serif;
+}
+
+/* Component styles */
+.button-primary {
+  background-color: var(--bg-primary-600);
+  color: var(--text-primary);
+  height: 52px;
+  transition: all 0.3s ease-in-out;
+}
+
+.button-primary:hover {
+  color: var(--text-primary);
+  background-color: var(--bg-primary-700);
+}
+
+.button-secondary {
+  background-color: var(--bg-secondary-light);
+  color: var(--text-dark-primary);
+  height: 52px;
+  transition: all 0.3s ease-in-out;
+}
+
+.button-secondary:hover {
+  background-color: var(--bg-secondary-light-100);
+}
+
+.login-button {
+  background-color: var(--bg-primary-600);
+  color: white;
+  height: 52px;
+  transition: all 0.3s ease-in-out;
+}
+
+.login-button:hover {
+  color: white;
+  background-color: var(--bg-primary-700);
+}
+
+.login-button:active,
+.login-button:focus {
+  color: white;
 }
 
 .drop-down-button {
@@ -51,19 +243,47 @@
   height: 40px;
   width: 40px;
   border: none;
-  transition: all 0.3s ease-in-out;
-  span {
-    color: var(--text-dark-primary);
-    font-size: 20px;
-    font-weight: 800;
-    letter-spacing: 2px;
-  }
-  &:hover {
-    background-color: var(--bg-warning-600);
-    span {
-      color: white;
-    }
-  }
+  transition: all 0.5s ease-in-out;
+}
+
+.drop-down-button span {
+  color: var(--text-dark-primary);
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  transition: color 0.5s ease-in-out;
+}
+
+.drop-down-button:hover {
+  background-color: var(--bg-warning-600);
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.drop-down-button:hover span {
+  color: white;
+}
+
+.drop-down-button:active {
+  transform: scale(0.95);
+}
+
+/* Edit button specific hover - red background */
+.drop-down-button:has([nzType='edit']):hover {
+  background-color: #ff4d4f !important;
+}
+
+.drop-down-button:has([nzType='edit']):hover span {
+  color: white;
+}
+
+/* Delete button specific hover - red background */
+.drop-down-button:has([nzType='delete']):hover {
+  background-color: #ff4d4f !important;
+}
+
+.drop-down-button:has([nzType='delete']):hover span {
+  color: white;
 }
 
 .edit-button {
@@ -72,46 +292,342 @@
   height: 40px;
   width: 40px;
   border: none;
-  transition: all 0.3s ease-in-out;
-  span {
-    color: var(--text-dark-primary);
-    font-size: 20px;
-    font-weight: 800;
-    letter-spacing: 2px;
-  }
-  &:hover {
-    background-color: darkorange;
-    span {
-      color: white;
-    }
-  }
+  transition: all 0.5s ease-in-out;
 }
 
-.button-primary {
-  background-color: var(--bg-primary-600);
-  color: var(--text-primary);
-  height: 52px;
-  transition: all 0.3s ease-in-out;
-  &:hover {
-    color: var(--text-primary);
-    background-color: var(--bg-primary-700);
-  }
+.edit-button span {
+  color: var(--text-dark-primary);
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  transition: color 0.5s ease-in-out;
 }
 
-html,
-body {
-  height: 100%;
+.edit-button:hover {
+  background-color: #ff4d4f;
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
-body {
-  margin: 0;
-  font-family: Roboto, 'Helvetica Neue', sans-serif;
+
+.edit-button:hover span {
+  color: white;
+}
+
+.edit-button:active {
+  transform: scale(0.95);
+}
+
+.delete-button {
+  border-radius: 0;
+  height: 48px;
+  background: transparent;
+  color: var(--text-dark-primary);
+  font-weight: 400;
+  font-size: 18px;
+  transition: all 0.5s ease-in-out;
+}
+
+.delete-button:hover {
+  color: white;
+  background: var(--bg-warning-600) !important;
+}
+
+.delete-button:active {
+  color: whitesmoke;
+  background: var(--bg-warning-600);
 }
 
 .file-upload {
   border: 1px dashed #ccc;
   border-radius: 8px;
+  min-height: 300px;
 }
 
-.anticon-star.anticon-twotone svg path:first-child {
-  fill: white !important;
+/* Data table styles */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table thead {
+  background-color: var(--bg-ternary-light);
+}
+
+.data-table th {
+  padding: 12px;
+  text-align: left;
+  font-weight: 600;
+  color: var(--text-dark-primary);
+  border-bottom: 2px solid var(--bg-secondary-light);
+}
+
+.data-table td {
+  padding: 12px;
+  border-bottom: 1px solid var(--bg-secondary-light);
+}
+
+.data-table tbody tr:hover {
+  background-color: var(--bg-ternary-light);
+}
+
+/* Modal styles */
+.modal-header {
+  padding: 24px;
+  background-color: var(--bg-primary-600);
+  color: white;
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.modal-content {
+  padding: 24px;
+}
+
+.modal-footer {
+  padding: 16px 24px;
+  background-color: var(--bg-ternary-light);
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+/* Override NzZorro primary button color globally for modals */
+.ant-modal-footer .ant-btn-primary {
+  background-color: #66bb6a !important;
+  border-color: #66bb6a !important;
+  color: white !important;
+}
+
+.ant-modal-footer .ant-btn-primary:hover {
+  background-color: #5cb660 !important;
+  border-color: #5cb660 !important;
+  color: white !important;
+}
+
+.ant-modal-footer .ant-btn-primary:active,
+.ant-modal-footer .ant-btn-primary:focus {
+  background-color: #4caf50 !important;
+  border-color: #4caf50 !important;
+  color: white !important;
+}
+
+.ant-modal-footer .ant-btn-primary:not(:disabled):not(.ant-btn-disabled):hover {
+  background-color: #5cb660 !important;
+  border-color: #5cb660 !important;
+}
+
+.ant-modal-footer .ant-btn-primary:not(:disabled):not(.ant-btn-disabled):active {
+  background-color: #4caf50 !important;
+  border-color: #4caf50 !important;
+}
+
+/* Global override for all primary buttons (NzZorro theme override) */
+.ant-btn-primary,
+button.ant-btn-primary,
+.ant-btn.ant-btn-primary {
+  background-color: #66bb6a !important;
+  border-color: #66bb6a !important;
+  color: white !important;
+}
+
+.ant-btn-primary:hover,
+.ant-btn-primary:focus,
+button.ant-btn-primary:hover,
+button.ant-btn-primary:focus,
+.ant-btn.ant-btn-primary:hover,
+.ant-btn.ant-btn-primary:focus {
+  background-color: #5cb660 !important;
+  border-color: #5cb660 !important;
+  color: white !important;
+}
+
+.ant-btn-primary:active,
+button.ant-btn-primary:active,
+.ant-btn.ant-btn-primary:active {
+  background-color: #4caf50 !important;
+  border-color: #4caf50 !important;
+  color: white !important;
+}
+
+.ant-btn-primary:not(:disabled):not(.ant-btn-disabled),
+button.ant-btn-primary:not(:disabled):not(.ant-btn-disabled),
+.ant-btn.ant-btn-primary:not(:disabled):not(.ant-btn-disabled) {
+  background-color: #66bb6a !important;
+  border-color: #66bb6a !important;
+}
+
+.ant-btn-primary:not(:disabled):not(.ant-btn-disabled):hover,
+.ant-btn-primary:not(:disabled):not(.ant-btn-disabled):focus,
+button.ant-btn-primary:not(:disabled):not(.ant-btn-disabled):hover,
+button.ant-btn-primary:not(:disabled):not(.ant-btn-disabled):focus,
+.ant-btn.ant-btn-primary:not(:disabled):not(.ant-btn-disabled):hover,
+.ant-btn.ant-btn-primary:not(:disabled):not(.ant-btn-disabled):focus {
+  background-color: #5cb660 !important;
+  border-color: #5cb660 !important;
+}
+
+.ant-btn-primary:not(:disabled):not(.ant-btn-disabled):active,
+button.ant-btn-primary:not(:disabled):not(.ant-btn-disabled):active,
+.ant-btn.ant-btn-primary:not(:disabled):not(.ant-btn-disabled):active {
+  background-color: #4caf50 !important;
+  border-color: #4caf50 !important;
+}
+
+/* Specific override for modal buttons */
+.ant-modal .ant-modal-footer .ant-btn-primary {
+  background-color: #66bb6a !important;
+  border-color: #66bb6a !important;
+}
+
+.ant-modal .ant-modal-footer .ant-btn-primary:hover {
+  background-color: #5cb660 !important;
+  border-color: #5cb660 !important;
+}
+
+/* Global modal border radius styling */
+.ant-modal-content {
+  border-radius: 16px !important;
+  overflow: hidden;
+}
+
+.ant-modal-header {
+  border-radius: 16px 16px 0 0 !important;
+}
+
+.ant-modal-footer {
+  border-radius: 0 0 16px 16px !important;
+}
+
+/* Confirmation modal button styling */
+.ant-modal-confirm .ant-modal-confirm-btns {
+  display: flex !important;
+  gap: 12px !important;
+  justify-content: center !important;
+}
+
+.ant-modal-confirm .ant-modal-confirm-btns .ant-btn {
+  flex: 1 !important;
+  min-width: 140px !important;
+  height: 48px !important;
+  border-radius: 8px !important;
+  font-weight: 500 !important;
+  font-size: 16px !important;
+  transition: all 0.3s ease !important;
+}
+
+/* Cancel button - light gray background (left side) */
+.ant-modal-confirm .ant-modal-confirm-btns .ant-btn-default,
+.ant-modal-confirm .ant-modal-confirm-btns button:first-child {
+  background-color: #e8e8e8 !important;
+  border: 2px solid #e8e8e8 !important;
+  color: #000000 !important;
+  box-shadow: none !important;
+}
+
+.ant-modal-confirm .ant-modal-confirm-btns .ant-btn-default a,
+.ant-modal-confirm .ant-modal-confirm-btns button:first-child a {
+  color: #000000 !important;
+}
+
+.ant-modal-confirm .ant-modal-confirm-btns .ant-btn-default:hover,
+.ant-modal-confirm .ant-modal-confirm-btns .ant-btn-default:focus,
+.ant-modal-confirm .ant-modal-confirm-btns .ant-btn-default:active,
+.ant-modal-confirm .ant-modal-confirm-btns button:first-child:hover,
+.ant-modal-confirm .ant-modal-confirm-btns button:first-child:focus,
+.ant-modal-confirm .ant-modal-confirm-btns button:first-child:active {
+  background-color: var(--bg-primary-600) !important;
+  border: 2px solid var(--bg-primary-600) !important;
+  color: white !important;
+  box-shadow: none !important;
+}
+
+.ant-modal-confirm .ant-modal-confirm-btns .ant-btn-default:hover a,
+.ant-modal-confirm .ant-modal-confirm-btns .ant-btn-default:focus a,
+.ant-modal-confirm .ant-modal-confirm-btns .ant-btn-default:active a,
+.ant-modal-confirm .ant-modal-confirm-btns button:first-child:hover a,
+.ant-modal-confirm .ant-modal-confirm-btns button:first-child:focus a,
+.ant-modal-confirm .ant-modal-confirm-btns button:first-child:active a {
+  color: white !important;
+}
+
+/* OK/Delete button - red (right side) */
+.ant-modal-confirm .ant-modal-confirm-btns .ant-btn-primary {
+  background-color: #dc2626 !important;
+  border: none !important;
+  color: white !important;
+}
+
+.ant-modal-confirm .ant-modal-confirm-btns .ant-btn-primary:hover,
+.ant-modal-confirm .ant-modal-confirm-btns .ant-btn-primary:focus {
+  background-color: #b91c1c !important;
+  border: none !important;
+  color: white !important;
+}
+
+/* Additional specificity for danger buttons */
+.ant-modal-confirm .ant-modal-confirm-btns .ant-btn-primary.ant-btn-dangerous {
+  background-color: #dc2626 !important;
+  border: none !important;
+  color: white !important;
+}
+
+.ant-modal-confirm .ant-modal-confirm-btns .ant-btn-primary.ant-btn-dangerous:hover,
+.ant-modal-confirm .ant-modal-confirm-btns .ant-btn-primary.ant-btn-dangerous:focus {
+  background-color: #b91c1c !important;
+  border: none !important;
+  color: white !important;
+}
+
+/* Employee assignment dropdown height increase */
+.ant-select-dropdown {
+  max-height: 400px !important;
+  min-height: 200px !important;
+}
+
+.ant-select-dropdown .ant-select-item-option-content {
+  display: flex;
+  align-items: center;
+}
+
+/* Target the inner scrollable container */
+.cdk-virtual-scroll-viewport {
+  max-height: 400px !important;
+  min-height: 200px !important;
+}
+
+.rc-virtual-list-holder {
+  max-height: 400px !important;
+  min-height: 200px !important;
+}
+
+.rc-virtual-list {
+  max-height: 400px !important;
+  min-height: 200px !important;
+}
+
+.rc-virtual-list-holder-inner {
+  min-height: auto !important;
+}
+
+/* Image preview modal centering */
+.ant-image-preview-wrap {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.ant-image-preview-img-wrapper {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.ant-image-preview-img {
+  max-width: 90vw !important;
+  max-height: 90vh !important;
+  object-fit: contain !important;
 }

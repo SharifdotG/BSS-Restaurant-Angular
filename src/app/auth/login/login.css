@@ -1,48 +1,72 @@
+/* Carousel styles */
 .login-carousel-item {
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */
   user-select: none; /* Standard syntax */
   pointer-events: none;
   max-width: 500px;
-  h1 {
-    color: var(--text-dark-primary);
-  }
-  p {
-    color: var(--text-dark-secondary);
-  }
-  img {
-    height: 200px;
-  }
 }
 
+.login-carousel-item h1 {
+  color: var(--text-dark-primary);
+}
+
+.login-carousel-item p {
+  color: var(--text-dark-secondary);
+}
+
+.login-carousel-item img {
+  height: 200px;
+}
+
+/* Left column with carousel */
 .login-info-container {
   background-color: var(--bg-ternary-light);
   border-radius: 10px;
   box-shadow: 0px 12px 15px -2px rgba(12, 12, 12, 0.5);
-  img {
-    width: 100%;
-    max-width: 240px;
-  }
 }
 
+.login-info-container img {
+  width: 100%;
+  max-width: 240px;
+}
+
+/* Login form container */
 .login-form-container {
   width: 540px;
   padding: 30px 45px;
   border-radius: 10px;
   box-shadow: 0px 12px 15px -2px rgba(12, 12, 12, 0.5);
   transition: all 0.3s ease-in-out;
-  &:hover {
-    transform: translate3d(0px, 3px, 3px);
-    box-shadow: 0px 12px 15px -11px rgba(12, 12, 12, 0.5);
+}
+
+.login-form-container:hover {
+  transform: translate3d(0px, 3px, 3px);
+  box-shadow: 0px 12px 15px -11px rgba(12, 12, 12, 0.5);
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .login-form-container {
+    width: 90%;
+    padding: 20px 25px;
   }
 }
 
+/* Logo/Image in form header */
 .login-form-image {
   height: 130px;
   width: 130px;
   max-width: 100%;
 }
 
+.login-form-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Restaurant name styling */
 .login-form-header p {
   font-size: 32px;
   font-weight: 700;
@@ -64,11 +88,14 @@
     #2e7d32 1.92034px -0.558831px 0px;
 }
 
+/* Form input label styling */
 .login-text-input-label {
   font-size: 20px;
   font-weight: 500;
+  color: var(--text-dark-primary);
 }
 
+/* Form input field styling */
 .login-text-input-field {
   height: 52px;
   font-size: 18px;
@@ -80,33 +107,60 @@
   border: 1px solid #66bb6a;
   border-radius: 5px;
   box-shadow: 3px 3px 6px 1px #e2e2e2;
-  transition: all 0s ease-in-out;
-  &:focus,
-  &:hover {
-    background: #fefefe;
-    border: 2px solid #43a047;
-    border-radius: 7px;
-  }
+  transition: all 0.3s ease-in-out;
 }
 
-.blob-image {
-  width: 65%;
-  animation: rotateimg 20s linear 0s infinite;
+.login-text-input-field:focus,
+.login-text-input-field:hover {
+  background: #fefefe;
+  border: 2px solid #43a047;
+  border-radius: 7px;
 }
 
-.bg-table {
-  transform: translateY(-33px) translateX(-10px);
+.login-text-input-field::placeholder {
+  color: #999;
+  font-size: 16px;
 }
 
-@keyframes rotateimg {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(0deg);
-  }
+/* Password input wrapper */
+.password-input-wrapper {
+  position: relative;
 }
 
+.password-input-wrapper .password-toggle-button {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #66bb6a;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.password-input-wrapper .password-toggle-button:hover {
+  color: #43a047;
+  background-color: rgba(102, 187, 106, 0.1);
+  border-radius: 4px;
+}
+
+.password-input-wrapper .password-toggle-button:focus {
+  outline: none;
+}
+
+.password-input-wrapper .password-toggle-button span {
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+}
+
+/* Background colors for columns */
 .right-column {
   background-color: #e6feed;
 }
@@ -127,4 +181,70 @@
     #e5f4e6,
     #e8f5e9
   );
+}
+
+/* Animation for rotating elements (if needed) */
+@keyframes rotateimg {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* NgZorro carousel customization */
+::ng-deep .ant-carousel {
+  height: 100%;
+}
+
+::ng-deep .slick-slider,
+::ng-deep .slick-list,
+::ng-deep .slick-track {
+  height: 100%;
+}
+
+::ng-deep .slick-slide {
+  text-align: center;
+  height: 100%;
+  line-height: normal;
+  background: transparent;
+  overflow: hidden;
+}
+
+::ng-deep .slick-slide > div {
+  height: 100%;
+}
+
+::ng-deep .slick-dots {
+  bottom: -30px;
+}
+
+::ng-deep .slick-dots li button {
+  background: #424242 !important; /* Black color for inactive dots */
+}
+
+::ng-deep .slick-dots li.slick-active button {
+  background: #212121 !important; /* Darker black for active dot */
+}
+
+/* Form validation styles */
+.ng-invalid.ng-touched .login-text-input-field {
+  border-color: var(--bg-warning-400);
+}
+
+/* Alert/notification styles */
+.alert-enter {
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
