@@ -1,0 +1,105 @@
+.upload-text {
+  margin-top: 8px;
+}
+
+.preview-image {
+  width: 100%;
+}
+
+.file-upload {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.file-upload ::ng-deep .ant-upload-picture-card-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+/* Ensure consistent spacing for form items */
+nz-form-item {
+  margin-bottom: 16px;
+}
+
+/* Reserve space for error messages to prevent layout shift */
+::ng-deep .ant-form-item-explain,
+::ng-deep .ant-form-item-extra {
+  min-height: 24px;
+  transition: all 0.3s ease;
+}
+
+::ng-deep .ant-form-item-explain-error {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Ensure form control always has consistent spacing */
+::ng-deep .ant-form-item-control {
+  min-height: 56px;
+}
+
+/* Input field styling with green border on hover and border radius */
+::ng-deep .ant-input,
+::ng-deep .ant-picker,
+::ng-deep .ant-select-selector {
+  border-radius: 8px !important;
+  transition: all 0.3s ease-in-out;
+}
+
+::ng-deep .ant-input:hover,
+::ng-deep .ant-picker:hover,
+::ng-deep .ant-select-selector:hover {
+  border-color: #66bb6a !important;
+}
+
+::ng-deep .ant-input:focus,
+::ng-deep .ant-picker:focus,
+::ng-deep .ant-select-selector:focus {
+  border-color: #66bb6a !important;
+  box-shadow: 0 0 0 2px rgba(102, 187, 106, 0.2) !important;
+}
+
+/* Ensure select dropdown also has green border on hover */
+::ng-deep .ant-select:hover .ant-select-selector {
+  border-color: #66bb6a !important;
+}
+
+/* When select is focused */
+::ng-deep .ant-select-focused .ant-select-selector {
+  border-color: #66bb6a !important;
+  box-shadow: 0 0 0 2px rgba(102, 187, 106, 0.2) !important;
+}
+
+/* Date picker specific styling */
+::ng-deep .ant-picker:hover,
+::ng-deep .ant-picker-focused {
+  border-color: #66bb6a !important;
+}
+
+::ng-deep .ant-picker-focused {
+  box-shadow: 0 0 0 2px rgba(102, 187, 106, 0.2) !important;
+}
+
+:host ::ng-deep .ant-modal-footer {
+  border-top: 1px solid #f0f0f0;
+  padding: 16px 24px;
+  text-align: center;
+}
+
+:host ::ng-deep .ant-modal-footer .ant-btn-primary {
+  background-color: var(--bg-primary-600) !important;
+  border-color: var(--bg-primary-600) !important;
+}
+
+:host ::ng-deep .ant-modal-footer .ant-btn-primary:hover {
+  background-color: var(--bg-primary-700) !important;
+  border-color: var(--bg-primary-700) !important;
+}
+
+:host ::ng-deep .ant-modal-footer .ant-btn-primary:active,
+:host ::ng-deep .ant-modal-footer .ant-btn-primary:focus {
+  background-color: var(--bg-primary-800) !important;
+  border-color: var(--bg-primary-800) !important;
+}
