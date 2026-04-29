@@ -4,7 +4,7 @@ export interface Employee {
   id: string;
   designation: string;
   joinDate: string;
-  amountSold?: number;
+  amountSold?: number | null;
   user: User;
 }
 

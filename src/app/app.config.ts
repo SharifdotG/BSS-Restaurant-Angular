@@ -9,13 +9,6 @@ import { provideRouter, withComponentInputBinding, withRouterConfig } from '@ang
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { ReactiveFormsModule } from '@angular/forms';
-import { authInterceptor } from './auth/auth.interceptor';
-
-// API Configuration
-export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
-// As I didn't have the local backend, I used the same URL for both development and production.
-// You can change the development URL to your local backend if needed.
-const apiBaseUrl = isDevMode() ? 'https://bssrms.runasp.net' : 'https://bssrms.runasp.net';
 
 // NgZorro imports
 import { en_US, provideNzI18n } from 'ng-zorro-antd/i18n';
@@ -72,6 +65,13 @@ import {
 } from '@ant-design/icons-angular/icons';
 
 import { routes } from './app.routes';
+import { authInterceptor } from './auth/auth.interceptor';
+
+// API Configuration
+export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
+// As I didn't have the local backend, I used the same URL for both development and production.
+// You can change the development URL to your local backend if needed.
+const apiBaseUrl = isDevMode() ? 'https://bssrms.runasp.net' : 'https://bssrms.runasp.net';
 
 registerLocaleData(en);
 

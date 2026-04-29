@@ -3,12 +3,13 @@
     <ng-template #indicatorTemplate>
       <div
         class="loading h-100 w-100 d-flex justify-content-center align-items-center"
-        style="background: rgba(255, 255, 255, 0.6)"
+        [style.background]="'rgba(255, 255, 255, 0.6)'"
         role="status"
         aria-label="Loading dashboard data"
       >
         <div
-          style="font-size: 50px; color: darkseagreen"
+          [style.fontSize.px]="50"
+          [style.color]="'darkseagreen'"
           nz-icon
           nzType="loading"
           nzTheme="outline"
@@ -17,6 +18,7 @@
       </div>
     </ng-template>
 
+    <!-- Employee Table -->
     <nz-table
       nzShowSizeChanger
       nzPaginationType="default"
@@ -28,8 +30,8 @@
       [nzLoading]="employeeService.isSendingRequest()"
       [nzLoadingIndicator]="indicatorTemplate"
       [nzTotal]="employeeService.totalEmployees()"
-      [nzPageSize]="this.pageSize"
-      [nzPageIndex]="this.pageIndex"
+      [nzPageSize]="pageSize()"
+      [nzPageIndex]="pageIndex()"
       (nzQueryParams)="onQueryParamsChange($event)"
       [nzShowTotal]="totalTemplate"
     >
@@ -96,14 +98,17 @@
               nz-tooltip
               nzTooltipTitle="Add New Employee"
               nzTooltipPlacement="top"
+              aria-label="Add New Employee"
               (click)="employeeService.showAddModal.set(true)"
             >
-              <span nz-icon nzType="user-add" nzTheme="outline"></span>
+              <span nz-icon nzType="user-add" nzTheme="outline" aria-hidden="true"></span>
               <span> Add Employee </span>
             </button>
           </th>
         </tr>
       </thead>
+
+      <!-- Employee Rows -->
       <tbody>
         @for (data of listOfEmployees(); track data.id) {
           <tr class="custom-table-row">
@@ -119,27 +124,34 @@
             <td>
               <div class="d-flex justify-content-between pe-3">
                 <p
-                  nzTooltipTitle="{{ data.user.firstName }} {{ data.user.middleName }} {{
-                    data.user.lastName
-                  }}"
+                  [nzTooltipTitle]="
+                    data.user.firstName + ' ' + data.user.middleName + ' ' + data.user.lastName
+                  "
                   nzTooltipPlacement="topLeft"
                   nz-tooltip
                   class="truncate"
                 >
-                  {{ data.user.firstName }} {{ data.user.middleName }} {{ data.user.lastName }}
+                  {{ data.user.firstName + ' ' + data.user.middleName + ' ' + data.user.lastName }}
                 </p>
-                <span
-                  nz-icon
-                  nzType="star"
-                  [nzTheme]="starMarked"
+                <!-- Converted span to button for accessibility focus management -->
+                <button
+                  class="border-0 bg-transparent p-0"
+                  [style.color]="'darkorange'"
                   (click)="toggleStar()"
-                  nzTwotoneColor="orange"
-                  style="color: orange"
-                ></span>
+                  aria-label="Toggle star mark"
+                >
+                  <span
+                    nz-icon
+                    nzType="star"
+                    [nzTheme]="starMarked()"
+                    nzTwotoneColor="darkorange"
+                    aria-hidden="true"
+                  ></span>
+                </button>
               </div>
             </td>
             <td
-              nzTooltipTitle="{{ data.user.email }}"
+              [nzTooltipTitle]="data.user.email"
               nzTooltipPlacement="topLeft"
               nz-tooltip
               class="truncate"
@@ -147,7 +159,7 @@
               {{ data.user.email }}
             </td>
             <td
-              nzTooltipTitle="{{ data.designation }}"
+              [nzTooltipTitle]="data.designation"
               nzTooltipPlacement="topLeft"
               nz-tooltip
               class="truncate"
@@ -155,7 +167,7 @@
               {{ data.designation }}
             </td>
             <td
-              nzTooltipTitle="{{ data.joinDate | date: 'MMM dd, yyyy' }}"
+              [nzTooltipTitle]="data.joinDate | date: 'MMM dd, yyyy'"
               nzTooltipPlacement="topLeft"
               nz-tooltip
               class="truncate"
@@ -163,7 +175,7 @@
               {{ data.joinDate | date: 'MMM dd, yyyy' }}
             </td>
             <td
-              nzTooltipTitle="{{ data.user.phoneNumber }}"
+              [nzTooltipTitle]="data.user.phoneNumber"
               nzTooltipPlacement="topLeft"
               nz-tooltip
               class="truncate"
@@ -181,7 +193,7 @@
                   title="Edit Employee"
                   aria-label="Edit Employee"
                 >
-                  <span nz-icon nzType="edit" nzTheme="outline"></span>
+                  <span nz-icon nzType="edit" nzTheme="outline" aria-hidden="true"></span>
                 </button>
                 <button
                   (click)="deleteUser(data.id)"
@@ -192,7 +204,7 @@
                   title="Delete Employee"
                   aria-label="Delete Employee"
                 >
-                  <span nz-icon nzType="delete" nzTheme="outline"></span>
+                  <span nz-icon nzType="delete" nzTheme="outline" aria-hidden="true"></span>
                 </button>
               </div>
             </td>

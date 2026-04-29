@@ -3,6 +3,8 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
+
+import { API_BASE_URL } from '../app.config';
 import {
   User,
   LoginRequest,
@@ -11,7 +13,6 @@ import {
   RefreshTokenResponse,
   UserProfile,
 } from './auth.model';
-import { API_BASE_URL } from '../app.config';
 
 @Injectable({
   providedIn: 'root',
@@ -20,8 +21,6 @@ export class AuthService {
   private http = inject(HttpClient);
   private router = inject(Router);
   private baseUrl = inject(API_BASE_URL);
-  private readonly API_URL = `${this.baseUrl}/api`;
-
   private authState = signal<AuthState>({
     user: null,
     token: null,
@@ -30,6 +29,8 @@ export class AuthService {
     isLoading: false,
     error: null,
   });
+
+  private readonly API_URL = `${this.baseUrl}/api`;
 
   readonly currentUser = this.authState.asReadonly();
   readonly isAuthenticated = computed(() => this.authState().isAuthenticated);
@@ -63,6 +64,7 @@ export class AuthService {
 
     if (loginStatus === 'valid' && token) {
       let user: User | null = null;
+
       if (userStr) {
         try {
           user = JSON.parse(userStr) as User;
@@ -104,16 +106,17 @@ export class AuthService {
           isLoading: false,
           error: null,
         }));
-
         this.getUserProfile().subscribe();
       }),
       catchError((error: HttpErrorResponse) => {
         const errorMessage = this.resolveLoginError(error);
+
         this.authState.update((state) => ({
           ...state,
           isLoading: false,
           error: errorMessage,
         }));
+
         return throwError(() => new Error(errorMessage));
       }),
     );
@@ -122,6 +125,7 @@ export class AuthService {
   private resolveLoginError(error: HttpErrorResponse): string {
     if (error.status === 401) return 'Invalid username or password';
     if (error.status === 0) return 'Unable to connect to server';
+
     const errBody = error.error as { message?: string } | null;
     return errBody?.message ?? 'Login failed';
   }

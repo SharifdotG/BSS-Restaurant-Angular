@@ -11,6 +11,7 @@ import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
+
 import { DashboardService } from './dashboard.service';
 
 const STATUS_CONFIG: Record<string, { bg: string; label: string }> = {
@@ -35,6 +36,7 @@ export class Dashboard implements OnInit {
   readonly dashboardService = inject(DashboardService);
   readonly statusConfig = STATUS_CONFIG;
   readonly defaultStatusConfig = DEFAULT_STATUS_CONFIG;
+
   private failedImageIds = signal<Set<number>>(new Set());
   readonly failedImages = this.failedImageIds.asReadonly();
 

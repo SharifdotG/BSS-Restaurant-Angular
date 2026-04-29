@@ -1,11 +1,17 @@
-import { Component, inject, OnInit, OnDestroy, effect } from '@angular/core';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  effect,
+  inject,
+  OnDestroy,
+  OnInit,
+  signal,
+} from '@angular/core';
 import {
   NzModalComponent,
   NzModalContentDirective,
   NzModalFooterDirective,
-  NzModalService,
 } from 'ng-zorro-antd/modal';
-import { EmployeesService } from '../employees.service';
 import { NzButtonComponent } from 'ng-zorro-antd/button';
 import {
   NzFormControlComponent,
@@ -15,7 +21,6 @@ import {
 } from 'ng-zorro-antd/form';
 import {
   AbstractControl,
-  FormsModule,
   NonNullableFormBuilder,
   ReactiveFormsModule,
   ValidationErrors,
@@ -23,34 +28,18 @@ import {
 } from '@angular/forms';
 import { NzColDirective, NzRowDirective } from 'ng-zorro-antd/grid';
 import { NzInputDirective } from 'ng-zorro-antd/input';
-import {
-  catchError,
-  debounceTime,
-  first,
-  map,
-  Observable,
-  Observer,
-  of,
-  Subject,
-  switchMap,
-} from 'rxjs';
+import { debounceTime, map, of, takeUntil, catchError, Observable, Subject } from 'rxjs';
 import { NzUploadChangeParam, NzUploadComponent, NzUploadFile } from 'ng-zorro-antd/upload';
 import { NzIconDirective } from 'ng-zorro-antd/icon';
 import { NzDatePickerComponent } from 'ng-zorro-antd/date-picker';
 import { NzOptionComponent, NzSelectComponent } from 'ng-zorro-antd/select';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { CreateEmployee } from '../employees.interface';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { API_BASE_URL } from '../../app.config';
 
-const getBase64 = (file: File): Promise<string | ArrayBuffer | null> =>
-  new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = (error) => reject(error);
-  });
+import { API_BASE_URL } from '../../app.config';
+import { CreateEmployee } from '../employees.interface';
+import { EmployeesService } from '../employees.service';
 
 @Component({
   selector: 'app-add-employee',
@@ -68,7 +57,6 @@ const getBase64 = (file: File): Promise<string | ArrayBuffer | null> =>
     NzInputDirective,
     NzRowDirective,
     NzModalContentDirective,
-    FormsModule,
     NzUploadComponent,
     NzIconDirective,
     NzDatePickerComponent,
@@ -77,119 +65,27 @@ const getBase64 = (file: File): Promise<string | ArrayBuffer | null> =>
   ],
   templateUrl: './add-employee.html',
   styleUrl: './add-employee.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddEmployee implements OnInit, OnDestroy {
-  httpClient = inject(HttpClient);
-  employeeService = inject(EmployeesService);
-  responsive = inject(BreakpointObserver);
+  private httpClient = inject(HttpClient);
+  private responsive = inject(BreakpointObserver);
   private baseUrl = inject(API_BASE_URL);
-
-  modalWidth = '80vw';
-
-  handleOk(): void {
-    if (this.employeeService.isEditMode()) {
-      // In edit mode, validate and send all fields including image
-      const selectedEmployee = this.employeeService.selectedEmployee();
-      if (this.validateForm.status === 'INVALID') {
-        for (const i in this.validateForm.controls) {
-          this.validateForm.controls[i as keyof typeof this.validateForm.controls].markAsDirty();
-          this.validateForm.controls[
-            i as keyof typeof this.validateForm.controls
-          ].updateValueAndValidity();
-        }
-        this.validateForm.controls.firstName.markAsDirty();
-      }
-      if (selectedEmployee && this.validateForm.status === 'VALID') {
-        this.employeeService.isSendingRequest.set(true);
-        let UPDATE_VALUES: CreateEmployee = {
-          designation: this.validateForm.controls.designation.value,
-          joinDate: this.validateForm.controls.doj.value,
-          email: this.validateForm.controls.email.value,
-          phoneNumber: this.validateForm.controls.phoneNumber.value,
-          firstName: this.validateForm.controls.firstName.value,
-          middleName: this.validateForm.controls.middleName.value,
-          lastName: this.validateForm.controls.lastName.value,
-          fatherName: this.validateForm.controls.fatherName.value,
-          motherName: this.validateForm.controls.motherName.value,
-          spouseName: this.validateForm.controls.spouseName.value,
-          dob: this.validateForm.controls.dob.value,
-          nid: this.validateForm.controls.nidCardNumber.value,
-          genderId:
-            this.validateForm.controls.gender.value === 'Male'
-              ? 1
-              : this.validateForm.controls.gender.value === 'Female'
-                ? 2
-                : 3,
-          image: this.image,
-          base64: this.imageB64,
-        };
-        this.employeeService.updateEmployee(selectedEmployee.id, UPDATE_VALUES);
-        setTimeout(() => {
-          this.employeeService.isSendingRequest.set(false);
-          this.handleCancel();
-        }, 1000);
-      }
-    } else {
-      // In add mode, validate all fields
-      if (this.validateForm.status === 'INVALID') {
-        for (const i in this.validateForm.controls) {
-          this.validateForm.controls[i as keyof typeof this.validateForm.controls].markAsDirty();
-          this.validateForm.controls[
-            i as keyof typeof this.validateForm.controls
-          ].updateValueAndValidity();
-        }
-        this.validateForm.controls.firstName.markAsDirty();
-      }
-      if (this.validateForm.status === 'VALID') {
-        this.employeeService.isSendingRequest.set(true);
-        let POST_VALUES: CreateEmployee = {
-          designation: this.validateForm.controls.designation.value,
-          joinDate: this.validateForm.controls.doj.value,
-          email: this.validateForm.controls.email.value,
-          phoneNumber: this.validateForm.controls.phoneNumber.value,
-          firstName: this.validateForm.controls.firstName.value,
-          middleName: this.validateForm.controls.middleName.value,
-          lastName: this.validateForm.controls.lastName.value,
-          fatherName: this.validateForm.controls.fatherName.value,
-          motherName: this.validateForm.controls.motherName.value,
-          spouseName: this.validateForm.controls.spouseName.value,
-          dob: this.validateForm.controls.dob.value,
-          nid: this.validateForm.controls.nidCardNumber.value,
-          genderId:
-            this.validateForm.controls.gender.value === 'Male'
-              ? 1
-              : this.validateForm.controls.gender.value === 'Female'
-                ? 2
-                : 3,
-          image: this.image,
-          base64: this.imageB64,
-        };
-        this.employeeService.addNewEmployee(POST_VALUES);
-        setTimeout(() => {
-          this.employeeService.isSendingRequest.set(false);
-          this.handleCancel();
-          this.employeeService.triggerRefresh.set(true);
-        }, 1000);
-      }
-    }
-  }
-
-  handleCancel() {
-    this.fileList = [];
-    this.image = '';
-    this.imageB64 = '';
-    this.validateForm.reset();
-    this.employeeService.showAddModal.set(false);
-    this.employeeService.selectedEmployee.set(null);
-    this.employeeService.isEditMode.set(false);
-  }
-
-  //FORM SECTION
-  fb = inject(NonNullableFormBuilder);
+  private fb = inject(NonNullableFormBuilder);
   private destroy$ = new Subject<void>();
+
+  employeeService = inject(EmployeesService);
+
+  modalWidth = signal('80vw');
+  image = signal('');
+  imageB64 = signal('');
+  fileList = signal<NzUploadFile[]>([]);
+  previewImage = signal<string | undefined>('');
+  previewVisible = signal(false);
+
   validateForm = this.fb.group({
     firstName: this.fb.control('', [Validators.required], [this.nameValidator]),
-    middleName: this.fb.control('', [Validators.nullValidator], [this.middleNameValidator]),
+    middleName: this.fb.control('', [], [this.middleNameValidator]),
     lastName: this.fb.control('', [Validators.required], [this.nameValidator]),
     spouseName: this.fb.control('', [Validators.required], [this.nameValidator]),
     fatherName: this.fb.control('', [Validators.required], [this.nameValidator]),
@@ -203,19 +99,12 @@ export class AddEmployee implements OnInit, OnDestroy {
     gender: this.fb.control('', [Validators.required]),
   });
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
   constructor() {
-    // Effect to populate form when editing
     effect(() => {
       const selectedEmployee = this.employeeService.selectedEmployee();
       const isEditMode = this.employeeService.isEditMode();
 
       if (isEditMode && selectedEmployee) {
-        // Populate form with employee data
         this.validateForm.patchValue({
           firstName: selectedEmployee.user.firstName,
           middleName: selectedEmployee.user.middleName || '',
@@ -237,69 +126,113 @@ export class AddEmployee implements OnInit, OnDestroy {
                 : 'Other',
         });
 
-        // Set image if exists
         if (selectedEmployee.user.image) {
-          this.image = selectedEmployee.user.image;
-          this.previewImage = `${this.baseUrl}/images/user/${selectedEmployee.user.image}`;
-          this.fileList = [
+          this.image.set(selectedEmployee.user.image);
+          this.previewImage.set(`${this.baseUrl}/images/user/${selectedEmployee.user.image}`);
+          this.fileList.set([
             {
               uid: '-1',
               name: selectedEmployee.user.image,
               status: 'done',
               url: `${this.baseUrl}/images/user/${selectedEmployee.user.image}`,
             },
-          ];
-        }
-
-        // Enable all fields in edit mode (removed the disable logic)
-        Object.keys(this.validateForm.controls).forEach((key) => {
-          this.validateForm.get(key)?.enable();
-        });
-      } else {
-        // Enable all fields in add mode
-        Object.keys(this.validateForm.controls).forEach((key) => {
-          this.validateForm.get(key)?.enable();
-        });
-      }
-    });
-  }
-
-  ngOnInit() {
-    this.responsive.observe([Breakpoints.Large, Breakpoints.XLarge]).subscribe((result) => {
-      this.modalWidth = '100vw';
-      if (result.matches) {
-        this.modalWidth = '80vw';
-      } else {
-        this.modalWidth = '100vw';
-      }
-    });
-  }
-
-  // Validators
-  middleNameValidator(control: AbstractControl): Observable<ValidationErrors | null> {
-    return new Observable((observer: Observer<ValidationErrors | null>) => {
-      setTimeout(() => {
-        if (control.value.length > 0 && !/^[a-zA-Z ]+$/.test(control.value)) {
-          observer.next({ error: true, notAplhaNum: true });
+          ]);
         } else {
-          observer.next(null);
+          this.image.set('');
+          this.previewImage.set('');
+          this.fileList.set([]);
         }
-        observer.complete();
-      }, 500);
+
+        Object.values(this.validateForm.controls).forEach((control) => control.enable());
+      } else {
+        Object.values(this.validateForm.controls).forEach((control) => control.enable());
+      }
     });
+
+    effect(() => {
+      if (this.employeeService.triggerRefresh() && this.employeeService.showAddModal()) {
+        this.handleCancel();
+      }
+    });
+  }
+
+  ngOnInit(): void {
+    this.responsive
+      .observe([Breakpoints.Large, Breakpoints.XLarge])
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((result) => {
+        this.modalWidth.set(result.matches ? '80vw' : '100vw');
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  handleOk(): void {
+    if (this.validateForm.invalid) {
+      Object.values(this.validateForm.controls).forEach((control) => {
+        control.markAsDirty();
+        control.updateValueAndValidity();
+      });
+      return;
+    }
+
+    const formValue = this.validateForm.value;
+
+    const payload: CreateEmployee = {
+      designation: formValue.designation!,
+      joinDate: formValue.doj!,
+      email: formValue.email!,
+      phoneNumber: formValue.phoneNumber!,
+      firstName: formValue.firstName!,
+      middleName: formValue.middleName || '',
+      lastName: formValue.lastName!,
+      fatherName: formValue.fatherName || '',
+      motherName: formValue.motherName || '',
+      spouseName: formValue.spouseName || '',
+      dob: formValue.dob!,
+      nid: formValue.nidCardNumber!,
+      genderId: formValue.gender === 'Male' ? 1 : formValue.gender === 'Female' ? 2 : 3,
+      image: this.image(),
+      base64: this.imageB64(),
+    };
+
+    if (this.employeeService.isEditMode()) {
+      const selectedEmployee = this.employeeService.selectedEmployee();
+      if (selectedEmployee) {
+        this.employeeService.updateEmployee(selectedEmployee.id, payload);
+      }
+    } else {
+      this.employeeService.addNewEmployee(payload);
+    }
+  }
+
+  handleCancel(): void {
+    this.fileList.set([]);
+    this.image.set('');
+    this.imageB64.set('');
+    this.validateForm.reset();
+    this.employeeService.showAddModal.set(false);
+    this.employeeService.selectedEmployee.set(null);
+    this.employeeService.isEditMode.set(false);
+  }
+
+  middleNameValidator(control: AbstractControl): Observable<ValidationErrors | null> {
+    return of(control.value).pipe(
+      debounceTime(500),
+      map((value) =>
+        value.length > 0 && !/^[a-zA-Z ]+$/.test(value) ? { error: true, notAplhaNum: true } : null,
+      ),
+    );
   }
 
   nameValidator(control: AbstractControl): Observable<ValidationErrors | null> {
-    return new Observable((observer: Observer<ValidationErrors | null>) => {
-      setTimeout(() => {
-        if (!/^[a-zA-Z ]+$/.test(control.value)) {
-          observer.next({ error: true, notAplhaNum: true });
-        } else {
-          observer.next(null);
-        }
-        observer.complete();
-      }, 500);
-    });
+    return of(control.value).pipe(
+      debounceTime(500),
+      map((value) => (!/^[a-zA-Z ]+$/.test(value) ? { error: true, notAplhaNum: true } : null)),
+    );
   }
 
   phoneNumberValidator(control: AbstractControl): Observable<ValidationErrors | null> {
@@ -307,9 +240,9 @@ export class AddEmployee implements OnInit, OnDestroy {
       return of(null);
     }
 
-    // In edit mode, skip validation if phone number hasn't changed
     const selectedEmployee = this.employeeService.selectedEmployee();
     const isEditMode = this.employeeService.isEditMode();
+
     if (isEditMode && selectedEmployee && selectedEmployee.user.phoneNumber === control.value) {
       return of(null);
     }
@@ -317,41 +250,25 @@ export class AddEmployee implements OnInit, OnDestroy {
     return this.httpClient
       .get<boolean>(`${this.baseUrl}/api/Auth/phoneNumberExist/${control.value}`)
       .pipe(
+        debounceTime(500),
         map((isTaken) => (isTaken ? { phoneNumberTaken: true } : null)),
         catchError(() => of(null)),
       );
   }
 
   nidNumberValidator(control: AbstractControl): Observable<ValidationErrors | null> {
-    return new Observable((observer: Observer<ValidationErrors | null>) => {
-      setTimeout(() => {
-        if (!/^\d{4,}$/.test(control.value)) {
-          observer.next({ error: true, isNotNumeric: true });
-        } else {
-          observer.next(null);
-        }
-        observer.complete();
-      }, 500);
-    });
+    return of(control.value).pipe(
+      debounceTime(500),
+      map((value) => (!/^\d{4,}$/.test(value) ? { error: true, isNotNumeric: true } : null)),
+    );
   }
-
-  submitForm() {
-    // Form submission handled in handleOk
-  }
-
-  //File Upload Section
-  image = '';
-  imageB64 = '';
-  fileList: NzUploadFile[] = [];
-  previewImage: string | undefined = '';
-  previewVisible = false;
 
   handlePreview = async (file: NzUploadFile): Promise<void> => {
     if (!file.url && !file['preview']) {
       file['preview'] = await this.getBase64(file.originFileObj!);
     }
-    this.previewImage = file.url || file['preview'];
-    this.previewVisible = true;
+    this.previewImage.set(file.url || file['preview']);
+    this.previewVisible.set(true);
   };
 
   getBase64 = (file: File): Promise<string> =>
@@ -362,25 +279,23 @@ export class AddEmployee implements OnInit, OnDestroy {
       reader.onerror = (error) => reject(error);
     });
 
-  date: any;
-
-  beforeUpload(file: NzUploadFile, fileList: NzUploadFile[]): boolean {
+  beforeUpload(_file: NzUploadFile, _fileList: NzUploadFile[]): boolean {
     return true;
   }
 
-  onChange(event: NzUploadChangeParam) {
+  onChange(event: NzUploadChangeParam): void {
     const reader = new FileReader();
     if (event.file.originFileObj) {
       reader.onloadend = () => {
-        this.imageB64 = reader.result as string;
-        this.image = event.file.uid + event.file.name;
+        this.imageB64.set(reader.result as string);
+        this.image.set(event.file.uid + event.file.name);
       };
       reader.readAsDataURL(event.file.originFileObj);
     }
 
-    if (event.type !== 'removed') {
-      this.image = '';
-      this.imageB64 = '';
+    if (event.type === 'removed') {
+      this.image.set('');
+      this.imageB64.set('');
     }
 
     if (event.type === 'error') {
@@ -388,6 +303,4 @@ export class AddEmployee implements OnInit, OnDestroy {
       event.file.error.status = '200';
     }
   }
-
-  protected readonly toString = toString;
 }

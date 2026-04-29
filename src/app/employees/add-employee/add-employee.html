@@ -3,24 +3,26 @@
     nz-icon
     [nzType]="employeeService.isEditMode() ? 'edit' : 'user-add'"
     nzTheme="outline"
+    aria-hidden="true"
   ></span>
   <span> {{ employeeService.isEditMode() ? 'Update Employee' : 'Add New Employee' }}</span>
 </ng-template>
+
 <nz-modal
   nzCentered
-  [(nzVisible)]="employeeService.showAddModal"
+  [nzVisible]="employeeService.showAddModal()"
   [nzTitle]="modalTitle"
   (nzOnCancel)="handleCancel()"
   (nzOnOk)="handleOk()"
   [nzOkLoading]="employeeService.isSendingRequest()"
-  [nzWidth]="modalWidth"
+  [nzWidth]="modalWidth()"
 >
   <ng-container *nzModalContent>
     <div class="form-wrapper">
-      <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+      <form nz-form [formGroup]="validateForm" role="form" aria-label="Employee Details Form">
         <div class="row">
           <div class="col-12 col-lg-6 p-0 pe-lg-2">
-            <!--      //First Name-->
+            <!-- First Name -->
             <nz-form-item>
               <nz-form-label nzRequired nzNoColon nzLabelAlign="left" nzSpan="24"
                 >First Name</nz-form-label
@@ -30,40 +32,54 @@
                   nz-input
                   formControlName="firstName"
                   placeholder="First Name"
-                  [disabled]="employeeService.isEditMode()"
+                  aria-label="First Name"
                 />
                 <ng-template #firstNameErrorTmpl let-control>
                   @if (control.errors?.['required']) {
-                    This field is required!
+                    <span role="alert">This field is required!</span>
                   }
                   @if (control.errors?.['notAplhaNum']) {
-                    Field can only contain letters (A-Z)
+                    <span role="alert">Field can only contain letters (A-Z)</span>
                   }
                 </ng-template>
               </nz-form-control>
             </nz-form-item>
-            <!--      //Middle Name-->
+
+            <!-- Middle Name -->
             <nz-form-item>
               <nz-form-label nzNoColon nzLabelAlign="left" nzSpan="24">Middle Name</nz-form-label>
               <nz-form-control [nzSpan]="24" nzHasFeedback [nzErrorTip]="middleNameError">
-                <input nz-input formControlName="middleName" placeholder="Middle Name" />
+                <input
+                  nz-input
+                  formControlName="middleName"
+                  placeholder="Middle Name"
+                  aria-label="Middle Name"
+                />
                 <ng-template #middleNameError let-control>
                   @if (control.errors?.['notAplhaNum']) {
-                    Name can only contain letters (A-Z)
+                    <span role="alert">Name can only contain letters (A-Z)</span>
                   }
                 </ng-template>
               </nz-form-control>
             </nz-form-item>
-            <!--      //Last Name-->
+
+            <!-- Last Name -->
             <nz-form-item>
               <nz-form-label nzRequired nzNoColon nzLabelAlign="left" nzSpan="24"
                 >Last Name</nz-form-label
               >
               <nz-form-control [nzSpan]="24" nzHasFeedback [nzErrorTip]="firstNameErrorTmpl">
-                <input nz-input formControlName="lastName" placeholder="Last Name" />
+                <input
+                  nz-input
+                  formControlName="lastName"
+                  placeholder="Last Name"
+                  aria-label="Last Name"
+                />
               </nz-form-control>
             </nz-form-item>
           </div>
+
+          <!-- Employee Image -->
           <div class="col-12 col-lg-6 p-0 ps-lg-2">
             <div
               class="w-100 h-100 p-4 d-flex align-items-center justify-content-center file-upload"
@@ -76,30 +92,32 @@
                 }"
                 nzAction="null"
                 nzListType="picture-card"
-                [(nzFileList)]="fileList"
-                [nzShowButton]="fileList.length < 1"
+                [nzFileList]="fileList()"
+                (nzFileListChange)="fileList.set($event)"
+                [nzShowButton]="fileList().length < 1"
                 [nzPreview]="handlePreview"
                 [nzBeforeUpload]="beforeUpload"
                 [nzFileType]="'image/png,image/jpeg,image/gif,image/bmp'"
                 (nzChange)="onChange($event)"
               >
                 <div class="card p-10 d-flex align-items-center justify-content-center">
-                  <span nz-icon nzType="plus"></span>
-                  <div style="margin-top: 8px">Upload Employee Image</div>
+                  <span nz-icon nzType="plus" aria-hidden="true"></span>
+                  <div [style.margin-top]="'8px'">Upload Employee Image</div>
                 </div>
               </nz-upload>
+
               <nz-modal
-                [nzVisible]="previewVisible"
+                [nzVisible]="previewVisible()"
                 [nzContent]="modalContent"
                 [nzFooter]="null"
-                (nzOnCancel)="previewVisible = false"
+                (nzOnCancel)="previewVisible.set(false)"
                 nzCentered
                 nzWidth="760px"
               >
                 <ng-template #modalContent>
                   <img
                     class="mt-2 preview-image"
-                    [src]="previewImage"
+                    [src]="previewImage()"
                     alt="Employee image preview"
                     title="Employee image preview"
                   />
@@ -108,99 +126,135 @@
             </div>
           </div>
         </div>
+
         <div class="row justify-content-center">
           <div class="col-12 p-0 d-flex flex-wrap justify-content-between">
-            <!--      //Spouse Name-->
+            <!-- Spouse Name -->
             <nz-form-item class="w-1/3 pe-0 pe-xl-2 max-xl:w-full">
               <nz-form-label nzRequired nzNoColon nzLabelAlign="left" nzSpan="24"
                 >Spouse Name</nz-form-label
               >
               <nz-form-control [nzSpan]="24" nzHasFeedback [nzErrorTip]="firstNameErrorTmpl">
-                <input nz-input formControlName="spouseName" placeholder="Spouse Name" />
+                <input
+                  nz-input
+                  formControlName="spouseName"
+                  placeholder="Spouse Name"
+                  aria-label="Spouse Name"
+                />
               </nz-form-control>
             </nz-form-item>
-            <!--      //Father Name-->
+
+            <!-- Father Name -->
             <nz-form-item class="w-1/3 pe-0 pe-xl-2 max-xl:w-full">
               <nz-form-label nzRequired nzNoColon nzLabelAlign="left" nzSpan="24"
                 >Father's Name</nz-form-label
               >
               <nz-form-control [nzSpan]="24" nzHasFeedback [nzErrorTip]="firstNameErrorTmpl">
-                <input nz-input formControlName="fatherName" placeholder="Father's Name" />
+                <input
+                  nz-input
+                  formControlName="fatherName"
+                  placeholder="Father's Name"
+                  aria-label="Father Name"
+                />
               </nz-form-control>
             </nz-form-item>
-            <!--      //Mother Name-->
+
+            <!-- Mother Name -->
             <nz-form-item class="w-1/3 pe-0 max-xl:w-full">
               <nz-form-label nzRequired nzNoColon nzLabelAlign="left" nzSpan="24"
                 >Mother's Name</nz-form-label
               >
               <nz-form-control [nzSpan]="24" nzHasFeedback [nzErrorTip]="firstNameErrorTmpl">
-                <input nz-input formControlName="motherName" placeholder="Mother's Name" />
+                <input
+                  nz-input
+                  formControlName="motherName"
+                  placeholder="Mother's Name"
+                  aria-label="Mother Name"
+                />
               </nz-form-control>
             </nz-form-item>
 
-            <!--      //Designation-->
+            <!-- Designation -->
             <nz-form-item class="w-1/3 pe-0 pe-xl-2 max-xl:w-full">
               <nz-form-label nzRequired nzNoColon nzLabelAlign="left" nzSpan="24"
                 >Designation</nz-form-label
               >
               <nz-form-control [nzSpan]="24" nzHasFeedback [nzErrorTip]="firstNameErrorTmpl">
-                <input nz-input formControlName="designation" placeholder="Designation" />
+                <input
+                  nz-input
+                  formControlName="designation"
+                  placeholder="Designation"
+                  aria-label="Designation"
+                />
               </nz-form-control>
             </nz-form-item>
 
-            <!--      //Email-->
+            <!-- Email -->
             <nz-form-item class="w-1/3 pe-0 pe-xl-2 max-xl:w-full">
               <nz-form-label nzRequired nzNoColon nzLabelAlign="left" nzSpan="24"
                 >Email Address</nz-form-label
               >
               <nz-form-control [nzSpan]="24" nzHasFeedback [nzErrorTip]="emailErrorTmpl">
-                <input nz-input formControlName="email" placeholder="Email Address" />
+                <input
+                  nz-input
+                  formControlName="email"
+                  placeholder="Email Address"
+                  aria-label="Email Address"
+                />
               </nz-form-control>
               <ng-template #emailErrorTmpl let-control>
                 @if (control.errors?.['required']) {
-                  This field is required!
+                  <span role="alert">This field is required!</span>
                 }
                 @if (control.errors?.['email']) {
-                  Enter a valid email!
+                  <span role="alert">Enter a valid email!</span>
                 }
               </ng-template>
             </nz-form-item>
-            <!--      //Phone Number-->
+
+            <!-- Phone Number -->
             <nz-form-item class="w-1/3 max-xl:w-full">
               <nz-form-label nzRequired nzNoColon nzLabelAlign="left" nzSpan="24"
                 >Phone Number</nz-form-label
               >
               <nz-form-control [nzSpan]="24" nzHasFeedback [nzErrorTip]="phoneNumberTmlp">
-                <input nz-input formControlName="phoneNumber" placeholder="Phone Number" />
+                <input
+                  nz-input
+                  formControlName="phoneNumber"
+                  placeholder="Phone Number"
+                  aria-label="Phone Number"
+                />
               </nz-form-control>
               <ng-template #phoneNumberTmlp let-control>
                 @if (control.errors?.['required']) {
-                  This field is required!
+                  <span role="alert">This field is required!</span>
                 }
                 @if (control.errors?.['isNotNumeric']) {
-                  Enter a valid BD phone number.
+                  <span role="alert">Enter a valid BD phone number.</span>
                 }
                 @if (control.errors?.['phoneNumberTaken']) {
-                  This phone number already exists!
+                  <span role="alert">This phone number already exists!</span>
                 }
               </ng-template>
             </nz-form-item>
           </div>
+
           <div class="col-12 p-0 d-flex flex-wrap justify-content-between">
-            <!--      //Gender -->
+            <!-- Gender -->
             <nz-form-item class="w-1/4 pe-0 pe-xl-2 max-xl:w-full">
               <nz-form-label nzRequired nzNoColon nzLabelAlign="left" nzSpan="24"
                 >Gender</nz-form-label
               >
               <nz-form-control [nzSpan]="24" nzHasFeedback [nzErrorTip]="firstNameErrorTmpl">
-                <nz-select formControlName="gender">
+                <nz-select formControlName="gender" aria-label="Gender">
                   <nz-option nzValue="Male" nzLabel="Male"></nz-option>
                   <nz-option nzValue="Female" nzLabel="Female"></nz-option>
                   <nz-option nzValue="Other" nzLabel="Other"></nz-option>
                 </nz-select>
               </nz-form-control>
             </nz-form-item>
-            <!--      //DOB-->
+
+            <!-- DOB -->
             <nz-form-item class="w-1/4 pe-0 pe-xl-2 max-xl:w-full">
               <nz-form-label nzRequired nzNoColon nzLabelAlign="left" nzSpan="24"
                 >Date of Birth</nz-form-label
@@ -212,10 +266,12 @@
                   nzFormat="dd/MM/yyyy"
                   [nzBackdrop]="true"
                   nzPlaceHolder="Enter date of birth"
+                  aria-label="Date of Birth"
                 ></nz-date-picker>
               </nz-form-control>
             </nz-form-item>
-            <!--      //DOJ-->
+
+            <!-- DOJ -->
             <nz-form-item class="w-1/4 pe-0 pe-xl-2 max-xl:w-full">
               <nz-form-label nzRequired nzNoColon nzLabelAlign="left" nzSpan="24"
                 >Date of Join</nz-form-label
@@ -227,10 +283,12 @@
                   nzFormat="dd/MM/yyyy"
                   [nzBackdrop]="true"
                   nzPlaceHolder="Enter date of join"
+                  aria-label="Date of Joining"
                 ></nz-date-picker>
               </nz-form-control>
             </nz-form-item>
-            <!--      //NID-->
+
+            <!-- NID -->
             <nz-form-item class="w-1/4 pe-0 max-xl:w-full">
               <nz-form-label nzRequired nzNoColon nzLabelAlign="left" nzSpan="24"
                 >NID Card Number</nz-form-label
@@ -240,7 +298,12 @@
                 nzHasFeedback
                 nzErrorTip="Enter a valid NID card number"
               >
-                <input nz-input formControlName="nidCardNumber" placeholder="NID Card Number" />
+                <input
+                  nz-input
+                  formControlName="nidCardNumber"
+                  placeholder="NID Card Number"
+                  aria-label="NID Card Number"
+                />
               </nz-form-control>
             </nz-form-item>
           </div>
@@ -249,6 +312,7 @@
     </div>
   </ng-container>
 
+  <!-- Modal Footer -->
   <div *nzModalFooter>
     <button class="drop-shadow-md" nz-button nzDanger nzType="default" (click)="handleCancel()">
       Cancel Operation

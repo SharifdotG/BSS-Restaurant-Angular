@@ -8,8 +8,8 @@ import {
 } from '@angular/common/http';
 import { Observable, BehaviorSubject, throwError } from 'rxjs';
 import { catchError, filter, take, switchMap } from 'rxjs/operators';
+
 import { AuthService } from './auth.service';
-import { Router } from '@angular/router';
 
 let isRefreshing = false;
 const refreshTokenSubject = new BehaviorSubject<string | null>(null);
@@ -19,8 +19,6 @@ export const authInterceptor: HttpInterceptorFn = (
   next: HttpHandlerFn,
 ): Observable<HttpEvent<unknown>> => {
   const authService = inject(AuthService);
-  const router = inject(Router);
-
   const token = authService.getToken();
 
   const isAuthEndpoint =
@@ -35,6 +33,7 @@ export const authInterceptor: HttpInterceptorFn = (
       if (error.status === 401 && !isAuthEndpoint) {
         return handle401Error(request, next, authService);
       }
+
       return throwError(() => error);
     }),
   );
@@ -44,7 +43,6 @@ function addToken(request: HttpRequest<unknown>, token: string): HttpRequest<unk
   return request.clone({
     setHeaders: {
       Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
     },
   });
 }
@@ -60,15 +58,18 @@ function handle401Error(
 
     return authService.refreshAccessToken().pipe(
       switchMap((tokenResponse: unknown) => {
-        isRefreshing = false;
         const response = tokenResponse as { token?: string; accessToken?: string };
         const token = response.token ?? response.accessToken ?? '';
+
+        isRefreshing = false;
         refreshTokenSubject.next(token);
+
         return next(addToken(request, token));
       }),
       catchError((err) => {
         isRefreshing = false;
         authService.logout();
+
         return throwError(() => err);
       }),
     );

@@ -4,6 +4,7 @@ import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angula
 import { Router } from '@angular/router';
 import { NzCarouselModule } from 'ng-zorro-antd/carousel';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+
 import { AuthService } from '../auth.service';
 
 @Component({
@@ -26,9 +27,11 @@ export class Login {
 
   loginStatus = computed(() => {
     const authState = this.authService.currentUser();
+
     if (authState.isLoading) return 'loading';
     if (authState.error) return 'invalid';
     if (authState.isAuthenticated) return 'valid';
+
     return null;
   });
 

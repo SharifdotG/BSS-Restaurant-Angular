@@ -2,6 +2,7 @@ import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { finalize } from 'rxjs/operators';
 import { NzMessageService } from 'ng-zorro-antd/message';
+
 import { API_BASE_URL } from '../app.config';
 import { DashboardStats } from './dashboard.interface';
 
@@ -22,7 +23,6 @@ export class DashboardService {
     if (year != null) params = params.append('Year', year.toString());
 
     this.isSendingRequest.set(true);
-
     this.http
       .get<DashboardStats>(`${this.baseUrl}/api/Dashboard/stats`, { params })
       .pipe(finalize(() => this.isSendingRequest.set(false)))
