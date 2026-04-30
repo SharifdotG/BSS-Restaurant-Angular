@@ -44,7 +44,7 @@ const SIDE_BAR_ITEMS: readonly SideBarItem[] = [
 ];
 
 @Component({
-  selector: 'app-main',
+  selector: 'app-nav',
   imports: [
     NgOptimizedImage,
     RouterOutlet,
@@ -55,11 +55,11 @@ const SIDE_BAR_ITEMS: readonly SideBarItem[] = [
     NzDropDownModule,
     Profile,
   ],
-  templateUrl: './main.html',
-  styleUrl: './main.css',
+  templateUrl: './nav.html',
+  styleUrl: './nav.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Main implements OnInit {
+export class Nav implements OnInit {
   private readonly baseUrl = inject(API_BASE_URL);
   private readonly router = inject(Router);
   private readonly activatedRoute = inject(ActivatedRoute);

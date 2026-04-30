@@ -97,6 +97,7 @@
                 [nzShowButton]="fileList().length < 1"
                 [nzPreview]="handlePreview"
                 [nzBeforeUpload]="beforeUpload"
+                nzAccept="image/*"
                 [nzFileType]="'image/png,image/jpeg,image/gif,image/bmp'"
                 (nzChange)="onChange($event)"
               >
@@ -223,14 +224,15 @@
                   formControlName="phoneNumber"
                   placeholder="Phone Number"
                   aria-label="Phone Number"
+                  (input)="onPhoneInput($event)"
                 />
               </nz-form-control>
               <ng-template #phoneNumberTmlp let-control>
                 @if (control.errors?.['required']) {
                   <span role="alert">This field is required!</span>
                 }
-                @if (control.errors?.['isNotNumeric']) {
-                  <span role="alert">Enter a valid BD phone number.</span>
+                @if (control.errors?.['pattern']) {
+                  <span role="alert">Must be 11 digits and start with 01 (e.g. 01XXXXXXXXX).</span>
                 }
                 @if (control.errors?.['phoneNumberTaken']) {
                   <span role="alert">This phone number already exists!</span>

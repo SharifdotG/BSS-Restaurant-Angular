@@ -17,7 +17,7 @@ export class EmployeesService {
   private messageService = inject(NzMessageService);
 
   isSendingRequest = signal(false);
-  triggerRefresh = signal(false);
+  triggerRefresh = signal(0);
   listOfEmployees = signal<Employee[]>([]);
   totalEmployees = signal(10);
   showAddModal = signal(false);
@@ -64,7 +64,7 @@ export class EmployeesService {
       },
       complete: () => {
         this.isSendingRequest.set(false);
-        this.triggerRefresh.update((v) => !v);
+        this.triggerRefresh.update((v) => v + 1);
       },
     });
   }
@@ -75,7 +75,7 @@ export class EmployeesService {
     this.httpClient.post(`${this.baseUrl}/api/Employee/create`, postData).subscribe({
       next: () => {
         this.messageService.success('Employee Added Successfully');
-        this.triggerRefresh.update((v) => !v);
+        this.triggerRefresh.update((v) => v + 1);
       },
       error: () => {
         this.messageService.error('Error Processing The Request. Please Try Again...');
@@ -112,7 +112,7 @@ export class EmployeesService {
         this.messageService.success('Employee Updated Successfully');
         this.selectedEmployee.set(null);
         this.isEditMode.set(false);
-        this.triggerRefresh.update((v) => !v);
+        this.triggerRefresh.update((v) => v + 1);
       },
       error: () => {
         this.messageService.error('Error updating employee');

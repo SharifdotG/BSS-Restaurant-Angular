@@ -6,6 +6,7 @@ import {
   OnDestroy,
   OnInit,
   signal,
+  untracked,
 } from '@angular/core';
 import {
   NzModalComponent,
@@ -92,7 +93,11 @@ export class AddEmployee implements OnInit, OnDestroy {
     motherName: this.fb.control('', [Validators.required], [this.nameValidator]),
     designation: this.fb.control('', [Validators.required], [this.nameValidator]),
     email: this.fb.control('', [Validators.required, Validators.email]),
-    phoneNumber: this.fb.control('', [Validators.required], [this.phoneNumberValidator.bind(this)]),
+    phoneNumber: this.fb.control(
+      '',
+      [Validators.required, Validators.pattern(/^01\d{9}$/)],
+      [this.phoneNumberValidator.bind(this)],
+    ),
     nidCardNumber: this.fb.control('', [Validators.required], [this.nidNumberValidator]),
     dob: this.fb.control('', [Validators.required]),
     doj: this.fb.control('', [Validators.required]),
@@ -150,7 +155,8 @@ export class AddEmployee implements OnInit, OnDestroy {
     });
 
     effect(() => {
-      if (this.employeeService.triggerRefresh() && this.employeeService.showAddModal()) {
+      const refresh = this.employeeService.triggerRefresh();
+      if (refresh > 0 && untracked(() => this.employeeService.showAddModal())) {
         this.handleCancel();
       }
     });
@@ -259,7 +265,7 @@ export class AddEmployee implements OnInit, OnDestroy {
   nidNumberValidator(control: AbstractControl): Observable<ValidationErrors | null> {
     return of(control.value).pipe(
       debounceTime(500),
-      map((value) => (!/^\d{4,}$/.test(value) ? { error: true, isNotNumeric: true } : null)),
+      map((value) => (!/^\d{10,17}$/.test(value) ? { error: true, isNotNumeric: true } : null)),
     );
   }
 
@@ -278,6 +284,15 @@ export class AddEmployee implements OnInit, OnDestroy {
       reader.onload = () => resolve(reader.result as string);
       reader.onerror = (error) => reject(error);
     });
+
+  onPhoneInput(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const numericOnly = input.value.replace(/\D/g, '');
+    if (input.value !== numericOnly) {
+      input.value = numericOnly;
+      this.validateForm.get('phoneNumber')?.setValue(numericOnly);
+    }
+  }
 
   beforeUpload(_file: NzUploadFile, _fileList: NzUploadFile[]): boolean {
     return true;

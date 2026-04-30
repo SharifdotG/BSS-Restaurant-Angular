@@ -77,7 +77,7 @@ export class EmployeeList {
   }
 
   getImageUrl(imageUrl: string | undefined): string {
-    return imageUrl ? `${this.imageBaseUrl}/${imageUrl}` : '';
+    return imageUrl ? `${this.imageBaseUrl}${imageUrl}` : '';
   }
 
   toggleStar(): void {
