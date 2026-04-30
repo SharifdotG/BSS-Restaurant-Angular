@@ -1,0 +1,27 @@
+/* Assign Employee to Table Component Styles */
+/* Most styles are inherited from global styles and ng-zorro */
+
+::ng-deep .employee-select + .cdk-overlay-pane .ant-select-dropdown {
+  max-height: 400px !important;
+  min-height: 250px !important;
+}
+
+::ng-deep .employee-select + .cdk-overlay-pane .rc-virtual-list-holder {
+  max-height: 400px !important;
+  min-height: 250px !important;
+}
+
+::ng-deep .employee-select + .cdk-overlay-pane .rc-virtual-list {
+  max-height: 400px !important;
+  min-height: 250px !important;
+}
+
+::ng-deep .employee-select + .cdk-overlay-pane .rc-virtual-list-holder-inner {
+  max-height: none !important;
+  min-height: auto !important;
+}
+
+::ng-deep .ant-select-dropdown .ant-select-item-option-content {
+  display: flex;
+  align-items: center;
+}

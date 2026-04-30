@@ -1,0 +1,39 @@
+.delete-button {
+  border: none;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 16px;
+  font-size: 16px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.delete-button span {
+  color: white !important;
+}
+
+.delete-container {
+  color: white !important;
+  background: #dc2626 !important;
+  padding: 0 !important;
+  transition: all 0.3s ease;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.delete-container:hover {
+  background: #b91c1c !important;
+}
+
+.delete-container .delete-button {
+  color: white !important;
+}
+
+.delete-container .delete-button:hover {
+  background: transparent !important;
+}
