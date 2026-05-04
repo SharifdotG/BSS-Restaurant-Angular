@@ -1,0 +1,67 @@
+.food-image {
+  min-width: 92px;
+  max-width: 92px;
+  height: 92px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.cart-item {
+  width: 100%;
+  height: 120px;
+}
+
+.sub-total-container {
+  height: auto;
+  min-height: 200px;
+  background: var(--bg-ternary-light);
+}
+
+.sub-total {
+  height: auto;
+}
+
+.submit-button {
+  cursor: pointer;
+  height: 58px;
+  width: 100%;
+  border-radius: 6px;
+  color: white;
+  background: var(--bg-primary-600);
+  align-content: center;
+}
+
+.submit-button:hover {
+  background: var(--bg-primary-700);
+}
+
+.drop-down-button {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  border: 1px solid var(--bg-secondary-light-100);
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.drop-down-button:hover {
+  background-color: var(--bg-secondary-light-50);
+}
+
+.phone-input {
+  border-radius: 8px;
+}
+
+@media screen and (max-width: 1024px) {
+  .food-image {
+    min-width: 64px;
+    max-width: 64px;
+    height: 64px;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+}

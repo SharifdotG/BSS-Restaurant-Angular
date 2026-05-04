@@ -1,0 +1,155 @@
+<ng-template #modalTitle xmlns="http://www.w3.org/1999/html">
+  <span nz-icon [nzType]="backendService.isEditMode() ? 'edit' : 'plus'" nzTheme="outline"></span>
+  <span> {{ backendService.isEditMode() ? 'Edit Food Item' : 'Add New Food Item' }}</span>
+</ng-template>
+<nz-modal
+  nzCentered
+  [(nzVisible)]="backendService.showAddModal"
+  [nzTitle]="modalTitle"
+  (nzOnCancel)="handleCancel()"
+  (nzOnOk)="handleOk()"
+  [nzOkLoading]="backendService.isSendingRequest()"
+  [nzWidth]="modalWidth"
+>
+  <ng-container *nzModalContent>
+    <div class="form-wrapper">
+      <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+        <div class="row">
+          <div class="col-12 col-lg-6 p-0 pe-lg-2">
+            <!--    //Food Name-->
+            <nz-form-item>
+              <nz-form-label nzRequired nzNoColon nzLabelAlign="left" nzSpan="24"
+                >Food Name
+              </nz-form-label>
+              <nz-form-control [nzSpan]="24" nzHasFeedback [nzErrorTip]="foodNameErrorTmpl">
+                <input nz-input formControlName="foodName" placeholder="Food Name" />
+                <ng-template #foodNameErrorTmpl let-control>
+                  @if (control.errors?.['required']) {
+                    This field is required!
+                  }
+                </ng-template>
+              </nz-form-control>
+            </nz-form-item>
+            <!--   //Food Description-->
+            <nz-form-item>
+              <nz-form-label nzRequired nzNoColon nzLabelAlign="left" nzSpan="24"
+                >Description</nz-form-label
+              >
+              <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="This field is required!">
+                <textarea
+                  rows="10"
+                  nz-input
+                  formControlName="description"
+                  placeholder="Description"
+                ></textarea>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div class="col-12 col-lg-6 p-0 ps-lg-2">
+            <div
+              class="w-100 h-100 p-4 d-flex align-items-center justify-content-center file-upload"
+            >
+              <nz-upload
+                [nzShowUploadList]="{
+                  showPreviewIcon: true,
+                  showRemoveIcon: true,
+                  showDownloadIcon: false,
+                }"
+                nzAction="null"
+                nzListType="picture-card"
+                [(nzFileList)]="fileList"
+                [nzShowButton]="fileList.length < 1"
+                [nzPreview]="handlePreview"
+                [nzBeforeUpload]="beforeUpload"
+                [nzFileType]="'image/png,image/jpeg,image/gif,image/bmp'"
+                (nzChange)="onChange($event)"
+              >
+                <div class="card p-10 d-flex align-items-center justify-content-center">
+                  <span nz-icon nzType="plus"></span>
+                  <div style="margin-top: 8px">Upload Food Image</div>
+                </div>
+              </nz-upload>
+              <nz-modal
+                [nzVisible]="previewVisible"
+                [nzContent]="modalContent"
+                [nzFooter]="null"
+                (nzOnCancel)="previewVisible = false"
+                nzWidth="760px"
+              >
+                <ng-template #modalContent>
+                  <img class="mt-2" [src]="previewImage" alt="Food preview" style="width: 100%" />
+                </ng-template>
+              </nz-modal>
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-center mt-3">
+          <div class="col-12 p-0 d-flex flex-wrap justify-content-between">
+            <!--      //Price -->
+            <nz-form-item class="w-1/4 pe-0 pe-xl-2 max-xl:w-full">
+              <nz-form-label nzRequired nzNoColon nzLabelAlign="left" nzSpan="24"
+                >Price</nz-form-label
+              >
+              <nz-form-control [nzSpan]="24" nzHasFeedback [nzErrorTip]="priceErrorTmpl">
+                <input nz-input formControlName="price" placeholder="Price" />
+              </nz-form-control>
+            </nz-form-item>
+            <!--      //Discount Type-->
+            <nz-form-item class="w-1/4 pe-0 pe-xl-2 max-xl:w-full">
+              <nz-form-label nzNoColon nzLabelAlign="left" nzSpan="24"
+                >Select Discount Type</nz-form-label
+              >
+              <nz-form-control [nzSpan]="24" nzHasFeedback>
+                <nz-select formControlName="discountType">
+                  <nz-option nzValue="None" nzLabel="None"></nz-option>
+                  <nz-option nzValue="Flat" nzLabel="Flat"></nz-option>
+                  <nz-option nzValue="Percentage" nzLabel="Percentage"></nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+            <!--            Discount in -->
+            <nz-form-item class="w-1/4 pe-0 pe-xl-2 max-xl:w-full">
+              <nz-form-label nzNoColon nzLabelAlign="left" nzSpan="24"
+                >Discount In
+                <pre>{{ discType() }}</pre>
+              </nz-form-label>
+              <nz-form-control [nzSpan]="24" nzHasFeedback>
+                <input nz-input formControlName="discountAmount" placeholder="0" />
+              </nz-form-control>
+            </nz-form-item>
+            <!--            Discounted Price -->
+            <nz-form-item class="w-1/4 pe-0 max-xl:w-full">
+              <nz-form-label nzNoColon nzLabelAlign="left" nzSpan="24"
+                >Discounted Price</nz-form-label
+              >
+              <nz-form-control [nzSpan]="24" nzHasFeedback>
+                <input nz-input formControlName="discountedPrice" placeholder="0" />
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        </div>
+      </form>
+    </div>
+  </ng-container>
+
+  <div *nzModalFooter>
+    <button class="drop-shadow-md" nz-button nzDanger nzType="default" (click)="handleCancel()">
+      Cancel Operation
+    </button>
+    <button
+      class="drop-shadow-md"
+      nz-button
+      nzType="primary"
+      (click)="handleOk()"
+      [nzLoading]="backendService.isSendingRequest()"
+    >
+      {{ backendService.isEditMode() ? 'Update Food Item' : 'Add New Food Item' }}
+    </button>
+  </div>
+</nz-modal>
+
+<ng-template #priceErrorTmpl let-control>
+  @if (control.errors?.['required']) {
+    This field is required!
+  }
+</ng-template>

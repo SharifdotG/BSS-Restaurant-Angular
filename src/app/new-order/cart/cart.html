@@ -1,0 +1,112 @@
+<div
+  style="width: 600px"
+  class="offcanvas offcanvas-end"
+  tabindex="-1"
+  id="cartOffCanvas"
+  aria-labelledby="cartOffCanvas"
+>
+  <div
+    class="offcanvas-header border-b-4 border-green-500 d-flex justify-content-between align-items-center"
+  >
+    <div class="text-3xl text-bold text-green-600" id="offcanvasExampleLabel">
+      <span
+        nz-icon
+        nzType="shopping-cart"
+        nzTheme="outline"
+        style="color: darkgreen; font-size: 32px"
+      ></span>
+      Order Cart
+    </div>
+    <button type="button">
+      <span
+        nz-icon
+        nzType="close"
+        nzTheme="outline"
+        data-bs-dismiss="offcanvas"
+        aria-label="Close"
+        style="color: darkgreen; font-size: 30px"
+      ></span>
+    </button>
+  </div>
+  <div></div>
+  <div class="offcanvas-body p-0">
+    @if (newOrderService.cartFood().length) {
+      <div class="d-flex flex-column justify-between h-100 overflow-y-clip">
+        <div class="overflow-auto">
+          @for (item of newOrderService.cartFood(); track item) {
+            <div class="cart-item border-b-2 border-green-700 border-opacity-30">
+              <div class="d-flex w-100 align-items-center h-100 p-3">
+                <img
+                  nz-image
+                  class="food-image rounded-lg drop-shadow-md"
+                  [nzSrc]="getFoodImage(item.food.image)"
+                  alt=""
+                  [nzFallback]="fallbackImage"
+                />
+                <div class="h-100 w-100 d-flex justify-content-between">
+                  <div class="d-flex flex-column justify-content-between p-3 pt-0 pb-0 gap-2 pe-0">
+                    <div class="text-lg md:text-xl">{{ item.food.name }}</div>
+                    <div>
+                      <span class="text-lg me-1 d-none d-sm-inline-block">Qty. </span>
+                      <nz-input-number
+                        (ngModelChange)="valueChange()"
+                        [(ngModel)]="item.quantity"
+                        [nzMin]="1"
+                        [nzMax]="10"
+                        [nzStep]="1"
+                        style="width: 100px"
+                      ></nz-input-number>
+                    </div>
+                  </div>
+                  <div class="d-flex flex-column justify-content-between align-items-end">
+                    <button
+                      (click)="removeFromCart(item.food.id)"
+                      class="drop-down-button drop-shadow-md mt-1"
+                      aria-label="Remove item from cart"
+                      title="Remove from cart"
+                    >
+                      <span nz-icon nzType="delete" nzTheme="outline"></span>
+                    </button>
+                    <div class="text-md md:text-lg">Price: {{ item.amount * item.quantity }} ৳</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+        <div class="sub-total-container shadow-lg">
+          <div
+            class="w-100 d-flex justify-between border-b-2 border-t-2 border-green-700 border-opacity-30 p-4"
+          >
+            <div class="sub-total text-2xl">Sub-Total</div>
+            <div class="sub-total text-2xl">{{ subtotal() }} ৳</div>
+          </div>
+          <div class="w-100 p-4 pb-2">
+            <label class="d-block mb-2 font-semibold text-gray-700">Phone Number (Optional)</label>
+            <input
+              nz-input
+              [ngModel]="phoneNumber()"
+              (ngModelChange)="phoneNumber.set($event)"
+              placeholder="Enter customer phone number"
+              type="tel"
+              class="w-100 phone-input"
+            />
+          </div>
+          <div class="w-100 p-4 pt-2">
+            <button
+              data-bs-dismiss="offcanvas"
+              (click)="confirmOrder()"
+              class="submit-button text-center text-2xl"
+            >
+              Confirm Order
+            </button>
+          </div>
+        </div>
+      </div>
+    } @else {
+      <div class="h-100 d-flex align-items-center justify-content-center">
+        <div class="text-4xl text-gray-700">The Cart Is Empty!</div>
+      </div>
+    }
+  </div>
+</div>

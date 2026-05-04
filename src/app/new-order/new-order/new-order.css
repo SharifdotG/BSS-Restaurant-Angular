@@ -1,0 +1,271 @@
+.new-order-container {
+  height: calc(100vh - 130px);
+}
+
+.left-col {
+  border-right: darkgrey solid 1px;
+}
+
+.table-card {
+  width: 100%;
+  min-width: 200px;
+  height: 230px;
+}
+
+.table-card:hover {
+  background: var(--bg-ternary-light);
+  cursor: pointer;
+}
+
+.active {
+  background: var(--bg-ternary-light);
+  border: 3px solid var(--bg-primary-700) !important;
+  transition: none !important;
+}
+
+.table-image {
+  height: 100%;
+  width: 100%;
+  max-width: 180px;
+  object-fit: cover;
+}
+
+.table-image-container {
+  height: 150px;
+  width: 80%;
+}
+
+.food-image-container {
+  height: 200px;
+  min-width: 200px;
+  max-width: 200px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.food-image-container:hover {
+  transform: scale(1.1);
+}
+
+.food-image {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+img.ant-image-preview-img {
+  display: inline-block !important;
+}
+
+.food-card {
+  margin-top: 4px !important;
+  height: 250px;
+}
+
+.food-card:hover {
+  background: var(--bg-ternary-light);
+}
+
+.add-to-cart-button {
+  cursor: pointer;
+  height: 52px;
+  width: 150px;
+  border-radius: 6px;
+  color: white;
+  background: var(--bg-primary-600);
+  align-content: center;
+}
+
+.add-to-cart-button:hover {
+  background: var(--bg-primary-700);
+}
+
+.warning-table-banner {
+  background: var(--bg-ternary-light);
+  border: 2px dashed var(--bg-ternary-light);
+}
+
+.cart-button-wrapper {
+  position: fixed;
+  top: 50%;
+  right: 2%;
+  z-index: 1000;
+  transition: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.cart-button {
+  height: 50px;
+  width: 50px;
+  background: white;
+  border: 1px solid var(--bg-ternary-light);
+  border-radius: 8px;
+  font-size: 32px;
+  color: #00230b;
+}
+
+.cart-button:hover {
+  background: #fafafa;
+}
+
+.top-section {
+  height: 180px;
+}
+
+.bottom-section {
+  max-height: calc((100vh - (340px)));
+}
+
+@media screen and (max-width: 1400px) {
+  .table-card {
+    width: 100%;
+    min-width: 100px;
+    height: 120px;
+  }
+
+  .table-card:hover {
+    background: var(--bg-ternary-light);
+    cursor: pointer;
+  }
+
+  .table-image {
+    height: 100%;
+    width: 100%;
+    max-width: 90px;
+    object-fit: cover;
+  }
+
+  .table-image-container {
+    height: 70px;
+    width: 80%;
+  }
+
+  .food-image-container {
+    height: 120px;
+    min-width: 120px;
+    max-width: 120px;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+
+  .food-image-container:hover {
+    transform: scale(1.1);
+  }
+
+  .food-image {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+
+  .food-card {
+    height: 140px;
+  }
+
+  .food-card:hover {
+    background: var(--bg-ternary-light);
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .new-order-container {
+    height: calc(100vh - 80px);
+  }
+
+  .add-to-cart-button {
+    cursor: pointer;
+    height: 44px;
+    width: 100px;
+    border-radius: 6px;
+    color: white;
+    font-size: 14px;
+    background: var(--bg-primary-600);
+    align-content: center;
+  }
+
+  .add-to-cart-button:hover {
+    background: var(--bg-primary-700);
+  }
+
+  .bottom-section {
+    max-height: calc((100vh - (275px)));
+  }
+
+  .cart-button-wrapper {
+    position: absolute;
+    top: 50%;
+    right: 5%;
+  }
+}
+
+/* Override NzZorro primary button color to green */
+:host ::ng-deep button[nz-button][nzType='primary'] {
+  background-color: var(--bg-primary-600);
+  border-color: var(--bg-primary-600);
+}
+
+:host ::ng-deep button[nz-button][nzType='primary']:hover,
+:host ::ng-deep button[nz-button][nzType='primary']:focus {
+  background-color: var(--bg-primary-700);
+  border-color: var(--bg-primary-700);
+}
+
+:host ::ng-deep button[nz-button][nzType='primary']:active {
+  background-color: var(--bg-primary-800);
+  border-color: var(--bg-primary-800);
+}
+
+/* Override NzZorro input focus border to green */
+:host ::ng-deep .ant-input-group-wrapper {
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+:host ::ng-deep .ant-input-group-wrapper .ant-input:focus,
+:host ::ng-deep .ant-input-group-wrapper .ant-input-focused {
+  border-color: var(--bg-primary-600);
+  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+}
+
+:host ::ng-deep .ant-input-group-wrapper .ant-input:hover {
+  border-color: var(--bg-primary-400);
+}
+
+:host ::ng-deep .ant-input-group-wrapper .ant-input {
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+:host ::ng-deep .ant-input-affix-wrapper:focus,
+:host ::ng-deep .ant-input-affix-wrapper-focused {
+  border-color: var(--bg-primary-600);
+  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+}
+
+:host ::ng-deep .ant-input-affix-wrapper:hover {
+  border-color: var(--bg-primary-400);
+}
+
+:host ::ng-deep .ant-input-group-addon {
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+:host ::ng-deep .ant-input-group-addon button {
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+:host ::ng-deep .ant-input-search-button {
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
