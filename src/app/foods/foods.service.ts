@@ -1,7 +1,9 @@
 import { Injectable, inject, signal } from '@angular/core';
-import { HttpClient, HttpParams, HttpEventType } from '@angular/common/http';
-import { FoodItem, ResponseFoodList, CreateFood, UpdateFood } from '../foods/foods.interface';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { finalize } from 'rxjs/operators';
+
+import { FoodItem, ResponseFoodList, CreateFood, UpdateFood } from '../foods/foods.interface';
 import { API_BASE_URL } from '../app.config';
 
 function getSanitizedListOfFood(data: ResponseFoodList | null): FoodItem[] {
@@ -12,156 +14,111 @@ function getSanitizedListOfFood(data: ResponseFoodList | null): FoodItem[] {
   providedIn: 'root',
 })
 export class FoodsService {
-  private http = inject(HttpClient);
-  private message = inject(NzMessageService);
-  private baseUrl = inject(API_BASE_URL);
+  private readonly http = inject(HttpClient);
+  private readonly message = inject(NzMessageService);
+  private readonly baseUrl = inject(API_BASE_URL);
 
+  readonly isSendingRequest = signal(false);
+  readonly triggerRefresh = signal(false);
+  readonly listOfFood = signal<FoodItem[]>([]);
+  readonly totalFood = signal(10);
+  readonly showAddModal = signal(false);
+  readonly selectedFood = signal<FoodItem | null>(null);
+  readonly isEditMode = signal(false);
 
-  // State management with signals
-  isSendingRequest = signal(false);
-  triggerRefresh = signal(false);
-  listOfFood = signal<FoodItem[]>([]);
-  totalFood = signal(10);
-  showAddModal = signal(false);
-  selectedFood = signal<FoodItem | null>(null);
-  isEditMode = signal(false);
-
-  getListOfFood(sortBy: string, page: string, per_page: string, search: string = '') {
+  getListOfFood(sortBy: string, page: string, per_page: string, search: string = ''): void {
     const params = new HttpParams()
       .append('Sort', sortBy)
       .append('Page', page)
       .append('Per_Page', per_page);
 
-    this.http.get<ResponseFoodList>(`${this.baseUrl}/api/Food/datatable/`, {
-      params,
-      observe: 'events'
-    }).subscribe({
-      next: (data) => {
-        switch (data.type) {
-          case HttpEventType.Sent:
-            this.isSendingRequest.set(true);
-            break;
-          case HttpEventType.Response:
-            if (data.status === 200) {
-              this.listOfFood.set(getSanitizedListOfFood(data.body));
-              this.totalFood.set(data.body?.totalRecords || data.body?.total || 10);
-              this.isSendingRequest.set(false);
-            }
-            break;
-        }
-      },
-      error: (error) => {
-        this.isSendingRequest.set(false);
-        this.message.create('error', 'Error Processing The Request. Please Try Again...');
-      }
-    });
-  }
-
-  addNewFood(postData: CreateFood) {
-    this.http.post(`${this.baseUrl}/api/Food/create`, postData, {
-      observe: 'events'
-    }).subscribe({
-      next: (data) => {
-        switch (data.type) {
-          case HttpEventType.Sent:
-            this.isSendingRequest.set(true);
-            break;
-          case HttpEventType.Response:
-            if (data.status == 200) {
-              this.message.create('success', 'Food Item Added Successfully!');
-              this.showAddModal.set(false);
-              // Delay refresh by 1 second like demo app
-              setTimeout(() => {
-                this.triggerRefresh.set(true);
-              }, 1000);
-            }
-            this.isSendingRequest.set(false);
-            break;
-        }
-      },
-      error: (error) => {
-        this.isSendingRequest.set(false);
-        this.message.create('error', 'Error Processing The Request. Please Try Again...');
-      }
-    });
-  }
-
-  deleteFood(id: number) {
     this.isSendingRequest.set(true);
-    this.http.delete(`${this.baseUrl}/api/Food/delete/${id}`, {
-      observe: 'events'
-    }).subscribe({
-      next: (data) => {
-        switch (data.type) {
-          case HttpEventType.Response:
-            if (data.status === 200) {
-              this.message.create('success', 'Food Item Removed Successfully!');
-              this.triggerRefresh.set(true);
-            }
-            this.isSendingRequest.set(false);
-            break;
-        }
-      },
-      error: (error) => {
-        this.isSendingRequest.set(false);
-        this.message.create('error', 'Error Processing The Request. Please Try Again...');
-      }
-    });
+
+    this.http
+      .get<ResponseFoodList>(`${this.baseUrl}/api/Food/datatable/`, { params })
+      .pipe(finalize(() => this.isSendingRequest.set(false)))
+      .subscribe({
+        next: (data) => {
+          this.listOfFood.set(getSanitizedListOfFood(data));
+          this.totalFood.set(data?.totalRecords || data?.total || 10);
+        },
+        error: () => {
+          this.message.create('error', 'Error Processing The Request. Please Try Again...');
+        },
+      });
   }
 
-  getFoodById(id: number) {
-    this.http.get<FoodItem>(`${this.baseUrl}/api/Food/get/${id}`, {
-      observe: 'events'
-    }).subscribe({
-      next: (data) => {
-        switch (data.type) {
-          case HttpEventType.Sent:
-            this.isSendingRequest.set(true);
-            break;
-          case HttpEventType.Response:
-            if (data.status === 200) {
-              this.selectedFood.set(data.body);
-              this.isEditMode.set(true);
-              this.showAddModal.set(true);
-              this.isSendingRequest.set(false);
-            }
-            break;
-        }
-      },
-      error: (error) => {
-        this.message.create('error', 'Error fetching food details');
-        this.isSendingRequest.set(false);
-      }
-    });
+  addNewFood(postData: CreateFood): void {
+    this.isSendingRequest.set(true);
+
+    this.http
+      .post(`${this.baseUrl}/api/Food/create`, postData)
+      .pipe(finalize(() => this.isSendingRequest.set(false)))
+      .subscribe({
+        next: () => {
+          this.message.create('success', 'Food Item Added Successfully!');
+          this.showAddModal.set(false);
+          setTimeout(() => {
+            this.triggerRefresh.set(true);
+          }, 1000);
+        },
+        error: () => {
+          this.message.create('error', 'Error Processing The Request. Please Try Again...');
+        },
+      });
   }
 
-  updateFood(id: number, updateData: UpdateFood) {
-    this.http.put(`${this.baseUrl}/api/Food/update/${id}`, updateData, {
-      observe: 'events'
-    }).subscribe({
-      next: (data) => {
-        switch (data.type) {
-          case HttpEventType.Sent:
-            this.isSendingRequest.set(true);
-            break;
-          case HttpEventType.Response:
-            if (data.status === 200) {
-              this.message.create('success', 'Food Item Updated Successfully!');
-              this.isSendingRequest.set(false);
-              this.triggerRefresh.set(true);
-              this.selectedFood.set(null);
-              this.isEditMode.set(false);
-            }
-            break;
-        }
-      },
-      error: (error) => {
-        this.message.create('error', 'Error updating food item');
-        this.isSendingRequest.set(false);
-      },
-      complete: () => {
-        this.isSendingRequest.set(false);
-      }
-    });
+  deleteFood(id: number): void {
+    this.isSendingRequest.set(true);
+
+    this.http
+      .delete(`${this.baseUrl}/api/Food/delete/${id}`)
+      .pipe(finalize(() => this.isSendingRequest.set(false)))
+      .subscribe({
+        next: () => {
+          this.message.create('success', 'Food Item Removed Successfully!');
+          this.triggerRefresh.set(true);
+        },
+        error: () => {
+          this.message.create('error', 'Error Processing The Request. Please Try Again...');
+        },
+      });
+  }
+
+  getFoodById(id: number): void {
+    this.isSendingRequest.set(true);
+
+    this.http
+      .get<FoodItem>(`${this.baseUrl}/api/Food/get/${id}`)
+      .pipe(finalize(() => this.isSendingRequest.set(false)))
+      .subscribe({
+        next: (data) => {
+          this.selectedFood.set(data);
+          this.isEditMode.set(true);
+          this.showAddModal.set(true);
+        },
+        error: () => {
+          this.message.create('error', 'Error fetching food details');
+        },
+      });
+  }
+
+  updateFood(id: number, updateData: UpdateFood): void {
+    this.isSendingRequest.set(true);
+
+    this.http
+      .put(`${this.baseUrl}/api/Food/update/${id}`, updateData)
+      .pipe(finalize(() => this.isSendingRequest.set(false)))
+      .subscribe({
+        next: () => {
+          this.message.create('success', 'Food Item Updated Successfully!');
+          this.triggerRefresh.set(true);
+          this.selectedFood.set(null);
+          this.isEditMode.set(false);
+        },
+        error: () => {
+          this.message.create('error', 'Error updating food item');
+        },
+      });
   }
 }

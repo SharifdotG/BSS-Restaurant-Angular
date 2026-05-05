@@ -1,28 +1,33 @@
-<ng-template #modalTitle xmlns="http://www.w3.org/1999/html">
-  <span nz-icon [nzType]="backendService.isEditMode() ? 'edit' : 'plus'" nzTheme="outline"></span>
-  <span> {{ backendService.isEditMode() ? 'Edit Food Item' : 'Add New Food Item' }}</span>
+<ng-template #modalTitle>
+  <span nz-icon [nzType]="foodsService.isEditMode() ? 'edit' : 'plus'" nzTheme="outline"></span>
+  <span> {{ foodsService.isEditMode() ? 'Edit Food Item' : 'Add New Food Item' }}</span>
 </ng-template>
 <nz-modal
   nzCentered
-  [(nzVisible)]="backendService.showAddModal"
+  [nzVisible]="foodsService.showAddModal()"
   [nzTitle]="modalTitle"
   (nzOnCancel)="handleCancel()"
   (nzOnOk)="handleOk()"
-  [nzOkLoading]="backendService.isSendingRequest()"
-  [nzWidth]="modalWidth"
+  [nzOkLoading]="foodsService.isSendingRequest()"
+  [nzWidth]="modalWidth()"
 >
   <ng-container *nzModalContent>
     <div class="form-wrapper">
-      <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+      <form nz-form [formGroup]="validateForm" (ngSubmit)="handleOk()">
         <div class="row">
           <div class="col-12 col-lg-6 p-0 pe-lg-2">
-            <!--    //Food Name-->
+            <!-- Food Name -->
             <nz-form-item>
               <nz-form-label nzRequired nzNoColon nzLabelAlign="left" nzSpan="24"
                 >Food Name
               </nz-form-label>
               <nz-form-control [nzSpan]="24" nzHasFeedback [nzErrorTip]="foodNameErrorTmpl">
-                <input nz-input formControlName="foodName" placeholder="Food Name" />
+                <input
+                  nz-input
+                  formControlName="foodName"
+                  placeholder="Food Name"
+                  aria-label="Food Name"
+                />
                 <ng-template #foodNameErrorTmpl let-control>
                   @if (control.errors?.['required']) {
                     This field is required!
@@ -30,7 +35,7 @@
                 </ng-template>
               </nz-form-control>
             </nz-form-item>
-            <!--   //Food Description-->
+            <!-- Food Description -->
             <nz-form-item>
               <nz-form-label nzRequired nzNoColon nzLabelAlign="left" nzSpan="24"
                 >Description</nz-form-label
@@ -41,6 +46,7 @@
                   nz-input
                   formControlName="description"
                   placeholder="Description"
+                  aria-label="Description"
                 ></textarea>
               </nz-form-control>
             </nz-form-item>
@@ -57,8 +63,9 @@
                 }"
                 nzAction="null"
                 nzListType="picture-card"
-                [(nzFileList)]="fileList"
-                [nzShowButton]="fileList.length < 1"
+                [nzFileList]="fileList()"
+                (nzFileListChange)="fileList.set($event)"
+                [nzShowButton]="fileList().length < 1"
                 [nzPreview]="handlePreview"
                 [nzBeforeUpload]="beforeUpload"
                 [nzFileType]="'image/png,image/jpeg,image/gif,image/bmp'"
@@ -66,18 +73,18 @@
               >
                 <div class="card p-10 d-flex align-items-center justify-content-center">
                   <span nz-icon nzType="plus"></span>
-                  <div style="margin-top: 8px">Upload Food Image</div>
+                  <div [style.marginTop.px]="'8'">Upload Food Image</div>
                 </div>
               </nz-upload>
               <nz-modal
-                [nzVisible]="previewVisible"
+                [nzVisible]="previewVisible()"
                 [nzContent]="modalContent"
                 [nzFooter]="null"
-                (nzOnCancel)="previewVisible = false"
+                (nzOnCancel)="previewVisible.set(false)"
                 nzWidth="760px"
               >
                 <ng-template #modalContent>
-                  <img class="mt-2" [src]="previewImage" alt="Food preview" style="width: 100%" />
+                  <img class="mt-2" [src]="previewImage()" alt="Food preview" style="width: 100%" />
                 </ng-template>
               </nz-modal>
             </div>
@@ -85,45 +92,55 @@
         </div>
         <div class="row justify-content-center mt-3">
           <div class="col-12 p-0 d-flex flex-wrap justify-content-between">
-            <!--      //Price -->
+            <!-- Price -->
             <nz-form-item class="w-1/4 pe-0 pe-xl-2 max-xl:w-full">
               <nz-form-label nzRequired nzNoColon nzLabelAlign="left" nzSpan="24"
                 >Price</nz-form-label
               >
               <nz-form-control [nzSpan]="24" nzHasFeedback [nzErrorTip]="priceErrorTmpl">
-                <input nz-input formControlName="price" placeholder="Price" />
+                <input nz-input formControlName="price" placeholder="Price" aria-label="Price" />
               </nz-form-control>
             </nz-form-item>
-            <!--      //Discount Type-->
+            <!-- Discount Type -->
             <nz-form-item class="w-1/4 pe-0 pe-xl-2 max-xl:w-full">
               <nz-form-label nzNoColon nzLabelAlign="left" nzSpan="24"
                 >Select Discount Type</nz-form-label
               >
               <nz-form-control [nzSpan]="24" nzHasFeedback>
-                <nz-select formControlName="discountType">
+                <nz-select formControlName="discountType" aria-label="Select Discount Type">
                   <nz-option nzValue="None" nzLabel="None"></nz-option>
                   <nz-option nzValue="Flat" nzLabel="Flat"></nz-option>
                   <nz-option nzValue="Percentage" nzLabel="Percentage"></nz-option>
                 </nz-select>
               </nz-form-control>
             </nz-form-item>
-            <!--            Discount in -->
+            <!-- Discount in -->
             <nz-form-item class="w-1/4 pe-0 pe-xl-2 max-xl:w-full">
               <nz-form-label nzNoColon nzLabelAlign="left" nzSpan="24"
                 >Discount In
-                <pre>{{ discType() }}</pre>
+                <span>{{ discType() }}</span>
               </nz-form-label>
               <nz-form-control [nzSpan]="24" nzHasFeedback>
-                <input nz-input formControlName="discountAmount" placeholder="0" />
+                <input
+                  nz-input
+                  formControlName="discountAmount"
+                  placeholder="0"
+                  aria-label="Discount Amount"
+                />
               </nz-form-control>
             </nz-form-item>
-            <!--            Discounted Price -->
+            <!-- Discounted Price -->
             <nz-form-item class="w-1/4 pe-0 max-xl:w-full">
               <nz-form-label nzNoColon nzLabelAlign="left" nzSpan="24"
                 >Discounted Price</nz-form-label
               >
               <nz-form-control [nzSpan]="24" nzHasFeedback>
-                <input nz-input formControlName="discountedPrice" placeholder="0" />
+                <input
+                  nz-input
+                  formControlName="discountedPrice"
+                  placeholder="0"
+                  aria-label="Discounted Price"
+                />
               </nz-form-control>
             </nz-form-item>
           </div>
@@ -141,9 +158,9 @@
       nz-button
       nzType="primary"
       (click)="handleOk()"
-      [nzLoading]="backendService.isSendingRequest()"
+      [nzLoading]="foodsService.isSendingRequest()"
     >
-      {{ backendService.isEditMode() ? 'Update Food Item' : 'Add New Food Item' }}
+      {{ foodsService.isEditMode() ? 'Update Food Item' : 'Add New Food Item' }}
     </button>
   </div>
 </nz-modal>

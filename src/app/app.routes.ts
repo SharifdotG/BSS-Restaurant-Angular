@@ -39,6 +39,19 @@ export const routes: Routes = [
         path: 'foods',
         loadComponent: () => import('./foods/food-list/food-list').then((m) => m.FoodList),
       },
+      {
+        path: 'new-order',
+        loadComponent: () => import('./new-order/new-order/new-order').then((m) => m.NewOrder),
+      },
+      {
+        path: 'orders',
+        loadComponent: () => import('./orders/order-list/order-list').then((m) => m.OrderList),
+      },
+      {
+        path: 'expenses',
+        loadComponent: () =>
+          import('./expenses/expense-list/expense-list').then((m) => m.ExpenseList),
+      },
     ],
   },
 ];

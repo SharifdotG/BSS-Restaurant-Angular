@@ -24,7 +24,7 @@ function mapAvailableEmployees(
 }
 
 @Injectable({ providedIn: 'root' })
-export class TableService {
+export class TablesService {
   private readonly baseUrl = inject(API_BASE_URL);
   private readonly httpClient = inject(HttpClient);
   private readonly messageService = inject(NzMessageService);

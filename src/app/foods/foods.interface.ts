@@ -32,7 +32,6 @@ export interface CreateFood {
   base64: string;
 }
 
-
 export interface UpdateFood {
   name: string;
   description: string;

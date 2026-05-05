@@ -23,7 +23,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { TableService } from '../tables.service';
+import { TablesService } from '../tables.service';
 import { CreateTableRequest, UpdateTableRequest, Table } from '../tables.interface';
 import { API_BASE_URL } from '../../app.config';
 
@@ -66,7 +66,7 @@ function numberOfSeatsValidator(control: AbstractControl): ValidationErrors | nu
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddTable {
-  readonly tableService = inject(TableService);
+  readonly tablesService = inject(TablesService);
   private readonly responsive = inject(BreakpointObserver);
   private readonly baseUrl = inject(API_BASE_URL);
   private readonly fb = inject(NonNullableFormBuilder);
@@ -89,11 +89,11 @@ export class AddTable {
   constructor() {
     effect(
       () => {
-        const isOpen = this.tableService.showAddModal();
+        const isOpen = this.tablesService.showAddModal();
         if (isOpen) {
           this.addModalWasOpen = true;
-          const table = this.tableService.selectedTable();
-          if (table && this.tableService.isEditMode()) {
+          const table = this.tablesService.selectedTable();
+          if (table && this.tablesService.isEditMode()) {
             this.populateForm(table);
           }
         } else if (this.addModalWasOpen) {
@@ -118,9 +118,9 @@ export class AddTable {
       return;
     }
 
-    if (this.tableService.isEditMode()) {
+    if (this.tablesService.isEditMode()) {
       const updateData: UpdateTableRequest = {
-        id: this.tableService.selectedTable()!.id,
+        id: this.tablesService.selectedTable()!.id,
         tableNumber: this.validateForm.controls.tableName.value,
         numberOfSeats: this.validateForm.controls.numberofseats.value,
       };
@@ -130,7 +130,7 @@ export class AddTable {
         updateData.base64 = this.imageB64;
       }
 
-      this.tableService.updateTable(updateData.id, updateData);
+      this.tablesService.updateTable(updateData.id, updateData);
     } else {
       const postData: CreateTableRequest = {
         tableNumber: this.validateForm.controls.tableName.value,
@@ -139,12 +139,12 @@ export class AddTable {
         base64: this.imageB64,
       };
 
-      this.tableService.addNewTable(postData);
+      this.tablesService.addNewTable(postData);
     }
   }
 
   handleCancel(): void {
-    this.tableService.closeAddModal();
+    this.tablesService.closeAddModal();
   }
 
   private populateForm(table: Table): void {

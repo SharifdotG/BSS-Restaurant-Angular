@@ -25,9 +25,9 @@
       nzTableLayout="auto"
       [nzData]="listOfTables()"
       [nzFrontPagination]="true"
-      [nzLoading]="tableService.isAnyLoading()"
+      [nzLoading]="tablesService.isAnyLoading()"
       [nzLoadingIndicator]="indicatorTemplate"
-      [nzTotal]="tableService.totalTables()"
+      [nzTotal]="tablesService.totalTables()"
       [nzPageSize]="pageSize"
       [nzPageIndex]="pageIndex"
       (nzQueryParams)="onQueryParamsChange($event)"
@@ -77,7 +77,7 @@
           </th>
           <th class="custom-table-title-button" nzColumnKey="action">
             <button
-              (click)="tableService.showAddModal.set(true)"
+              (click)="tablesService.showAddModal.set(true)"
               class="add-table-button"
               nz-tooltip
               nzTooltipTitle="Add New Table"

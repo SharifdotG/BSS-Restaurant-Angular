@@ -1,18 +1,18 @@
 <ng-template #modalTitle>
   <span
     nz-icon
-    [nzType]="tableService.isEditMode() ? 'edit' : 'plus'"
+    [nzType]="tablesService.isEditMode() ? 'edit' : 'plus'"
     nzTheme="outline"
     aria-hidden="true"
   ></span>
-  <span> {{ tableService.isEditMode() ? 'Edit Table' : 'Add New Table' }}</span>
+  <span> {{ tablesService.isEditMode() ? 'Edit Table' : 'Add New Table' }}</span>
 </ng-template>
 <nz-modal
-  [(nzVisible)]="tableService.showAddModal"
+  [(nzVisible)]="tablesService.showAddModal"
   [nzTitle]="modalTitle"
   (nzOnCancel)="handleCancel()"
   (nzOnOk)="handleOk()"
-  [nzOkLoading]="tableService.isSendingRequest()"
+  [nzOkLoading]="tablesService.isSendingRequest()"
   [nzWidth]="modalWidth()"
   nzCentered
 >
@@ -132,10 +132,10 @@
       nz-button
       nzType="primary"
       (click)="handleOk()"
-      [nzLoading]="tableService.isSendingRequest()"
+      [nzLoading]="tablesService.isSendingRequest()"
       type="button"
     >
-      {{ tableService.isEditMode() ? 'Update Table' : 'Add New Table' }}
+      {{ tablesService.isEditMode() ? 'Update Table' : 'Add New Table' }}
     </button>
   </div>
 </nz-modal>

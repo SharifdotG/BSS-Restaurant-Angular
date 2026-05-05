@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, effect, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TableService } from '../tables.service';
+import { TablesService } from '../tables.service';
 import { NzTableModule, NzTableQueryParams } from 'ng-zorro-antd/table';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -30,12 +30,12 @@ import { API_BASE_URL } from '../../app.config';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TableList {
-  readonly tableService = inject(TableService);
+  readonly tablesService = inject(TablesService);
   private readonly modal = inject(NzModalService);
   private readonly responsive = inject(BreakpointObserver);
 
-  readonly listOfTables = this.tableService.listOfTables;
-  readonly listOfEmployees = this.tableService.listOfEmployees;
+  readonly listOfTables = this.tablesService.listOfTables;
+  readonly listOfEmployees = this.tablesService.listOfEmployees;
   readonly imageBaseUrl = inject(API_BASE_URL) + '/images/table/';
 
   tableWidthConfig = ['120px', '140px', '110px', '160px', 'auto', '180px'];
@@ -45,9 +45,9 @@ export class TableList {
   constructor() {
     effect(
       () => {
-        if (this.tableService.triggerRefresh()) {
+        if (this.tablesService.triggerRefresh()) {
           this.loadDataFromServer(this.pageIndex, this.pageSize);
-          this.tableService.triggerRefresh.set(false);
+          this.tablesService.triggerRefresh.set(false);
         }
       },
       { allowSignalWrites: true },
@@ -67,12 +67,12 @@ export class TableList {
   }
 
   loadDataFromServer(pageIndex: number, pageSize: number): void {
-    this.tableService.getListOfTables('', pageIndex.toString(), pageSize.toString(), '');
-    this.tableService.loadFullListOfEmployees();
+    this.tablesService.getListOfTables('', pageIndex.toString(), pageSize.toString(), '');
+    this.tablesService.loadFullListOfEmployees();
   }
 
   editTable(id: number): void {
-    this.tableService.getTableById(id);
+    this.tablesService.getTableById(id);
   }
 
   deleteTable(id: number): void {
@@ -84,8 +84,8 @@ export class TableList {
       nzOkDanger: true,
       nzCancelText: 'Cancel',
       nzOnOk: () => {
-        this.tableService.deleteTable(id);
-        if (this.tableService.listOfTables().length <= 1) {
+        this.tablesService.deleteTable(id);
+        if (this.tablesService.listOfTables().length <= 1) {
           this.pageIndex = Math.max(1, this.pageIndex - 1);
         }
       },
@@ -97,12 +97,12 @@ export class TableList {
   }
 
   showAssignModal(tableId: string, tableName: string, image: string, numberOfSeats: number): void {
-    this.tableService.assignTableId.set(tableId);
-    this.tableService.assignTableImage.set(this.getImageUrl(image));
-    this.tableService.assignTableSeats.set(numberOfSeats);
-    this.tableService.assignTableName.set(tableName);
-    this.tableService.showAssignModal.set(true);
-    this.tableService.loadListOfAvailableEmployees(tableId);
+    this.tablesService.assignTableId.set(tableId);
+    this.tablesService.assignTableImage.set(this.getImageUrl(image));
+    this.tablesService.assignTableSeats.set(numberOfSeats);
+    this.tablesService.assignTableName.set(tableName);
+    this.tablesService.showAssignModal.set(true);
+    this.tablesService.loadListOfAvailableEmployees(tableId);
   }
 
   protected readonly String = String;

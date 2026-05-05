@@ -1,0 +1,20 @@
+.add-food-btn {
+  height: 32px !important;
+  line-height: 32px !important;
+  padding: 0 15px !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Ensure the parent container aligns items properly */
+.d-flex.gap-2 {
+  align-items: stretch;
+}
+
+.food-option-image {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 4px;
+}

@@ -5,7 +5,7 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzIconDirective } from 'ng-zorro-antd/icon';
 import { NzContextMenuService, NzDropdownMenuComponent } from 'ng-zorro-antd/dropdown';
 import { NzMenuDirective, NzMenuItemComponent } from 'ng-zorro-antd/menu';
-import { TableService } from '../tables.service';
+import { TablesService } from '../tables.service';
 import { Employee } from '../../employees/employees.interface';
 import { API_BASE_URL } from '../../app.config';
 
@@ -28,7 +28,7 @@ export class EmployeeTooltip {
   private readonly modal = inject(NzModalService);
   private readonly baseUrl = inject(API_BASE_URL);
   private readonly nzContextMenuService = inject(NzContextMenuService);
-  private readonly tableService = inject(TableService);
+  private readonly tablesService = inject(TablesService);
 
   employeeId = input.required<string>();
   employeeName = input.required<string>();
@@ -48,7 +48,7 @@ export class EmployeeTooltip {
   }
 
   removeEmployeeFromTable(): void {
-    this.tableService.removeEmployeeFromTable(this.employeeTableId());
+    this.tablesService.removeEmployeeFromTable(this.employeeTableId());
   }
 
   showDeleteConfirm(): void {

@@ -5,11 +5,11 @@
   </div>
 </ng-template>
 <nz-modal
-  [(nzVisible)]="tableService.showAssignModal"
+  [(nzVisible)]="tablesService.showAssignModal"
   [nzTitle]="modalTitle"
   (nzOnCancel)="handleCancel()"
   (nzOnOk)="handleOk()"
-  [nzOkLoading]="tableService.isSendingRequest()"
+  [nzOkLoading]="tablesService.isSendingRequest()"
   [nzWidth]="modalWidth"
   nzCentered
 >
@@ -17,12 +17,12 @@
     <div class="row gx-3 gy-3">
       <div class="col-12 col-md-6">
         <div class="d-flex flex-col">
-          <span class="text-lg mb-3">Table Number - {{ tableService.assignTableName() }}</span>
-          <span class="text-lg mb-3">Number of Seats - {{ tableService.assignTableSeats() }}</span>
+          <span class="text-lg mb-3">Table Number - {{ tablesService.assignTableName() }}</span>
+          <span class="text-lg mb-3">Number of Seats - {{ tablesService.assignTableSeats() }}</span>
           <img
             class="rounded-lg shadow-md"
-            [src]="tableService.assignTableImage()"
-            alt="Table {{ tableService.assignTableName() }} image"
+            [src]="tablesService.assignTableImage()"
+            alt="Table {{ tablesService.assignTableName() }} image"
           />
         </div>
       </div>
@@ -38,7 +38,7 @@
           nzAllowClear
           nzSize="large"
         >
-          @for (emp of tableService.listOfAvailableEmployees(); track emp.id) {
+          @for (emp of tablesService.listOfAvailableEmployees(); track emp.id) {
             <nz-option nzCustomContent [nzLabel]="getEmployeeFullName(emp)" [nzValue]="emp">
               <div class="d-flex align-items-center gap-2">
                 <nz-avatar
@@ -74,7 +74,7 @@
       nz-button
       nzType="primary"
       (click)="handleOk()"
-      [nzLoading]="tableService.isSendingRequest()"
+      [nzLoading]="tablesService.isSendingRequest()"
       type="button"
     >
       Assign Employee

@@ -1,1 +1,174 @@
-<p>edit-order works!</p>
+<ng-template #modalTitle>
+  <div class="d-flex gap-2 align-items-center">
+    <span nz-icon nzType="edit" nzTheme="outline"></span>
+    <span>Edit Order - {{ ordersService.selectedOrder()?.orderNumber }}</span>
+  </div>
+</ng-template>
+
+<nz-modal
+  [(nzVisible)]="ordersService.showEditModal"
+  [nzTitle]="modalTitle"
+  (nzOnCancel)="handleCancel()"
+  (nzOnOk)="handleOk()"
+  [nzOkLoading]="ordersService.isSendingRequest()"
+  [nzWidth]="800"
+  nzCentered
+>
+  <ng-container *nzModalContent>
+    <div class="row mb-4">
+      <div class="col-12 col-md-6">
+        <label class="d-block mb-2 font-semibold" for="edit-order-number">Order Number</label>
+        <input
+          nz-input
+          id="edit-order-number"
+          [value]="ordersService.selectedOrder()?.orderNumber"
+          disabled
+          class="bg-gray-100"
+        />
+      </div>
+      <div class="col-12 col-md-6">
+        <label class="d-block mb-2 font-semibold" for="edit-table-number">Table Number</label>
+        <input
+          nz-input
+          id="edit-table-number"
+          [value]="ordersService.selectedOrder()?.table?.tableNumber"
+          disabled
+          class="bg-gray-100"
+        />
+      </div>
+    </div>
+
+    <div class="mb-4">
+      <label class="d-block mb-2 font-semibold" for="edit-phone-number">Phone Number</label>
+      <input
+        nz-input
+        id="edit-phone-number"
+        [ngModel]="phoneNumber()"
+        (ngModelChange)="phoneNumber.set($event)"
+        placeholder="Enter phone number"
+      />
+    </div>
+
+    <div class="mb-3">
+      <label class="d-block mb-2 font-semibold" for="edit-food-select">Add Food Item</label>
+      <div class="d-flex gap-2 mb-3">
+        <nz-select
+          id="edit-food-select"
+          class="flex-grow-1"
+          nzShowSearch
+          nzPlaceHolder="Select a food item to add"
+          [ngModel]="selectedFoodId()"
+          (ngModelChange)="selectedFoodId.set($event)"
+        >
+          @for (food of foodsService.listOfFood(); track food.id) {
+            <nz-option [nzValue]="food.id" [nzLabel]="food.name" [nzCustomContent]="true">
+              <div class="d-flex align-items-center gap-2">
+                <img
+                  [src]="getFoodImage(food.image)"
+                  [alt]="food.name"
+                  [title]="food.name"
+                  class="food-option-image"
+                />
+                <div class="flex-grow-1">
+                  <div class="font-semibold">{{ food.name }}</div>
+                  <div class="text-sm text-gray-600">{{ food.discountPrice > 0 ? food.discountPrice : food.price }} ৳</div>
+                </div>
+              </div>
+            </nz-option>
+          }
+        </nz-select>
+        <button
+          nz-button
+          nzType="primary"
+          (click)="addFoodToOrder()"
+          [disabled]="!selectedFoodId()"
+          class="add-food-btn"
+        >
+          <span nz-icon nzType="plus" nzTheme="outline"></span>
+          Add
+        </button>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label class="d-block mb-2 font-semibold">Order Items</label>
+      <div class="border rounded p-3" style="max-height: 400px; overflow-y: auto;">
+        @if (editItems().length === 0) {
+          <div class="text-center py-4 text-gray-500">
+            No items in this order
+          </div>
+        }
+        @for (item of editItems(); track item.uniqueId; let i = $index) {
+          <div class="d-flex gap-3 mb-3 pb-3 border-bottom">
+            <div class="food-image-container" style="width: 60px; height: 60px;">
+              <img
+                nz-image
+                nzDisablePreview
+                class="w-100 h-100 rounded"
+                style="object-fit: cover;"
+                [nzSrc]="getFoodImage(item.foodImage)"
+                [nzFallback]="fallbackImage"
+                [alt]="item.foodName"
+                [title]="item.foodName"
+              />
+            </div>
+            <div class="flex-grow-1">
+              <div class="font-semibold">{{ item.foodName }}</div>
+              <div class="text-gray-600">Unit Price: {{ item.unitPrice }} ৳</div>
+              <div class="d-flex gap-2 align-items-center mt-2">
+                <span>Quantity:</span>
+                <nz-input-number
+                  [ngModel]="item.quantity"
+                  [nzMin]="1"
+                  [nzMax]="100"
+                  (ngModelChange)="onQuantityChange(i, $event)"
+                  style="width: 100px;"
+                ></nz-input-number>
+                <span class="ms-2">Total: {{ item.totalPrice }} ৳</span>
+              </div>
+            </div>
+            <div>
+              <button
+                nz-button
+                nzType="text"
+                nzDanger
+                (click)="removeItem(i)"
+                title="Remove item"
+                aria-label="Remove {{ item.foodName }} from order"
+              >
+                <span nz-icon nzType="delete" nzTheme="outline"></span>
+              </button>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-end align-items-center p-3 bg-gray-100 rounded">
+      <div class="text-xl font-bold">
+        Total Amount: <span class="text-green-600">{{ totalAmount() }} ৳</span>
+      </div>
+    </div>
+  </ng-container>
+
+  <div *nzModalFooter>
+    <button
+      class="drop-shadow-md"
+      nz-button
+      nzDanger
+      nzType="default"
+      (click)="handleCancel()"
+    >
+      Cancel
+    </button>
+    <button
+      class="drop-shadow-md"
+      nz-button
+      nzType="primary"
+      (click)="handleOk()"
+      [nzLoading]="ordersService.isSendingRequest()"
+    >
+      Update Order
+    </button>
+  </div>
+</nz-modal>

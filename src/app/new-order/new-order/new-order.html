@@ -40,19 +40,23 @@
           <div
             class="d-flex flex-row flex-xxl-column justify-content-center gap-3 p-4 pt-0 overflow-auto"
           >
-            <!--            Table Card-->
             @for (table of newOrderService.listOfTable(); track table.id) {
               <div
-                class="table-card d-flex flex-column justify-content-center align-items-center border-1 border-green-500 rounded-md shadow-md"
+                class="table-card d-flex flex-column justify-content-center align-items-center border-1 border-green-500 rounded-md shadow-md transition-all duration-200 hover:shadow-lg hover:border-green-600 cursor-pointer"
                 (click)="onTableSelect(table)"
-                [class.active]="String(table.id) === newOrderService.selectedTableId()"
+                [class.active]="table.id.toString() === newOrderService.selectedTableId()"
+                role="button"
+                [attr.aria-label]="'Select table ' + table.tableNumber"
+                tabindex="0"
+                (keydown.enter)="onTableSelect(table)"
+                (keydown.space)="onTableSelect(table); $event.preventDefault()"
               >
                 <div class="table-image-container d-flex justify-content-center">
                   <img
                     nz-image
                     class="table-image rounded-lg drop-shadow-lg"
                     [nzSrc]="getTableImage(table.image)"
-                    alt=""
+                    [alt]="'Table ' + table.tableNumber"
                     [nzFallback]="fallbackImage"
                   />
                 </div>
@@ -78,7 +82,7 @@
             >
               <div class="drop-shadow-md text-gray-700 animate-pulse" style="font-size: 48px">
                 <div class="img-fluid w-52">
-                  <img src="select_table.svg" alt="" />
+                  <img src="select_table.svg" alt="Select a table illustration" />
                 </div>
               </div>
               <div class="text-2xl mt-2 text-gray-700">Select A Table First!</div>
@@ -95,8 +99,9 @@
                   <input
                     placeholder="Search Food"
                     nz-input
-                    (input)="onSearchFoodInputChange()"
-                    [(ngModel)]="searchFoodInput"
+                    [ngModel]="searchFoodInput()"
+                    (ngModelChange)="onSearchFoodInputChange($event)"
+                    aria-label="Search food items"
                   />
                 </nz-input-group>
                 <ng-template #suffixIconButton>
@@ -114,16 +119,15 @@
               </div>
             </div>
             <div class="d-flex flex-column justify-content-center gap-3 p-4 pt-0">
-              <!-- Food Card -->
               @for (food of newOrderService.listOfFood(); track food.id) {
-                <div class="food-card w-100 border-1 border-green-500 rounded-md shadow-md p-4">
+                <div class="food-card w-100 border-1 border-green-500 rounded-md shadow-md p-4 transition-all duration-200 hover:shadow-lg hover:border-green-600">
                   <div class="d-flex gap-4 flex-row align-items-center h-100">
                     <div class="food-image-container">
                       <img
                         nz-image
                         class="food-image rounded-lg drop-shadow-lg"
                         [nzSrc]="getFoodImage(food.image)"
-                        alt=""
+                        [alt]="food.name"
                         [nzFallback]="fallbackImage"
                       />
                     </div>
@@ -147,8 +151,9 @@
                         </div>
                         <div>
                           <button
-                            class="add-to-cart-button text-center"
+                            class="add-to-cart-button text-center transition-colors duration-200"
                             (click)="addToCart(food, newOrderService.selectedTableId())"
+                            aria-label="Add {{ food.name }} to cart"
                           >
                             Add To Cart
                           </button>
@@ -178,12 +183,16 @@
             </div>
           </div>
           <div class="d-flex flex-row gap-3 p-1 pb-3 pt-0 overflow-auto">
-            <!--            Table Card-->
             @for (table of newOrderService.listOfTable(); track table.id) {
               <div
-                class="table-card d-flex flex-column justify-content-center align-items-center border-1 border-green-500 rounded-md shadow-md"
+                class="table-card d-flex flex-column justify-content-center align-items-center border-1 border-green-500 rounded-md shadow-md transition-all duration-200 hover:shadow-lg hover:border-green-600 cursor-pointer"
                 (click)="onTableSelect(table)"
-                [class.active]="String(table.id) === newOrderService.selectedTableId()"
+                [class.active]="table.id.toString() === newOrderService.selectedTableId()"
+                role="button"
+                [attr.aria-label]="'Select table ' + table.tableNumber"
+                tabindex="0"
+                (keydown.enter)="onTableSelect(table)"
+                (keydown.space)="onTableSelect(table); $event.preventDefault()"
               >
                 <div class="table-image-container d-flex justify-content-center">
                   <img
@@ -191,7 +200,7 @@
                     nz-image
                     class="table-image rounded-lg drop-shadow-lg"
                     [nzSrc]="getTableImage(table.image)"
-                    alt=""
+                    [alt]="'Table ' + table.tableNumber"
                     [nzFallback]="fallbackImage"
                   />
                 </div>
@@ -214,7 +223,7 @@
             >
               <div class="drop-shadow-md text-gray-700 animate-pulse" style="font-size: 48px">
                 <div class="img-fluid w-52">
-                  <img src="select_table.svg" alt="" />
+                  <img src="select_table.svg" alt="Select a table illustration" />
                 </div>
               </div>
               <div class="mt-3 text-2xl text-gray-700">Select A Table First!</div>
@@ -227,15 +236,16 @@
                 ADD FOOD TO CART ({{ newOrderService.totalFood() }})
               </div>
               <div class="p-3 pe-md-4 w-full md:w-auto mb-2">
-                <nz-input-group nzSearch nzSize="large" [nzAddOnAfter]="suffixIconButton">
+                <nz-input-group nzSearch nzSize="large" [nzAddOnAfter]="suffixIconButtonMobile">
                   <input
                     placeholder="Search Food"
                     nz-input
-                    (input)="onSearchFoodInputChange()"
-                    [(ngModel)]="searchFoodInput"
+                    [ngModel]="searchFoodInput()"
+                    (ngModelChange)="onSearchFoodInputChange($event)"
+                    aria-label="Search food items"
                   />
                 </nz-input-group>
-                <ng-template #suffixIconButton>
+                <ng-template #suffixIconButtonMobile>
                   <button
                     nz-button
                     nzType="primary"
@@ -250,10 +260,9 @@
               </div>
             </div>
             <div class="w-100 h-100 d-flex flex-column gap-3 p-3 pt-0 p-md-4">
-              <!-- Food Card -->
               @for (food of newOrderService.listOfFood(); track food.id) {
                 <div
-                  class="w-100 food-card d-flex gap-3 flex-row align-items-center border-1 border-green-500 rounded-md shadow-md p-2"
+                  class="w-100 food-card d-flex gap-3 flex-row align-items-center border-1 border-green-500 rounded-md shadow-md p-2 transition-all duration-200 hover:shadow-lg hover:border-green-600"
                 >
                   <div class="food-image-container">
                     <img
@@ -261,7 +270,7 @@
                       nz-image
                       class="food-image rounded-lg drop-shadow-lg"
                       [nzSrc]="getFoodImage(food.image)"
-                      alt=""
+                      [alt]="food.name"
                       [nzFallback]="fallbackImage"
                     />
                   </div>
@@ -291,8 +300,9 @@
                         }
                       </div>
                       <button
-                        class="add-to-cart-button text-center"
+                        class="add-to-cart-button text-center transition-colors duration-200"
                         (click)="addToCart(food, newOrderService.selectedTableId())"
+                        aria-label="Add {{ food.name }} to cart"
                       >
                         Add To Cart
                       </button>
@@ -313,14 +323,15 @@
 
 <div
   class="cart-button-wrapper"
-  [style.left.px]="cartButtonPosition.x || null"
-  [style.top.px]="cartButtonPosition.y || null"
-  [style.cursor]="isDragging && hasMoved ? 'grabbing' : 'grab'"
+  [style.left.px]="cartButtonPosition().x || null"
+  [style.top.px]="cartButtonPosition().y || null"
+  [style.cursor]="isDragging() && hasMoved() ? 'grabbing' : 'grab'"
 >
   <button
     class="d-flex align-items-center justify-content-center cart-button position-relative drop-shadow-md"
     data-bs-toggle="offcanvas"
     data-bs-target="#cartOffCanvas"
+    aria-label="Open shopping cart with {{ newOrderService.cartFood().length }} items"
     (mousedown)="onCartButtonMouseDown($event)"
     (window:mousemove)="onCartButtonMouseMove($event)"
     (window:mouseup)="onCartButtonMouseUp($event)"
@@ -333,6 +344,8 @@
     ></div>
     <div
       class="absolute inline-flex items-center justify-content-center w-7 h-7 text-xs text-white bg-red-500 border-2 border-white rounded-full -top-2 -end-2 dark:border-gray-900"
+      role="status"
+      aria-live="polite"
     >
       {{ newOrderService.cartFood().length }}
     </div>

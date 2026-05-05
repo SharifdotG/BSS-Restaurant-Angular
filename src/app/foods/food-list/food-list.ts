@@ -6,6 +6,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzModalService } from 'ng-zorro-antd/modal';
+
 import { FoodsService } from '../../foods/foods.service';
 import { AddFood } from '../add-food/add-food';
 import { API_BASE_URL } from '../../app.config';
@@ -20,12 +21,12 @@ import { API_BASE_URL } from '../../app.config';
     NzIconModule,
     NzTooltipModule,
     NzButtonModule,
-    AddFood
+    AddFood,
   ],
   templateUrl: './food-list.html',
   styleUrl: './food-list.css',
 })
-export class FoodList implements OnInit  {
+export class FoodList implements OnInit {
   foodService: FoodsService = inject(FoodsService);
   private modal = inject(NzModalService);
 
@@ -33,26 +34,25 @@ export class FoodList implements OnInit  {
   pageIndex = 1;
   imageBaseUrl = inject(API_BASE_URL) + '/images/food/';
 
-  // Expose signals for template
   listOfFood = this.foodService.listOfFood;
 
   constructor() {
-    // Setup refresh trigger effect
-    effect(() => {
-      if (this.foodService.triggerRefresh()) {
-        this.ngOnInit();
-        this.foodService.triggerRefresh.set(false);
-      }
-    }, { allowSignalWrites: true });
+    effect(
+      () => {
+        if (this.foodService.triggerRefresh()) {
+          this.ngOnInit();
+          this.foodService.triggerRefresh.set(false);
+        }
+      },
+      { allowSignalWrites: true },
+    );
   }
 
-  ngOnInit() {
-    // Initial load is handled by nz-table's (nzQueryParams) event
-  }
+  ngOnInit() {}
 
   onQueryParamsChange(params: NzTableQueryParams): void {
     const { pageSize, pageIndex, sort } = params;
-    const currentSort = sort.find(item => item.value !== null);
+    const currentSort = sort.find((item) => item.value !== null);
     const sortBy = currentSort?.key || '';
     this.pageIndex = pageIndex;
     this.pageSize = pageSize;
@@ -86,7 +86,7 @@ export class FoodList implements OnInit  {
           this.pageIndex--;
           this.loadDataFromServer(this.pageIndex, this.pageSize);
         }
-      }
+      },
     });
   }
 
@@ -96,7 +96,7 @@ export class FoodList implements OnInit  {
     } else if (data.discountType === 'Percentage') {
       return data.discount + ' %';
     } else {
-      return  data.discount;
+      return data.discount;
     }
   }
 }

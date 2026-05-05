@@ -4,19 +4,18 @@ import { User } from '../auth/auth.model';
 export interface ResponseOrderList {
   data: OrderData[];
   pageNumber: number;
-  current_page: number;
-  per_page: number;
+  currentPage: number;
+  perPage: number;
   pageSize: number;
   firstPage: string;
-  lastPage: string;
-  last_page: number;
+  lastPage: string | number;
   totalPages: number;
   totalRecords: number;
   total: number;
   from: number;
   to: number;
-  next_page_url: string;
-  prev_page_url: string;
+  nextPageUrl: string;
+  prevPageUrl: string;
 }
 
 export interface OrderData {
@@ -110,6 +109,17 @@ export interface UpdateOrder {
 
 export interface UpdateOrderItem {
   foodId: number;
+  foodPackageId: number;
+  quantity: number;
+  unitPrice: number;
+  totalPrice: number;
+}
+
+export interface EditOrderItem {
+  uniqueId: string;
+  foodId: number;
+  foodName: string;
+  foodImage: string;
   foodPackageId: number;
   quantity: number;
   unitPrice: number;

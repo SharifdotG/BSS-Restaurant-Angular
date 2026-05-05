@@ -3,21 +3,22 @@
   class="offcanvas offcanvas-end"
   tabindex="-1"
   id="cartOffCanvas"
-  aria-labelledby="cartOffCanvas"
+  aria-labelledby="cartOffCanvasLabel"
 >
   <div
     class="offcanvas-header border-b-4 border-green-500 d-flex justify-content-between align-items-center"
   >
-    <div class="text-3xl text-bold text-green-600" id="offcanvasExampleLabel">
+    <div class="text-3xl text-bold text-green-600" id="cartOffCanvasLabel">
       <span
         nz-icon
         nzType="shopping-cart"
         nzTheme="outline"
         style="color: darkgreen; font-size: 32px"
+        aria-hidden="true"
       ></span>
       Order Cart
     </div>
-    <button type="button">
+    <button type="button" aria-label="Close cart">
       <span
         nz-icon
         nzType="close"
@@ -33,14 +34,14 @@
     @if (newOrderService.cartFood().length) {
       <div class="d-flex flex-column justify-between h-100 overflow-y-clip">
         <div class="overflow-auto">
-          @for (item of newOrderService.cartFood(); track item) {
-            <div class="cart-item border-b-2 border-green-700 border-opacity-30">
+          @for (item of newOrderService.cartFood(); track item.food.id) {
+            <div class="cart-item border-b-2 border-green-700 border-opacity-30 transition-colors duration-150">
               <div class="d-flex w-100 align-items-center h-100 p-3">
                 <img
                   nz-image
                   class="food-image rounded-lg drop-shadow-md"
                   [nzSrc]="getFoodImage(item.food.image)"
-                  alt=""
+                  [alt]="item.food.name"
                   [nzFallback]="fallbackImage"
                 />
                 <div class="h-100 w-100 d-flex justify-content-between">
@@ -49,23 +50,24 @@
                     <div>
                       <span class="text-lg me-1 d-none d-sm-inline-block">Qty. </span>
                       <nz-input-number
-                        (ngModelChange)="valueChange()"
-                        [(ngModel)]="item.quantity"
+                        [ngModel]="item.quantity"
+                        (ngModelChange)="updateQuantity(item.food.id, $event)"
                         [nzMin]="1"
                         [nzMax]="10"
                         [nzStep]="1"
                         style="width: 100px"
+                        aria-label="Quantity for {{ item.food.name }}"
                       ></nz-input-number>
                     </div>
                   </div>
                   <div class="d-flex flex-column justify-content-between align-items-end">
                     <button
                       (click)="removeFromCart(item.food.id)"
-                      class="drop-down-button drop-shadow-md mt-1"
-                      aria-label="Remove item from cart"
+                      class="drop-down-button drop-shadow-md mt-1 transition-colors duration-150"
+                      aria-label="Remove {{ item.food.name }} from cart"
                       title="Remove from cart"
                     >
-                      <span nz-icon nzType="delete" nzTheme="outline"></span>
+                      <span nz-icon nzType="delete" nzTheme="outline" aria-hidden="true"></span>
                     </button>
                     <div class="text-md md:text-lg">Price: {{ item.amount * item.quantity }} ৳</div>
                   </div>
@@ -79,11 +81,12 @@
             class="w-100 d-flex justify-between border-b-2 border-t-2 border-green-700 border-opacity-30 p-4"
           >
             <div class="sub-total text-2xl">Sub-Total</div>
-            <div class="sub-total text-2xl">{{ subtotal() }} ৳</div>
+            <div class="sub-total text-2xl" aria-live="polite">{{ subtotal() }} ৳</div>
           </div>
           <div class="w-100 p-4 pb-2">
-            <label class="d-block mb-2 font-semibold text-gray-700">Phone Number (Optional)</label>
+            <label for="phoneNumberInput" class="d-block mb-2 font-semibold text-gray-700">Phone Number (Optional)</label>
             <input
+              id="phoneNumberInput"
               nz-input
               [ngModel]="phoneNumber()"
               (ngModelChange)="phoneNumber.set($event)"
@@ -96,7 +99,7 @@
             <button
               data-bs-dismiss="offcanvas"
               (click)="confirmOrder()"
-              class="submit-button text-center text-2xl"
+              class="submit-button text-center text-2xl transition-colors duration-200"
             >
               Confirm Order
             </button>
@@ -104,7 +107,7 @@
         </div>
       </div>
     } @else {
-      <div class="h-100 d-flex align-items-center justify-content-center">
+      <div class="h-100 d-flex align-items-center justify-content-center" role="status">
         <div class="text-4xl text-gray-700">The Cart Is Empty!</div>
       </div>
     }

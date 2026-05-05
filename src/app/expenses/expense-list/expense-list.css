@@ -1,93 +1,66 @@
-* {
-  transition: all 0.3s ease-in-out;
+ant-table-tbody {
+  height: 500px;
 }
 
-.order-container {
-  min-height: calc(100vh - 85px);
-  max-height: calc(100vh - 85px);
-}
-
-.order-card {
-  width: 100%;
-  min-height: 420px;
-  border: 1px solid var(--bg-secondary-light-100);
-}
-
-.order-item-container {
-  min-height: inherit;
-}
-
-.food-image-container {
-  min-height: 72px;
-  max-height: 72px;
-  min-width: 72px;
-  max-width: 72px;
-  border-radius: 50%;
-}
-
-.food-image {
+.add-expense-button {
+  text-align: center;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-}
-
-.order-card-body {
-  min-height: 250px;
-  max-height: 250px;
-}
-
-.drop-down-filter {
-  width: 155px;
-  height: 52px;
+  min-height: 48px;
+  min-width: 60px;
   border-radius: 8px;
-  border: 1px solid var(--bg-secondary-light-100);
-  background-color: white;
+  border: #66bb6a 1px solid;
+  font-size: 18px;
+  background: var(--bg-ternary-light);
 }
 
-/* Orders specific button overrides (inherit global animations from styles.scss) */
-.edit-button {
-  width: 40px;
-  height: 40px;
-  border: 1px solid var(--bg-secondary-light-100);
+.add-expense-button:hover {
+  background: #C8E6C9;
+  font-weight: 500;
 }
 
-.edit-button:hover {
-  background-color: var(--bg-secondary-light-50);
+td {
+  font-size: 18px;
 }
 
-.drop-down-button {
-  width: 40px;
-  height: 40px;
-  border: 1px solid var(--bg-secondary-light-100);
+.amount-cell {
+  font-weight: 600;
+  color: #2e7d32;
 }
 
-.drop-down-button:hover {
-  background-color: var(--bg-secondary-light-50);
+.category-badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 12px;
+  background-color: #e8f5e9;
+  color: #2e7d32;
+  font-size: 14px;
+  font-weight: 500;
 }
 
-.drop-down-button.status-button:hover,
-.drop-down-button.status-button:active,
-.drop-down-button.status-button:focus {
-  background-color: orange;
-  border-color: orange;
-  color: white;
+.custom-table-row:hover td {
+  background: var(--bg-ternary-light) !important;
 }
 
-.drop-down-button.status-button:hover span,
-.drop-down-button.status-button:active span,
-.drop-down-button.status-button:focus span {
-  color: white;
+.custom-table-row:hover {
+  background: var(--bg-ternary-light) !important;
 }
 
-@media screen and (max-width: 768px) {
-  .order-card {
-    width: 100%;
-    min-height: 400px;
-  }
+.custom-table-title {
+  font-size: 18px;
+  color: darkgreen;
+}
+
+.custom-table-title-button {
+  padding: 8px 10px;
+}
+
+.main-table {
+  height: 600px;
+  overflow-y: auto;
 }
 
 /* Override pagination colors to green */
-/* Center the pagination */
 ::ng-deep .ant-pagination {
   display: flex;
   justify-content: center;
@@ -139,13 +112,13 @@
 /* Page size selector (10 / page dropdown) */
 ::ng-deep .ant-select-selector {
   border-color: #66bb6a !important;
-  border-radius: 8px !important;
+  border-radius: 4px !important;
 }
 
 ::ng-deep .ant-select-focused .ant-select-selector,
 ::ng-deep .ant-select-selector:hover {
   border-color: #66bb6a !important;
-  border-radius: 8px !important;
+  border-radius: 4px !important;
 }
 
 ::ng-deep .ant-select-item-option-selected {

@@ -9,7 +9,7 @@ import {
 import { NzOptionComponent, NzSelectComponent } from 'ng-zorro-antd/select';
 import { NzAvatarComponent } from 'ng-zorro-antd/avatar';
 import { NzIconDirective } from 'ng-zorro-antd/icon';
-import { TableService } from '../tables.service';
+import { TablesService } from '../tables.service';
 import { Employee } from '../../employees/employees.interface';
 import { API_BASE_URL } from '../../app.config';
 
@@ -31,7 +31,7 @@ import { API_BASE_URL } from '../../app.config';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AssignEmployee {
-  readonly tableService = inject(TableService);
+  readonly tablesService = inject(TablesService);
   private readonly baseUrl = inject(API_BASE_URL);
 
   readonly modalWidth = '600px';
@@ -41,10 +41,10 @@ export class AssignEmployee {
 
   constructor() {
     effect(() => {
-      const isOpen = this.tableService.showAssignModal();
+      const isOpen = this.tablesService.showAssignModal();
       if (isOpen) {
         this.assignModalWasOpen = true;
-        this.tableService.loadListOfAvailableEmployees(this.tableService.assignTableId());
+        this.tablesService.loadListOfAvailableEmployees(this.tablesService.assignTableId());
       } else if (this.assignModalWasOpen) {
         this.assignModalWasOpen = false;
         this.listOfSelectedEmployees = [];
@@ -53,14 +53,14 @@ export class AssignEmployee {
   }
 
   handleCancel(): void {
-    this.tableService.closeAssignModal();
+    this.tablesService.closeAssignModal();
   }
 
   handleOk(): void {
     if (this.listOfSelectedEmployees.length > 0) {
-      this.tableService.assignEmployeeToTable(
+      this.tablesService.assignEmployeeToTable(
         this.listOfSelectedEmployees,
-        this.tableService.assignTableId(),
+        this.tablesService.assignTableId(),
       );
     }
   }
