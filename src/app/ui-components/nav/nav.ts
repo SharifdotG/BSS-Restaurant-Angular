@@ -38,7 +38,7 @@ const SIDE_BAR_ITEMS: readonly SideBarItem[] = [
   {
     label: 'Report & Analytics',
     icon: 'area-chart',
-    route: 'report-and-analysis',
+    route: 'report-and-analytics',
     headerTitle: 'Report & Analytics',
   },
 ];

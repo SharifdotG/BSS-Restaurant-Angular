@@ -8,7 +8,7 @@ import { NgxChartsModule, LegendPosition, Color, ScaleType } from '@swimlane/ngx
 import { DashboardService } from '../dashboard/dashboard.service';
 
 @Component({
-  selector: 'app-report-and-analysis',
+  selector: 'app-report-and-analytics',
   imports: [
     CommonModule,
     DecimalPipe,
@@ -18,10 +18,10 @@ import { DashboardService } from '../dashboard/dashboard.service';
     NzSelectModule,
     NgxChartsModule,
   ],
-  templateUrl: './report-and-analysis.html',
-  styleUrl: './report-and-analysis.css',
+  templateUrl: './report-and-analytics.html',
+  styleUrl: './report-and-analytics.css',
 })
-export class ReportAndAnalysis implements OnInit {
+export class ReportAndAnalytics implements OnInit {
   protected dashboardService = inject(DashboardService);
 
   legendPosition = LegendPosition.Below;

@@ -53,9 +53,9 @@ export const routes: Routes = [
           import('./expenses/expense-list/expense-list').then((m) => m.ExpenseList),
       },
       {
-        path: 'report-and-analysis',
+        path: 'report-and-analytics',
         loadComponent: () =>
-          import('./report-and-analysis/report-and-analysis').then((m) => m.ReportAndAnalysis),
+          import('./report-and-analytics/report-and-analytics').then((m) => m.ReportAndAnalytics),
       },
     ],
   },
