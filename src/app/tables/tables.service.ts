@@ -68,8 +68,8 @@ export class TablesService {
       .pipe(finalize(() => this.isLoadingTables.set(false)))
       .subscribe({
         next: (data) => {
-          this.listOfTables.set(data.data);
-          this.totalTables.set(data.totalRecords);
+          this.listOfTables.set(data?.data ?? []);
+          this.totalTables.set(data?.totalRecords ?? data?.total ?? data?.data?.length ?? 0);
         },
         error: () => {
           this.messageService.error('Error Processing The Request. Please Try Again...');

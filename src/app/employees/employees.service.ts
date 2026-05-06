@@ -41,7 +41,7 @@ export class EmployeesService {
       .subscribe({
         next: (data) => {
           this.listOfEmployees.set(getSanitizedListOfEmployee(data));
-          this.totalEmployees.set(data?.totalRecords ?? 0);
+          this.totalEmployees.set(data?.totalRecords ?? data?.total ?? data?.data?.length ?? 0);
         },
         error: () => {
           this.messageService.error('Error Processing The Request. Please Try Again...');

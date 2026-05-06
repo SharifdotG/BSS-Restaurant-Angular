@@ -40,7 +40,7 @@ export class FoodsService {
       .subscribe({
         next: (data) => {
           this.listOfFood.set(getSanitizedListOfFood(data));
-          this.totalFood.set(data?.totalRecords || data?.total || 10);
+          this.totalFood.set(data?.totalRecords ?? data?.total ?? data?.data?.length ?? 0);
         },
         error: () => {
           this.message.create('error', 'Error Processing The Request. Please Try Again...');

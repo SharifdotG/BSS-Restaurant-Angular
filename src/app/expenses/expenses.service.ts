@@ -42,7 +42,7 @@ export class ExpensesService {
       .subscribe({
         next: (response) => {
           this.listOfExpenses.set(response.data ?? []);
-          this.totalExpenses.set(response.total ?? 10);
+          this.totalExpenses.set(response.total ?? response.data?.length ?? 0);
         },
         error: () => {
           this.message.create('error', 'Error Processing The Request. Please Try Again...');

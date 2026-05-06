@@ -62,28 +62,59 @@ export class AuthService {
     const loginStatus = localStorage.getItem('loginStatus');
     const userStr = localStorage.getItem('currentUser');
 
-    if (loginStatus === 'valid' && token) {
-      let user: User | null = null;
+    if (loginStatus !== 'valid' || !token) {
+      return;
+    }
 
-      if (userStr) {
-        try {
-          user = JSON.parse(userStr) as User;
-        } catch (error: unknown) {
-          console.error('Failed to parse stored user:', error);
-        }
+    if (this.isTokenExpired(token)) {
+      this.clearAuthData();
+      return;
+    }
+
+    let user: User | null = null;
+
+    if (userStr) {
+      try {
+        user = JSON.parse(userStr) as User;
+      } catch (error: unknown) {
+        console.error('Failed to parse stored user:', error);
       }
+    }
 
-      this.authState.update((state) => ({
-        ...state,
-        user,
-        token,
-        refreshToken,
-        isAuthenticated: true,
-      }));
+    this.authState.update((state) => ({
+      ...state,
+      user,
+      token,
+      refreshToken,
+      isAuthenticated: true,
+    }));
 
-      if (!user) {
-        this.getUserProfile().subscribe();
-      }
+    if (!user) {
+      this.getUserProfile().subscribe();
+    }
+  }
+
+  private isTokenExpired(token: string): boolean {
+    const expiresAt = this.getTokenExpiry(token);
+    if (expiresAt === null) {
+      return false;
+    }
+    return Date.now() >= expiresAt;
+  }
+
+  private getTokenExpiry(token: string): number | null {
+    const parts = token.split('.');
+    if (parts.length !== 3) {
+      return null;
+    }
+
+    try {
+      const base64 = parts[1].replace(/-/g, '+').replace(/_/g, '/');
+      const padded = base64.padEnd(base64.length + ((4 - (base64.length % 4)) % 4), '=');
+      const payload = JSON.parse(atob(padded)) as { exp?: number };
+      return typeof payload.exp === 'number' ? payload.exp * 1000 : null;
+    } catch {
+      return null;
     }
   }
 

@@ -8,7 +8,7 @@ import { NgxChartsModule, LegendPosition, Color, ScaleType } from '@swimlane/ngx
 import { DashboardService } from '../dashboard/dashboard.service';
 
 @Component({
-  selector: 'app-reports-and-analysis',
+  selector: 'app-report-and-analysis',
   imports: [
     CommonModule,
     DecimalPipe,

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, effect, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, effect, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TablesService } from '../tables.service';
 import { NzTableModule, NzTableQueryParams } from 'ng-zorro-antd/table';
@@ -29,7 +29,7 @@ import { API_BASE_URL } from '../../app.config';
   styleUrl: './table-list.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TableList {
+export class TableList implements OnInit {
   readonly tablesService = inject(TablesService);
   private readonly modal = inject(NzModalService);
   private readonly responsive = inject(BreakpointObserver);
@@ -58,6 +58,10 @@ export class TableList {
         ? ['120px', '160px', '130px', '180px', 'auto', '180px']
         : ['120px', '100px', '70px', '110px', 'auto', '180px'];
     });
+  }
+
+  ngOnInit(): void {
+    this.loadDataFromServer(this.pageIndex, this.pageSize);
   }
 
   onQueryParamsChange(params: NzTableQueryParams): void {

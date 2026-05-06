@@ -1,4 +1,4 @@
-import { Component, effect, inject, signal } from '@angular/core';
+import { Component, OnInit, effect, inject, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { EmployeesService } from '../employees.service';
 import { NzTableModule, NzTableQueryParams } from 'ng-zorro-antd/table';
@@ -27,7 +27,7 @@ export type ThemeType = 'fill' | 'outline' | 'twotone';
   styleUrl: './employee-list.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class EmployeeList {
+export class EmployeeList implements OnInit {
   protected employeeService = inject(EmployeesService);
   listOfEmployees = this.employeeService.listOfEmployees;
   imageBaseUrl = inject(API_BASE_URL) + '/images/user/';
@@ -43,6 +43,10 @@ export class EmployeeList {
         this.loadDataFromServer(this.pageIndex(), this.pageSize());
       }
     });
+  }
+
+  ngOnInit(): void {
+    this.loadDataFromServer(this.pageIndex(), this.pageSize());
   }
 
   onQueryParamsChange(params: NzTableQueryParams): void {

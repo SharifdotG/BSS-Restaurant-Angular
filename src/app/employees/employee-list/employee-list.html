@@ -26,7 +26,7 @@
       [nzWidthConfig]="['120px', 'auto', 'auto', 'auto', 'auto', 'auto', '180px']"
       nzTableLayout="auto"
       [nzData]="listOfEmployees()"
-      [nzFrontPagination]="true"
+      [nzFrontPagination]="false"
       [nzLoading]="employeeService.isSendingRequest()"
       [nzLoadingIndicator]="indicatorTemplate"
       [nzTotal]="employeeService.totalEmployees()"
