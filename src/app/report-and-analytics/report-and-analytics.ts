@@ -1,45 +1,51 @@
-import { Component, OnInit, inject, signal, computed } from '@angular/core';
-import { CommonModule, DecimalPipe } from '@angular/common';
+import {
+  Component,
+  OnInit,
+  inject,
+  signal,
+  computed,
+  ChangeDetectionStrategy,
+} from '@angular/core';
+import { DecimalPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NgxChartsModule, LegendPosition, Color, ScaleType } from '@swimlane/ngx-charts';
+
 import { DashboardService } from '../dashboard/dashboard.service';
+
+interface MonthOption {
+  value: number;
+  label: string;
+}
 
 @Component({
   selector: 'app-report-and-analytics',
-  imports: [
-    CommonModule,
-    DecimalPipe,
-    FormsModule,
-    NzSpinModule,
-    NzIconModule,
-    NzSelectModule,
-    NgxChartsModule,
-  ],
+  imports: [DecimalPipe, FormsModule, NzSpinModule, NzIconModule, NzSelectModule, NgxChartsModule],
   templateUrl: './report-and-analytics.html',
   styleUrl: './report-and-analytics.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ReportAndAnalytics implements OnInit {
-  protected dashboardService = inject(DashboardService);
+  protected readonly dashboardService = inject(DashboardService);
 
-  legendPosition = LegendPosition.Below;
-  barLegendPosition = LegendPosition.Right;
-  barColorScheme: Color = {
+  readonly legendPosition = LegendPosition.Below;
+  readonly barLegendPosition = LegendPosition.Right;
+  readonly barColorScheme: Color = {
     name: 'bar',
     selectable: true,
     group: ScaleType.Ordinal,
     domain: ['#66bb6a', '#e91e63', '#26a69a'],
   };
-  pieColorScheme: Color = {
+  readonly pieColorScheme: Color = {
     name: 'pie',
     selectable: true,
     group: ScaleType.Ordinal,
     domain: ['#66bb6a', '#e91e63'],
   };
 
-  barChartData = computed(() => {
+  readonly barChartData = computed(() => {
     const sr = this.dashboardService.dashboardStats()?.salesRevenue;
     if (!sr) return [];
     return [
@@ -70,7 +76,7 @@ export class ReportAndAnalytics implements OnInit {
     ];
   });
 
-  pieChartData = computed(() => {
+  readonly pieChartData = computed(() => {
     const sr = this.dashboardService.dashboardStats()?.salesRevenue;
     if (!sr) return [];
     return [
@@ -79,10 +85,10 @@ export class ReportAndAnalytics implements OnInit {
     ];
   });
 
-  selectedMonth = signal(new Date().getMonth() + 1);
-  selectedYear = signal(new Date().getFullYear());
+  readonly selectedMonth = signal(new Date().getMonth() + 1);
+  readonly selectedYear = signal(new Date().getFullYear());
 
-  months = [
+  readonly months: readonly MonthOption[] = [
     { value: 1, label: 'January' },
     { value: 2, label: 'February' },
     { value: 3, label: 'March' },
@@ -97,17 +103,18 @@ export class ReportAndAnalytics implements OnInit {
     { value: 12, label: 'December' },
   ];
 
-  years: number[] = [];
+  readonly years: readonly number[] = this.buildYearRange();
 
-  ngOnInit() {
-    const currentYear = new Date().getFullYear();
-    for (let y = currentYear - 5; y <= currentYear + 1; y++) {
-      this.years.push(y);
-    }
+  ngOnInit(): void {
     this.dashboardService.getStats(this.selectedMonth(), this.selectedYear());
   }
 
-  onPeriodChange() {
+  onPeriodChange(): void {
     this.dashboardService.getStats(this.selectedMonth(), this.selectedYear());
+  }
+
+  private buildYearRange(): number[] {
+    const currentYear = new Date().getFullYear();
+    return Array.from({ length: 7 }, (_, i) => currentYear - 5 + i);
   }
 }

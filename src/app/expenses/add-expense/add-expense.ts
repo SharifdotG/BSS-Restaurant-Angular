@@ -11,6 +11,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+
 import { ExpensesService } from '../../expenses/expenses.service';
 import { CreateExpense, UpdateExpense, ExpenseItem } from '../../expenses/expenses.interface';
 
@@ -58,15 +59,12 @@ export class AddExpense {
   ];
 
   constructor() {
-    effect(
-      () => {
-        const selectedExpense = this.expensesService.selectedExpense();
-        if (selectedExpense && this.expensesService.isEditMode()) {
-          this.populateForm(selectedExpense);
-        }
-      },
-      { allowSignalWrites: true },
-    );
+    effect(() => {
+      const selectedExpense = this.expensesService.selectedExpense();
+      if (selectedExpense && this.expensesService.isEditMode()) {
+        this.populateForm(selectedExpense);
+      }
+    });
 
     this.responsive
       .observe([Breakpoints.Large, Breakpoints.XLarge])

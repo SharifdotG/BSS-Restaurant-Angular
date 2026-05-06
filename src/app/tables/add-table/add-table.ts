@@ -23,6 +23,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+
 import { TablesService } from '../tables.service';
 import { CreateTableRequest, UpdateTableRequest, Table } from '../tables.interface';
 import { API_BASE_URL } from '../../app.config';
@@ -87,26 +89,26 @@ export class AddTable {
   private addModalWasOpen = false;
 
   constructor() {
-    effect(
-      () => {
-        const isOpen = this.tablesService.showAddModal();
-        if (isOpen) {
-          this.addModalWasOpen = true;
-          const table = this.tablesService.selectedTable();
-          if (table && this.tablesService.isEditMode()) {
-            this.populateForm(table);
-          }
-        } else if (this.addModalWasOpen) {
-          this.addModalWasOpen = false;
-          this.resetForm();
+    effect(() => {
+      const isOpen = this.tablesService.showAddModal();
+      if (isOpen) {
+        this.addModalWasOpen = true;
+        const table = this.tablesService.selectedTable();
+        if (table && this.tablesService.isEditMode()) {
+          this.populateForm(table);
         }
-      },
-      { allowSignalWrites: true },
-    );
-
-    this.responsive.observe([Breakpoints.Large, Breakpoints.XLarge]).subscribe((result) => {
-      this.modalWidth.set(result.matches ? '50vw' : '100vw');
+      } else if (this.addModalWasOpen) {
+        this.addModalWasOpen = false;
+        this.resetForm();
+      }
     });
+
+    this.responsive
+      .observe([Breakpoints.Large, Breakpoints.XLarge])
+      .pipe(takeUntilDestroyed())
+      .subscribe((result) => {
+        this.modalWidth.set(result.matches ? '50vw' : '100vw');
+      });
   }
 
   handleOk(): void {

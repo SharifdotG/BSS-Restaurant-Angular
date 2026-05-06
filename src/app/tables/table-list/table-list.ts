@@ -1,21 +1,21 @@
 import { ChangeDetectionStrategy, Component, OnInit, effect, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { TablesService } from '../tables.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NzTableModule, NzTableQueryParams } from 'ng-zorro-antd/table';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import { AddTable } from '../add-table/add-table';
-import { AssignEmployee } from '../assign-employee/assign-employee';
-import { EmployeeTooltip } from '../employee-tooltip/employee-tooltip';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+
+import { TablesService } from '../tables.service';
+import { AssignEmployee } from '../assign-employee/assign-employee';
+import { AddTable } from '../add-table/add-table';
+import { EmployeeTooltip } from '../employee-tooltip/employee-tooltip';
 import { API_BASE_URL } from '../../app.config';
 
 @Component({
   selector: 'app-table-list',
   imports: [
-    CommonModule,
     NzTableModule,
     NzAvatarModule,
     NzIconModule,
@@ -43,21 +43,21 @@ export class TableList implements OnInit {
   pageIndex = 1;
 
   constructor() {
-    effect(
-      () => {
-        if (this.tablesService.triggerRefresh()) {
-          this.loadDataFromServer(this.pageIndex, this.pageSize);
-          this.tablesService.triggerRefresh.set(false);
-        }
-      },
-      { allowSignalWrites: true },
-    );
-
-    this.responsive.observe([Breakpoints.Large, Breakpoints.XLarge]).subscribe((result) => {
-      this.tableWidthConfig = result.matches
-        ? ['120px', '160px', '130px', '180px', 'auto', '180px']
-        : ['120px', '100px', '70px', '110px', 'auto', '180px'];
+    effect(() => {
+      if (this.tablesService.triggerRefresh()) {
+        this.loadDataFromServer(this.pageIndex, this.pageSize);
+        this.tablesService.triggerRefresh.set(false);
+      }
     });
+
+    this.responsive
+      .observe([Breakpoints.Large, Breakpoints.XLarge])
+      .pipe(takeUntilDestroyed())
+      .subscribe((result) => {
+        this.tableWidthConfig = result.matches
+          ? ['120px', '160px', '130px', '180px', 'auto', '180px']
+          : ['120px', '100px', '70px', '110px', 'auto', '180px'];
+      });
   }
 
   ngOnInit(): void {

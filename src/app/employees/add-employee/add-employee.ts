@@ -3,11 +3,10 @@ import {
   ChangeDetectionStrategy,
   effect,
   inject,
-  OnDestroy,
-  OnInit,
   signal,
   untracked,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   NzModalComponent,
   NzModalContentDirective,
@@ -29,14 +28,13 @@ import {
 } from '@angular/forms';
 import { NzColDirective, NzRowDirective } from 'ng-zorro-antd/grid';
 import { NzInputDirective } from 'ng-zorro-antd/input';
-import { debounceTime, map, of, takeUntil, catchError, Observable, Subject } from 'rxjs';
+import { debounceTime, map, of, catchError, Observable } from 'rxjs';
 import { NzUploadChangeParam, NzUploadComponent, NzUploadFile } from 'ng-zorro-antd/upload';
 import { NzIconDirective } from 'ng-zorro-antd/icon';
 import { NzDatePickerComponent } from 'ng-zorro-antd/date-picker';
 import { NzOptionComponent, NzSelectComponent } from 'ng-zorro-antd/select';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { HttpClient } from '@angular/common/http';
-import { CommonModule } from '@angular/common';
 
 import { API_BASE_URL } from '../../app.config';
 import { CreateEmployee } from '../employees.interface';
@@ -45,7 +43,6 @@ import { EmployeesService } from '../employees.service';
 @Component({
   selector: 'app-add-employee',
   imports: [
-    CommonModule,
     NzModalComponent,
     NzButtonComponent,
     NzModalFooterDirective,
@@ -68,12 +65,11 @@ import { EmployeesService } from '../employees.service';
   styleUrl: './add-employee.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AddEmployee implements OnInit, OnDestroy {
+export class AddEmployee {
   private httpClient = inject(HttpClient);
   private responsive = inject(BreakpointObserver);
   private baseUrl = inject(API_BASE_URL);
   private fb = inject(NonNullableFormBuilder);
-  private destroy$ = new Subject<void>();
 
   employeeService = inject(EmployeesService);
 
@@ -160,20 +156,13 @@ export class AddEmployee implements OnInit, OnDestroy {
         this.handleCancel();
       }
     });
-  }
 
-  ngOnInit(): void {
     this.responsive
       .observe([Breakpoints.Large, Breakpoints.XLarge])
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed())
       .subscribe((result) => {
         this.modalWidth.set(result.matches ? '80vw' : '100vw');
       });
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   handleOk(): void {

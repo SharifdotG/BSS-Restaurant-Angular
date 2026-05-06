@@ -2,6 +2,8 @@
   <div
     class="loading h-100 w-100 d-flex justify-content-center align-items-center"
     style="background: rgba(255, 255, 255, 0.6)"
+    role="status"
+    aria-label="Loading report data"
   >
     <div
       style="font-size: 50px; color: darkseagreen"
@@ -26,6 +28,7 @@
               nzPlaceHolder="Month"
               style="width: 140px"
               nzSize="small"
+              aria-label="Select month"
             >
               @for (m of months; track m.value) {
                 <nz-option [nzValue]="m.value" [nzLabel]="m.label"></nz-option>
@@ -37,6 +40,7 @@
               nzPlaceHolder="Year"
               style="width: 100px"
               nzSize="small"
+              aria-label="Select year"
             >
               @for (y of years; track y) {
                 <nz-option [nzValue]="y" [nzLabel]="'' + y"></nz-option>
@@ -55,6 +59,7 @@
                   nzType="shopping-cart"
                   nzTheme="outline"
                   style="color: #66bb6a"
+                  aria-hidden="true"
                 ></span>
               </div>
               <div class="stat-info">
@@ -69,7 +74,13 @@
           <div class="col-6 col-xl-4">
             <div class="stat-card sales-card">
               <div class="stat-icon" style="background: #fff3e0">
-                <span nz-icon nzType="calendar" nzTheme="outline" style="color: #ff9800"></span>
+                <span
+                  nz-icon
+                  nzType="calendar"
+                  nzTheme="outline"
+                  style="color: #ff9800"
+                  aria-hidden="true"
+                ></span>
               </div>
               <div class="stat-info">
                 <p class="stat-label">Monthly Sales</p>
@@ -83,7 +94,13 @@
           <div class="col-12 col-xl-4">
             <div class="stat-card sales-card">
               <div class="stat-icon" style="background: #e3f2fd">
-                <span nz-icon nzType="bar-chart" nzTheme="outline" style="color: #2196f3"></span>
+                <span
+                  nz-icon
+                  nzType="bar-chart"
+                  nzTheme="outline"
+                  style="color: #2196f3"
+                  aria-hidden="true"
+                ></span>
               </div>
               <div class="stat-info">
                 <p class="stat-label">Yearly Sales</p>
@@ -101,7 +118,13 @@
           <div class="col-6 col-xl-4">
             <div class="stat-card expense-card">
               <div class="stat-icon" style="background: #fce4ec">
-                <span nz-icon nzType="fall" nzTheme="outline" style="color: #e91e63"></span>
+                <span
+                  nz-icon
+                  nzType="fall"
+                  nzTheme="outline"
+                  style="color: #e91e63"
+                  aria-hidden="true"
+                ></span>
               </div>
               <div class="stat-info">
                 <p class="stat-label">Today's Expenses</p>
@@ -114,7 +137,13 @@
           <div class="col-6 col-xl-4">
             <div class="stat-card expense-card">
               <div class="stat-icon" style="background: #fce4ec">
-                <span nz-icon nzType="fall" nzTheme="outline" style="color: #e91e63"></span>
+                <span
+                  nz-icon
+                  nzType="fall"
+                  nzTheme="outline"
+                  style="color: #e91e63"
+                  aria-hidden="true"
+                ></span>
               </div>
               <div class="stat-info">
                 <p class="stat-label">Monthly Expenses</p>
@@ -127,7 +156,13 @@
           <div class="col-12 col-xl-4">
             <div class="stat-card expense-card">
               <div class="stat-icon" style="background: #fce4ec">
-                <span nz-icon nzType="fall" nzTheme="outline" style="color: #e91e63"></span>
+                <span
+                  nz-icon
+                  nzType="fall"
+                  nzTheme="outline"
+                  style="color: #e91e63"
+                  aria-hidden="true"
+                ></span>
               </div>
               <div class="stat-info">
                 <p class="stat-label">Yearly Expenses</p>
@@ -144,7 +179,13 @@
           <div class="col-6 col-xl-4">
             <div class="stat-card revenue-card">
               <div class="stat-icon" style="background: #e0f2f1">
-                <span nz-icon nzType="rise" nzTheme="outline" style="color: #26a69a"></span>
+                <span
+                  nz-icon
+                  nzType="rise"
+                  nzTheme="outline"
+                  style="color: #26a69a"
+                  aria-hidden="true"
+                ></span>
               </div>
               <div class="stat-info">
                 <p class="stat-label">Today's Revenue</p>
@@ -157,7 +198,13 @@
           <div class="col-6 col-xl-4">
             <div class="stat-card revenue-card">
               <div class="stat-icon" style="background: #e0f2f1">
-                <span nz-icon nzType="rise" nzTheme="outline" style="color: #26a69a"></span>
+                <span
+                  nz-icon
+                  nzType="rise"
+                  nzTheme="outline"
+                  style="color: #26a69a"
+                  aria-hidden="true"
+                ></span>
               </div>
               <div class="stat-info">
                 <p class="stat-label">Monthly Revenue</p>
@@ -173,7 +220,13 @@
           <div class="col-12 col-xl-4">
             <div class="stat-card revenue-card">
               <div class="stat-icon" style="background: #e0f2f1">
-                <span nz-icon nzType="rise" nzTheme="outline" style="color: #26a69a"></span>
+                <span
+                  nz-icon
+                  nzType="rise"
+                  nzTheme="outline"
+                  style="color: #26a69a"
+                  aria-hidden="true"
+                ></span>
               </div>
               <div class="stat-info">
                 <p class="stat-label">Yearly Revenue</p>
@@ -235,7 +288,13 @@
           <div class="col-6 col-xl-4">
             <div class="stat-card sales-card">
               <div class="stat-icon" style="background: #f3e5f5">
-                <span nz-icon nzType="fund" nzTheme="outline" style="color: #9c27b0"></span>
+                <span
+                  nz-icon
+                  nzType="fund"
+                  nzTheme="outline"
+                  style="color: #9c27b0"
+                  aria-hidden="true"
+                ></span>
               </div>
               <div class="stat-info">
                 <p class="stat-label">Total Sales</p>
@@ -247,7 +306,13 @@
           <div class="col-6 col-xl-4">
             <div class="stat-card expense-card">
               <div class="stat-icon" style="background: #fce4ec">
-                <span nz-icon nzType="fall" nzTheme="outline" style="color: #e91e63"></span>
+                <span
+                  nz-icon
+                  nzType="fall"
+                  nzTheme="outline"
+                  style="color: #e91e63"
+                  aria-hidden="true"
+                ></span>
               </div>
               <div class="stat-info">
                 <p class="stat-label">Total Expenses</p>
@@ -260,7 +325,13 @@
           <div class="col-12 col-xl-4">
             <div class="stat-card revenue-card">
               <div class="stat-icon" style="background: #e0f2f1">
-                <span nz-icon nzType="rise" nzTheme="outline" style="color: #26a69a"></span>
+                <span
+                  nz-icon
+                  nzType="rise"
+                  nzTheme="outline"
+                  style="color: #26a69a"
+                  aria-hidden="true"
+                ></span>
               </div>
               <div class="stat-info">
                 <p class="stat-label">Total Revenue</p>

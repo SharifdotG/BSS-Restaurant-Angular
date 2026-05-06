@@ -71,7 +71,9 @@
                 />
                 <div class="flex-grow-1">
                   <div class="font-semibold">{{ food.name }}</div>
-                  <div class="text-sm text-gray-600">{{ food.discountPrice > 0 ? food.discountPrice : food.price }} ৳</div>
+                  <div class="text-sm text-gray-600">
+                    {{ food.discountPrice > 0 ? food.discountPrice : food.price }} ৳
+                  </div>
                 </div>
               </div>
             </nz-option>
@@ -92,20 +94,18 @@
 
     <div class="mb-3">
       <label class="d-block mb-2 font-semibold">Order Items</label>
-      <div class="border rounded p-3" style="max-height: 400px; overflow-y: auto;">
+      <div class="border rounded p-3" style="max-height: 400px; overflow-y: auto">
         @if (editItems().length === 0) {
-          <div class="text-center py-4 text-gray-500">
-            No items in this order
-          </div>
+          <div class="text-center py-4 text-gray-500">No items in this order</div>
         }
         @for (item of editItems(); track item.uniqueId; let i = $index) {
           <div class="d-flex gap-3 mb-3 pb-3 border-bottom">
-            <div class="food-image-container" style="width: 60px; height: 60px;">
+            <div class="food-image-container" style="width: 60px; height: 60px">
               <img
                 nz-image
                 nzDisablePreview
                 class="w-100 h-100 rounded"
-                style="object-fit: cover;"
+                style="object-fit: cover"
                 [nzSrc]="getFoodImage(item.foodImage)"
                 [nzFallback]="fallbackImage"
                 [alt]="item.foodName"
@@ -122,7 +122,7 @@
                   [nzMin]="1"
                   [nzMax]="100"
                   (ngModelChange)="onQuantityChange(i, $event)"
-                  style="width: 100px;"
+                  style="width: 100px"
                 ></nz-input-number>
                 <span class="ms-2">Total: {{ item.totalPrice }} ৳</span>
               </div>
@@ -152,13 +152,7 @@
   </ng-container>
 
   <div *nzModalFooter>
-    <button
-      class="drop-shadow-md"
-      nz-button
-      nzDanger
-      nzType="default"
-      (click)="handleCancel()"
-    >
+    <button class="drop-shadow-md" nz-button nzDanger nzType="default" (click)="handleCancel()">
       Cancel
     </button>
     <button

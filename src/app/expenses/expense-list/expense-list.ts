@@ -4,6 +4,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzModalService } from 'ng-zorro-antd/modal';
+
 import { ExpensesService } from '../../expenses/expenses.service';
 import { AddExpense } from '../add-expense/add-expense';
 
@@ -25,15 +26,12 @@ export class ExpenseList {
   listOfExpenses = this.expensesService.listOfExpenses;
 
   constructor() {
-    effect(
-      () => {
-        if (this.expensesService.triggerRefresh()) {
-          this.loadDataFromServer(this.pageIndex, this.pageSize);
-          this.expensesService.triggerRefresh.set(false);
-        }
-      },
-      { allowSignalWrites: true },
-    );
+    effect(() => {
+      if (this.expensesService.triggerRefresh()) {
+        this.loadDataFromServer(this.pageIndex, this.pageSize);
+        this.expensesService.triggerRefresh.set(false);
+      }
+    });
   }
 
   onQueryParamsChange(params: NzTableQueryParams): void {

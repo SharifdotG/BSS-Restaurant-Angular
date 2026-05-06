@@ -3,7 +3,6 @@ import {
   OnInit,
   effect,
   inject,
-  computed,
   ChangeDetectionStrategy,
 } from '@angular/core';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
@@ -15,6 +14,7 @@ import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzModalService } from 'ng-zorro-antd/modal';
+
 import { OrdersService } from '../orders.service';
 import { OrderData } from '../orders.model';
 import { EditOrder } from '../edit-order/edit-order';
@@ -70,15 +70,12 @@ export class OrderList implements OnInit {
   ]);
 
   constructor() {
-    effect(
-      () => {
-        if (this.ordersService.triggerRefresh()) {
-          this.ordersService.triggerRefresh.set(false);
-          this.loadOrders();
-        }
-      },
-      { allowSignalWrites: true },
-    );
+    effect(() => {
+      if (this.ordersService.triggerRefresh()) {
+        this.ordersService.triggerRefresh.set(false);
+        this.loadOrders();
+      }
+    });
   }
 
   ngOnInit(): void {

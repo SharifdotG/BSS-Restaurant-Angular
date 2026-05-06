@@ -8,6 +8,7 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { Subject, debounceTime } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+
 import { NewOrderService } from '../new-order.service';
 import { Table } from '../../tables/tables.interface';
 import { FoodItem } from '../../foods/foods.interface';
@@ -49,11 +50,9 @@ export class NewOrder {
   private mouseDownPosition = { x: 0, y: 0 };
 
   constructor() {
-    this.searchSubject
-      .pipe(debounceTime(300), takeUntilDestroyed())
-      .subscribe((searchValue) => {
-        this.performSearch(searchValue);
-      });
+    this.searchSubject.pipe(debounceTime(300), takeUntilDestroyed()).subscribe((searchValue) => {
+      this.performSearch(searchValue);
+    });
   }
 
   ngOnInit(): void {
@@ -106,9 +105,7 @@ export class NewOrder {
       const existingItem = items.find((item) => item.food.id === food.id);
       if (existingItem) {
         return items.map((item) =>
-          item.food.id === food.id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item,
+          item.food.id === food.id ? { ...item, quantity: item.quantity + 1 } : item,
         );
       }
       return [...items, newItem];
@@ -121,12 +118,7 @@ export class NewOrder {
   }
 
   performSearch(searchValue: string): void {
-    this.newOrderService.getListOfFoods(
-      '',
-      '1',
-      String(this.currentFoodSize),
-      searchValue,
-    );
+    this.newOrderService.getListOfFoods('', '1', String(this.currentFoodSize), searchValue);
   }
 
   // Drag functionality
@@ -135,9 +127,7 @@ export class NewOrder {
     this.hasMoved.set(false);
     this.mouseDownPosition = { x: event.clientX, y: event.clientY };
     const cartButton = event.target as HTMLElement;
-    const rect = cartButton
-      .closest('.cart-button-wrapper')
-      ?.getBoundingClientRect();
+    const rect = cartButton.closest('.cart-button-wrapper')?.getBoundingClientRect();
     if (rect) {
       this.dragOffset = {
         x: event.clientX - rect.left,

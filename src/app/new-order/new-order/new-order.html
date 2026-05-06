@@ -120,7 +120,9 @@
             </div>
             <div class="d-flex flex-column justify-content-center gap-3 p-4 pt-0">
               @for (food of newOrderService.listOfFood(); track food.id) {
-                <div class="food-card w-100 border-1 border-green-500 rounded-md shadow-md p-4 transition-all duration-200 hover:shadow-lg hover:border-green-600">
+                <div
+                  class="food-card w-100 border-1 border-green-500 rounded-md shadow-md p-4 transition-all duration-200 hover:shadow-lg hover:border-green-600"
+                >
                   <div class="d-flex gap-4 flex-row align-items-center h-100">
                     <div class="food-image-container">
                       <img

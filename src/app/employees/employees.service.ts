@@ -1,7 +1,8 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { CreateEmployee, Employee, ResponseListOfEmployees } from './employees.interface';
 import { NzMessageService } from 'ng-zorro-antd/message';
+
+import { CreateEmployee, Employee, ResponseListOfEmployees } from './employees.interface';
 import { API_BASE_URL } from '../app.config';
 
 function getSanitizedListOfEmployee(data: ResponseListOfEmployees | null): Employee[] {

@@ -76,15 +76,12 @@ export class AddFood {
 
   constructor() {
     // Effect to populate form when editing
-    effect(
-      () => {
-        const selectedFood = this.foodsService.selectedFood();
-        if (selectedFood && this.foodsService.isEditMode()) {
-          this.populateForm(selectedFood);
-        }
-      },
-      { allowSignalWrites: true },
-    );
+    effect(() => {
+      const selectedFood = this.foodsService.selectedFood();
+      if (selectedFood && this.foodsService.isEditMode()) {
+        this.populateForm(selectedFood);
+      }
+    });
 
     this.setupFormListeners();
     this.setupResponsiveListener();
@@ -269,8 +266,9 @@ export class AddFood {
     }
 
     if (event.type === 'error' && event.file.error) {
-      (event.file.error as any).statusText = 'Food Image';
-      (event.file.error as any).status = '200';
+      const error = event.file.error as { statusText: string; status: string };
+      error.statusText = 'Food Image';
+      error.status = '200';
     }
   }
 }

@@ -35,7 +35,9 @@
       <div class="d-flex flex-column justify-between h-100 overflow-y-clip">
         <div class="overflow-auto">
           @for (item of newOrderService.cartFood(); track item.food.id) {
-            <div class="cart-item border-b-2 border-green-700 border-opacity-30 transition-colors duration-150">
+            <div
+              class="cart-item border-b-2 border-green-700 border-opacity-30 transition-colors duration-150"
+            >
               <div class="d-flex w-100 align-items-center h-100 p-3">
                 <img
                   nz-image
@@ -84,7 +86,9 @@
             <div class="sub-total text-2xl" aria-live="polite">{{ subtotal() }} ৳</div>
           </div>
           <div class="w-100 p-4 pb-2">
-            <label for="phoneNumberInput" class="d-block mb-2 font-semibold text-gray-700">Phone Number (Optional)</label>
+            <label for="phoneNumberInput" class="d-block mb-2 font-semibold text-gray-700"
+              >Phone Number (Optional)</label
+            >
             <input
               id="phoneNumberInput"
               nz-input

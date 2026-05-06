@@ -4,18 +4,13 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzImageModule } from 'ng-zorro-antd/image';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 import { NzInputModule } from 'ng-zorro-antd/input';
+
 import { NewOrderService } from '../new-order.service';
 import { PostOrder, PostOrderItem } from '../../orders/orders.model';
 
 @Component({
   selector: 'app-cart',
-  imports: [
-    FormsModule,
-    NzIconModule,
-    NzImageModule,
-    NzInputNumberModule,
-    NzInputModule,
-  ],
+  imports: [FormsModule, NzIconModule, NzImageModule, NzInputNumberModule, NzInputModule],
   templateUrl: './cart.html',
   styleUrl: './cart.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -26,9 +21,7 @@ export class Cart {
   readonly fallbackImage = this.newOrderService.fallbackImage;
 
   readonly subtotal = computed(() =>
-    this.newOrderService
-      .cartFood()
-      .reduce((total, item) => total + item.amount * item.quantity, 0),
+    this.newOrderService.cartFood().reduce((total, item) => total + item.amount * item.quantity, 0),
   );
 
   phoneNumber = signal('');
@@ -45,29 +38,22 @@ export class Cart {
 
   updateQuantity(foodId: number, newQuantity: number): void {
     this.newOrderService.cartFood.update((items) =>
-      items.map((item) =>
-        item.food.id === foodId ? { ...item, quantity: newQuantity } : item,
-      ),
+      items.map((item) => (item.food.id === foodId ? { ...item, quantity: newQuantity } : item)),
     );
   }
 
   confirmOrder(): void {
-    const items: PostOrderItem[] = this.newOrderService.cartFood().map(
-      (item) => ({
-        foodId: item.food.id,
-        foodPackageId: null,
-        quantity: item.quantity,
-        unitPrice: item.amount,
-        totalPrice: item.quantity * item.amount,
-      }),
-    );
+    const items: PostOrderItem[] = this.newOrderService.cartFood().map((item) => ({
+      foodId: item.food.id,
+      foodPackageId: null,
+      quantity: item.quantity,
+      unitPrice: item.amount,
+      totalPrice: item.quantity * item.amount,
+    }));
 
     const selectedTable = this.newOrderService
       .listOfTable()
-      .find(
-        (table) =>
-          table.id.toString() === this.newOrderService.selectedTableId(),
-      );
+      .find((table) => table.id.toString() === this.newOrderService.selectedTableId());
     const tableNumber = selectedTable?.tableNumber ?? 'TABLE';
 
     const now = new Date();
