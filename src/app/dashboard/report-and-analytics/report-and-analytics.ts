@@ -8,12 +8,14 @@ import {
 } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { NzSpinModule } from 'ng-zorro-antd/spin';
+import { BreakpointObserver } from '@angular/cdk/layout';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NgxChartsModule, LegendPosition, Color, ScaleType } from '@swimlane/ngx-charts';
 
-import { DashboardService } from '../dashboard/dashboard.service';
+import { DashboardService } from '../../dashboard/dashboard.service';
 
 interface MonthOption {
   value: number;
@@ -22,16 +24,25 @@ interface MonthOption {
 
 @Component({
   selector: 'app-report-and-analytics',
-  imports: [DecimalPipe, FormsModule, NzSpinModule, NzIconModule, NzSelectModule, NgxChartsModule],
+  imports: [
+    DecimalPipe,
+    FormsModule,
+    NzSkeletonModule,
+    NzIconModule,
+    NzSelectModule,
+    NgxChartsModule,
+  ],
   templateUrl: './report-and-analytics.html',
   styleUrl: './report-and-analytics.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ReportAndAnalytics implements OnInit {
   protected readonly dashboardService = inject(DashboardService);
+  private readonly breakpoint = inject(BreakpointObserver);
 
   readonly legendPosition = LegendPosition.Below;
-  readonly barLegendPosition = LegendPosition.Right;
+  readonly barLegendPosition = signal(LegendPosition.Right);
+  readonly pieChartView = signal<[number, number]>([320, 320]);
   readonly barColorScheme: Color = {
     name: 'bar',
     selectable: true,
@@ -104,6 +115,17 @@ export class ReportAndAnalytics implements OnInit {
   ];
 
   readonly years: readonly number[] = this.buildYearRange();
+
+  constructor() {
+    this.breakpoint
+      .observe(['(max-width: 768px)'])
+      .pipe(takeUntilDestroyed())
+      .subscribe((state) => {
+        const isMobile = state.matches;
+        this.barLegendPosition.set(isMobile ? LegendPosition.Below : LegendPosition.Right);
+        this.pieChartView.set(isMobile ? [240, 240] : [320, 320]);
+      });
+  }
 
   ngOnInit(): void {
     this.dashboardService.getStats(this.selectedMonth(), this.selectedYear());

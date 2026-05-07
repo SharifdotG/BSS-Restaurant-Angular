@@ -35,6 +35,11 @@
   background: var(--bg-primary-700);
 }
 
+.submit-button:disabled {
+  background: var(--color-gray-400);
+  cursor: not-allowed;
+}
+
 .drop-down-button {
   width: 40px;
   height: 40px;
@@ -45,7 +50,7 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.3s ease-in-out;
+  transition: var(--transition-base);
 }
 
 .drop-down-button:hover {

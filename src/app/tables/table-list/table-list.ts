@@ -5,6 +5,7 @@ import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 import { TablesService } from '../tables.service';
@@ -20,6 +21,7 @@ import { API_BASE_URL } from '../../app.config';
     NzAvatarModule,
     NzIconModule,
     NzTooltipModule,
+    NzSkeletonModule,
     AddTable,
     AssignEmployee,
     EmployeeTooltip,

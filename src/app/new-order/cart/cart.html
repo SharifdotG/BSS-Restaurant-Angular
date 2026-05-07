@@ -1,36 +1,12 @@
-<div
-  style="width: 600px"
-  class="offcanvas offcanvas-end"
-  tabindex="-1"
-  id="cartOffCanvas"
-  aria-labelledby="cartOffCanvasLabel"
+<nz-drawer
+  [nzVisible]="newOrderService.showCart()"
+  nzPlacement="right"
+  [nzWidth]="600"
+  nzTitle="Order Cart"
+  (nzOnClose)="closeCart()"
+  [nzBodyStyle]="{ padding: '0' }"
 >
-  <div
-    class="offcanvas-header border-b-4 border-green-500 d-flex justify-content-between align-items-center"
-  >
-    <div class="text-3xl text-bold text-green-600" id="cartOffCanvasLabel">
-      <span
-        nz-icon
-        nzType="shopping-cart"
-        nzTheme="outline"
-        style="color: darkgreen; font-size: 32px"
-        aria-hidden="true"
-      ></span>
-      Order Cart
-    </div>
-    <button type="button" aria-label="Close cart">
-      <span
-        nz-icon
-        nzType="close"
-        nzTheme="outline"
-        data-bs-dismiss="offcanvas"
-        aria-label="Close"
-        style="color: darkgreen; font-size: 30px"
-      ></span>
-    </button>
-  </div>
-  <div></div>
-  <div class="offcanvas-body p-0">
+  <ng-container *nzDrawerContent>
     @if (newOrderService.cartFood().length) {
       <div class="d-flex flex-column justify-between h-100 overflow-y-clip">
         <div class="overflow-auto">
@@ -101,11 +77,15 @@
           </div>
           <div class="w-100 p-4 pt-2">
             <button
-              data-bs-dismiss="offcanvas"
               (click)="confirmOrder()"
+              [disabled]="!newOrderService.selectedTableId()"
               class="submit-button text-center text-2xl transition-colors duration-200"
             >
-              Confirm Order
+              @if (newOrderService.selectedTableId()) {
+                Confirm Order
+              } @else {
+                Select a table from New Order first
+              }
             </button>
           </div>
         </div>
@@ -115,5 +95,5 @@
         <div class="text-4xl text-gray-700">The Cart Is Empty!</div>
       </div>
     }
-  </div>
-</div>
+  </ng-container>
+</nz-drawer>

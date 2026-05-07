@@ -3,7 +3,7 @@ import { NzTooltipDirective } from 'ng-zorro-antd/tooltip';
 import { NzAvatarComponent } from 'ng-zorro-antd/avatar';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzIconDirective } from 'ng-zorro-antd/icon';
-import { NzContextMenuService, NzDropdownMenuComponent } from 'ng-zorro-antd/dropdown';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzMenuDirective, NzMenuItemComponent } from 'ng-zorro-antd/menu';
 
 import { TablesService } from '../tables.service';
@@ -16,7 +16,7 @@ import { API_BASE_URL } from '../../app.config';
     NzTooltipDirective,
     NzAvatarComponent,
     NzIconDirective,
-    NzDropdownMenuComponent,
+    NzDropDownModule,
     NzMenuDirective,
     NzMenuItemComponent,
   ],
@@ -28,7 +28,6 @@ import { API_BASE_URL } from '../../app.config';
 export class EmployeeTooltip {
   private readonly modal = inject(NzModalService);
   private readonly baseUrl = inject(API_BASE_URL);
-  private readonly nzContextMenuService = inject(NzContextMenuService);
   private readonly tablesService = inject(TablesService);
 
   employeeId = input.required<string>();
@@ -43,10 +42,6 @@ export class EmployeeTooltip {
     const employee = employees.find((e) => e.id === id);
     return employee ? `${this.baseUrl}/images/user/${employee.user.image}` : '';
   });
-
-  contextMenu($event: MouseEvent, menu: NzDropdownMenuComponent): void {
-    this.nzContextMenuService.create($event, menu);
-  }
 
   removeEmployeeFromTable(): void {
     this.tablesService.removeEmployeeFromTable(this.employeeTableId());

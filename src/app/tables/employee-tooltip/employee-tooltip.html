@@ -1,7 +1,7 @@
-<!-- Right Click Context Menu -->
+<!-- Click-to-open menu attached to the avatar -->
 <nz-dropdown-menu #menu="nzDropdownMenu">
   <ul nz-menu>
-    <li nz-menu-item>
+    <li nz-menu-item nzDisabled>
       <div class="row d-flex align-items-center justify-content-center pt-1 pb-1">
         <div class="col-12 d-flex justify-content-center align-items-center pb-2">
           <nz-avatar [nzSize]="72" nzIcon="user" [nzSrc]="employeeImageUrl()"></nz-avatar>
@@ -26,12 +26,15 @@
   </ul>
 </nz-dropdown-menu>
 
-<div class="context-area" (contextmenu)="contextMenu($event, menu)">
-  <nz-avatar
-    nz-tooltip
-    [nzTooltipTitle]="employeeName() + ' - (Right click for action)'"
-    [nzSize]="52"
-    nzIcon="user"
-    [nzSrc]="employeeImageUrl()"
-  ></nz-avatar>
-</div>
+<button
+  type="button"
+  class="employee-avatar-trigger"
+  nz-dropdown
+  nzTrigger="click"
+  [nzDropdownMenu]="menu"
+  nz-tooltip
+  [nzTooltipTitle]="employeeName()"
+  [attr.aria-label]="'Open menu for ' + employeeName()"
+>
+  <nz-avatar [nzSize]="52" nzIcon="user" [nzSrc]="employeeImageUrl()"></nz-avatar>
+</button>

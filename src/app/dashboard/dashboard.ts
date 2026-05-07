@@ -7,12 +7,14 @@ import {
   signal,
 } from '@angular/core';
 import { DatePipe, DecimalPipe } from '@angular/common';
-import { NzSpinModule } from 'ng-zorro-antd/spin';
+import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
+import { NzTabsModule } from 'ng-zorro-antd/tabs';
 
 import { DashboardService } from './dashboard.service';
+import { ReportAndAnalytics } from '../dashboard/report-and-analytics/report-and-analytics';
 
 const STATUS_CONFIG: Record<string, { bg: string; label: string }> = {
   Pending: { bg: '#f59e0b', label: 'Pending' },
@@ -27,7 +29,16 @@ const DEFAULT_STATUS_CONFIG = { bg: '#6b7280' };
 
 @Component({
   selector: 'app-dashboard',
-  imports: [DatePipe, DecimalPipe, NzSpinModule, NzIconModule, NzTableModule, NzEmptyModule],
+  imports: [
+    DatePipe,
+    DecimalPipe,
+    NzSkeletonModule,
+    NzIconModule,
+    NzTableModule,
+    NzEmptyModule,
+    NzTabsModule,
+    ReportAndAnalytics,
+  ],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

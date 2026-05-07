@@ -1,34 +1,8 @@
-<ng-template #indicatorTemplate>
-  <div
-    class="loading h-100 w-100 d-flex justify-content-center align-items-center"
-    style="background: rgba(255, 255, 255, 0.6)"
-  >
-    <div
-      style="font-size: 50px; color: darkseagreen"
-      nz-icon
-      nzType="loading"
-      nzTheme="outline"
-    ></div>
-  </div>
-</ng-template>
-
 <div class="main-wrapper pb-0 relative">
-  <div
-    class="order-container h-100 position-relative"
-    [class.overflow-scroll]="!ordersService.isSendingRequest()"
-    [class.overflow-clip]="ordersService.isSendingRequest()"
-  >
-    <nz-spin
-      class="position-absolute w-100 h-100"
-      nzSimple="false"
-      [nzSpinning]="ordersService.isSendingRequest()"
-      [nzIndicator]="indicatorTemplate"
-      [class.d-none]="!ordersService.isSendingRequest()"
-    >
-    </nz-spin>
+  <div class="order-container h-100 position-relative overflow-scroll">
     <div class="container-fluid order-item-container p-4 pt-0">
       <div class="d-flex justify-content-end align-items-center w-100 h-20">
-        <button class="drop-down-filter" nz-dropdown [nzDropdownMenu]="menu">
+        <button class="drop-down-filter" nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu">
           Filter Orders
           <span nz-icon nzType="down"></span>
         </button>
@@ -44,21 +18,34 @@
           <li nz-menu-item (click)="onChangeFilter('Paid')">Paid</li>
         </ul>
       </nz-dropdown-menu>
-      @if (ordersService.listOfOrder().length) {
+      @if (ordersService.isSendingRequest()) {
+        <div class="row g-3 g-md-3 g-xl-4 gy-0" role="status" aria-label="Loading orders">
+          @for (_ of [1, 2, 3, 4, 5, 6]; track $index) {
+            <div class="col-12 col-xl-6 col-xxl-4">
+              <div class="order-card bg-white shadow rounded-md p-4">
+                <nz-skeleton
+                  [nzActive]="true"
+                  [nzTitle]="{ width: '40%' }"
+                  [nzParagraph]="{ rows: 4 }"
+                ></nz-skeleton>
+              </div>
+            </div>
+          }
+        </div>
+      } @else if (ordersService.listOfOrder().length) {
         <div>
           <!--Main Content Start-->
           <div class="row g-3 g-md-3 g-xl-4 gy-0">
             @for (orderData of ordersService.listOfOrder(); track orderData.id) {
               <div class="col-12 col-xl-6 col-xxl-4">
-                <div class="order-card bg-white shadow rounded-md">
-                  <div class="row order-card-header d-flex p-4 pb-2">
-                    <div class="col-8 p-0">
-                      <div class="text-xl truncate">{{ orderData.orderNumber }}</div>
-                      <div class="text-lg text-gray-700 text-opacity-70">
-                        {{ formatOrderTime(orderData.orderTime) }}
-                      </div>
+                <div class="order-card">
+                  <!-- Card Header -->
+                  <div class="order-card-header">
+                    <div class="order-card-meta">
+                      <div class="order-number">{{ orderData.orderNumber }}</div>
+                      <div class="order-time">{{ formatOrderTime(orderData.orderTime) }}</div>
                     </div>
-                    <div class="col-4 d-flex gap-2 justify-content-end">
+                    <div class="order-card-actions">
                       <nz-dropdown-menu #clickMenu="nzDropdownMenu">
                         <ul nz-menu nzSelectable>
                           <li nz-menu-item (click)="changeOrderStatus(orderData, 'Pending')">
@@ -85,8 +72,7 @@
 
                       <button
                         class="drop-down-button status-button drop-shadow-md"
-                        nzTrigger="hover"
-                        [nzClickHide]="false"
+                        nzTrigger="click"
                         nz-dropdown
                         [nzDropdownMenu]="clickMenu"
                         nz-tooltip
@@ -121,87 +107,59 @@
                       </button>
                     </div>
                   </div>
-                  <hr class="h-[2px] bg-gray-400 border-0 dark:bg-gray-700" />
-                  <div class="order-card-body overflow-auto p-4 pt-0">
+
+                  <!-- Status + Table chip row -->
+                  <div class="order-card-chips">
+                    <span class="status-chip" [attr.data-status]="orderData.orderStatus">
+                      @switch (orderData.orderStatus) {
+                        @case ('PreparedToServe') {
+                          Prepared To Serve
+                        }
+                        @default {
+                          {{ orderData.orderStatus }}
+                        }
+                      }
+                    </span>
+                    <span class="table-chip">
+                      <span nz-icon nzType="group" nzTheme="outline" aria-hidden="true"></span>
+                      {{ orderData.table.tableNumber }}
+                    </span>
+                  </div>
+
+                  <!-- Card Body: food items -->
+                  <div class="order-card-body">
                     @for (foodItem of orderData.orderItems; track foodItem.id) {
-                      <div class="d-flex gap-3 mt-4 w-100">
+                      <div class="order-food-item">
                         <div class="food-image-container">
                           <img
                             nz-image
                             nzDisablePreview
-                            class="food-image rounded-lg drop-shadow-lg"
+                            class="food-image"
                             [nzSrc]="getFoodImage(foodItem.food.image)"
                             [alt]="foodItem.food.name"
                             [nzFallback]="fallbackImage"
                           />
                         </div>
-                        <div class="d-flex flex-column w-100">
-                          <div class="text-lg text-slate-800 text-opacity-90">
-                            {{ foodItem.food.name }}
-                          </div>
-                          <div class="d-flex justify-content-between w-100">
-                            <div class="text-md text-slate-800 text-opacity-70">
-                              {{ foodItem.totalPrice }} ৳
-                            </div>
-                            <div class="text-md text-slate-800 text-opacity-70">
-                              QTY. {{ foodItem.quantity }}
-                            </div>
+                        <div class="food-item-meta">
+                          <div class="food-item-name">{{ foodItem.food.name }}</div>
+                          <div class="food-item-row">
+                            <span class="food-item-price">{{ foodItem.totalPrice }} ৳</span>
+                            <span class="food-item-qty">× {{ foodItem.quantity }}</span>
                           </div>
                         </div>
                       </div>
                     }
                   </div>
-                  <div class="d-flex justify-content-between p-2 ps-3 pe-3">
-                    <div class="d-flex flex-column">
-                      <div class="text-md text-slate-800 text-opacity-70">
-                        Total Quantity:
-                        <span class="font-bold text-md md:text-lg">{{
-                          getTotalQuantity(orderData)
-                        }}</span>
-                      </div>
-                      <div class="text-md md:text-xl text-slate-800 text-opacity-70">
-                        Total Amount (৳):
-                        <span class="font-bold text-md md:text-xl underline decoration-sky-500/30"
-                          >{{ orderData.amount }}৳</span
-                        >
-                      </div>
+
+                  <!-- Card Footer: totals -->
+                  <div class="order-card-footer">
+                    <div class="footer-stat">
+                      <div class="footer-label">Items</div>
+                      <div class="footer-value">{{ getTotalQuantity(orderData) }}</div>
                     </div>
-                    <div class="d-flex flex-column align-items-end">
-                      <div class="text-sm md:text-md text-slate-800 text-opacity-70">
-                        @switch (orderData.orderStatus) {
-                          @case ('Pending') {
-                            <div class="pe-1 text-amber-500">
-                              {{ orderData.orderStatus }}
-                            </div>
-                          }
-                          @case ('Confirmed') {
-                            <div class="pe-1 text-amber-600">
-                              {{ orderData.orderStatus }}
-                            </div>
-                          }
-                          @case ('Preparing') {
-                            <div class="pe-1 text-amber-500">
-                              {{ orderData.orderStatus }}
-                            </div>
-                          }
-                          @case ('PreparedToServe') {
-                            <div class="pe-1 text-teal-800">P.T.S</div>
-                          }
-                          @case ('Served') {
-                            <div class="pe-1 text-green-700">
-                              {{ orderData.orderStatus }}
-                            </div>
-                          }
-                          @case ('Paid') {
-                            <div class="pe-1 text-green-700">
-                              {{ orderData.orderStatus }}
-                            </div>
-                          }
-                        }
-                      </div>
-                      <div class="text-lg md:text-2xl text-slate-800 text-opacity-70">
-                        {{ orderData.table.tableNumber }}
-                      </div>
+                    <div class="footer-stat footer-stat-total">
+                      <div class="footer-label">Total</div>
+                      <div class="footer-value footer-value-total">{{ orderData.amount }} ৳</div>
                     </div>
                   </div>
                 </div>

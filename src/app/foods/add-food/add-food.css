@@ -27,7 +27,7 @@ nz-form-item {
 ::ng-deep .ant-form-item-explain,
 ::ng-deep .ant-form-item-extra {
   min-height: 24px;
-  transition: all 0.3s ease;
+  transition: var(--transition-base);
 }
 
 ::ng-deep .ant-form-item-explain-error {
@@ -49,7 +49,7 @@ nz-form-item {
 ::ng-deep .ant-picker,
 ::ng-deep .ant-select-selector {
   border-radius: 8px !important;
-  transition: all 0.3s ease-in-out;
+  transition: var(--transition-base);
 }
 
 ::ng-deep .ant-input:hover,

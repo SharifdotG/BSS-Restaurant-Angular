@@ -15,6 +15,7 @@ import { en_US, provideNzI18n } from 'ng-zorro-antd/i18n';
 import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
 import { provideNzIcons } from 'ng-zorro-antd/icon';
+import { provideNzConfig } from 'ng-zorro-antd/core/config';
 
 // Icons
 import { IconDefinition } from '@ant-design/icons-angular';
@@ -135,6 +136,9 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withInterceptors([authInterceptor])),
     { provide: API_BASE_URL, useValue: apiBaseUrl },
     provideNzI18n(en_US),
+    provideNzConfig({
+      modal: { nzMaskClosable: true },
+    }),
     importProvidersFrom(ReactiveFormsModule),
     provideAnimationsAsync(),
   ],

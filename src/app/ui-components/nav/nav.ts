@@ -16,9 +16,12 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzBadgeModule } from 'ng-zorro-antd/badge';
 
 import { AuthService } from '../../auth/auth.service';
 import { Profile } from '../profile/profile';
+import { Cart } from '../../new-order/cart/cart';
+import { NewOrderService } from '../../new-order/new-order.service';
 import { API_BASE_URL } from '../../app.config';
 
 interface SideBarItem {
@@ -36,12 +39,6 @@ const SIDE_BAR_ITEMS: readonly SideBarItem[] = [
   { label: 'New Order', icon: 'plus-square', route: 'new-order', headerTitle: 'Create New Order' },
   { label: 'Orders', icon: 'ordered-list', route: 'orders', headerTitle: 'Order Management' },
   { label: 'Expenses', icon: 'dollar', route: 'expenses', headerTitle: 'Expense Management' },
-  {
-    label: 'Report & Analytics',
-    icon: 'area-chart',
-    route: 'report-and-analytics',
-    headerTitle: 'Report & Analytics',
-  },
 ];
 
 @Component({
@@ -54,7 +51,9 @@ const SIDE_BAR_ITEMS: readonly SideBarItem[] = [
     NzIconModule,
     NzAvatarModule,
     NzDropDownModule,
+    NzBadgeModule,
     Profile,
+    Cart,
   ],
   templateUrl: './nav.html',
   styleUrl: './nav.css',
@@ -66,7 +65,16 @@ export class Nav implements OnInit {
   private readonly activatedRoute = inject(ActivatedRoute);
   private readonly responsive = inject(BreakpointObserver);
   readonly authService = inject(AuthService);
+  readonly newOrderService = inject(NewOrderService);
   readonly sideBarItems = SIDE_BAR_ITEMS;
+
+  readonly cartItemCount = computed(() =>
+    this.newOrderService.cartFood().reduce((sum, item) => sum + item.quantity, 0),
+  );
+
+  openCart(): void {
+    this.newOrderService.showCart.set(true);
+  }
 
   isCollapsed = signal(true);
   currentRoute = signal('home');

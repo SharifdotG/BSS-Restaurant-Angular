@@ -1,11 +1,5 @@
-import {
-  Component,
-  OnInit,
-  effect,
-  inject,
-  ChangeDetectionStrategy,
-} from '@angular/core';
-import { NzSpinModule } from 'ng-zorro-antd/spin';
+import { Component, OnInit, effect, inject, ChangeDetectionStrategy } from '@angular/core';
+import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzImageModule } from 'ng-zorro-antd/image';
@@ -23,7 +17,7 @@ import { EditOrder } from '../edit-order/edit-order';
   selector: 'app-order-list',
   providers: [NzModalService],
   imports: [
-    NzSpinModule,
+    NzSkeletonModule,
     NzIconModule,
     NzDropDownModule,
     NzImageModule,
@@ -41,7 +35,7 @@ export class OrderList implements OnInit {
   readonly ordersService = inject(OrdersService);
   private readonly modal = inject(NzModalService);
 
-  pageSize = 10;
+  pageSize = 12;
   pageIndex = 1;
   searchQuery = '';
   statusFilter?: number;

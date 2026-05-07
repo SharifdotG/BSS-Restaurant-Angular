@@ -1,357 +1,315 @@
-<ng-template #indicatorTemplate>
-  <div
-    class="loading h-100 w-100 d-flex justify-content-center align-items-center"
-    style="background: rgba(255, 255, 255, 0.6)"
-  >
-    <div
-      style="font-size: 50px; color: darkseagreen"
-      nz-icon
-      nzType="loading"
-      nzTheme="outline"
-    ></div>
-  </div>
-</ng-template>
-
 <div class="main-wrapper p-0 p-md-4 pb-md-0">
   <div class="bg-white drop-shadow-lg md:rounded-lg rounded-none new-order-container">
     <div class="container-fluid h-100">
-      <nz-spin
-        class="position-absolute h-100 w-100"
-        nzSimple="false"
-        [nzSpinning]="newOrderService.isSendingRequest()"
-        [nzIndicator]="indicatorTemplate"
-        [class.d-none]="!newOrderService.isSendingRequest()"
-      >
-      </nz-spin>
-      <div class="d-none d-xxl-flex row h-100">
-        <div
-          class="col-12 col-xxl-3 h-100 overflow-auto border-0 border-green-100 search-results"
-          infiniteScroll
-          [infiniteScrollDistance]="2"
-          [infiniteScrollThrottle]="50"
-          (scrolled)="onTableScroll()"
-          [scrollWindow]="false"
-        >
-          <div class="sticky-top d-flex align-items-center bg-white mt-3 h-12">
-            <div class="text-xl text-center w-100">
-              SELECT A TABLE ({{ newOrderService.totalTable() }})
-            </div>
-          </div>
-          <div
-            class="d-flex flex-row flex-xxl-column justify-content-center gap-3 p-4 pt-0 overflow-auto"
-          >
-            @for (table of newOrderService.listOfTable(); track table.id) {
-              <div
-                class="table-card d-flex flex-column justify-content-center align-items-center border-1 border-green-500 rounded-md shadow-md transition-all duration-200 hover:shadow-lg hover:border-green-600 cursor-pointer"
-                (click)="onTableSelect(table)"
-                [class.active]="table.id.toString() === newOrderService.selectedTableId()"
-                role="button"
-                [attr.aria-label]="'Select table ' + table.tableNumber"
-                tabindex="0"
-                (keydown.enter)="onTableSelect(table)"
-                (keydown.space)="onTableSelect(table); $event.preventDefault()"
-              >
-                <div class="table-image-container d-flex justify-content-center">
-                  <img
-                    nz-image
-                    class="table-image rounded-lg drop-shadow-lg"
-                    [nzSrc]="getTableImage(table.image)"
-                    [alt]="'Table ' + table.tableNumber"
-                    [nzFallback]="fallbackImage"
-                  />
-                </div>
-                <div class="text-xl text-center mt-2">
-                  {{ table.tableNumber
-                  }}<span class="text-lg text-center"> ({{ table.numberOfSeats }} Seats)</span>
-                </div>
+      @if (
+        newOrderService.isSendingRequest() &&
+        newOrderService.listOfFood().length === 0 &&
+        newOrderService.listOfTable().length === 0
+      ) {
+        <div class="row h-100 p-3" role="status" aria-label="Loading new order">
+          <div class="col-12 col-xxl-3 d-none d-xxl-block">
+            @for (_ of [1, 2, 3, 4]; track $index) {
+              <div class="border-1 rounded-md shadow-sm p-3 mb-3">
+                <nz-skeleton
+                  [nzActive]="true"
+                  [nzAvatar]="{ size: 'large', shape: 'square' }"
+                  [nzTitle]="{ width: '60%' }"
+                  [nzParagraph]="{ rows: 1 }"
+                ></nz-skeleton>
               </div>
             }
           </div>
-        </div>
-        <div
-          class="col-12 col-xxl h-100 overflow-auto border-0 border-green-100 search-results position-relative p-0"
-          infiniteScroll
-          [infiniteScrollDistance]="2"
-          [infiniteScrollThrottle]="50"
-          (scrolled)="onFoodScroll()"
-          [scrollWindow]="false"
-        >
-          @if (!newOrderService.selectedTableId()) {
-            <div
-              class="h-100 warning-table-banner position-relative rounded-lg d-flex flex-col justify-content-center align-items-center z-1"
-            >
-              <div class="drop-shadow-md text-gray-700 animate-pulse" style="font-size: 48px">
-                <div class="img-fluid w-52">
-                  <img src="select_table.svg" alt="Select a table illustration" />
-                </div>
-              </div>
-              <div class="text-2xl mt-2 text-gray-700">Select A Table First!</div>
-            </div>
-          } @else {
-            <div
-              class="sticky-top d-flex align-items-center justify-content-between bg-white mt-0 h-16"
-            >
-              <div class="text-xl text-start ps-4">
-                ADD FOOD TO CART ({{ newOrderService.totalFood() }})
-              </div>
-              <div class="pe-4">
-                <nz-input-group nzSearch nzSize="large" [nzAddOnAfter]="suffixIconButton">
-                  <input
-                    placeholder="Search Food"
-                    nz-input
-                    [ngModel]="searchFoodInput()"
-                    (ngModelChange)="onSearchFoodInputChange($event)"
-                    aria-label="Search food items"
-                  />
-                </nz-input-group>
-                <ng-template #suffixIconButton>
-                  <button
-                    nz-button
-                    nzType="primary"
-                    nzSize="large"
-                    nzSearch
-                    aria-label="Search"
-                    title="Search"
-                  >
-                    <span nz-icon nzType="search" nzTheme="outline"></span>
-                  </button>
-                </ng-template>
-              </div>
-            </div>
-            <div class="d-flex flex-column justify-content-center gap-3 p-4 pt-0">
-              @for (food of newOrderService.listOfFood(); track food.id) {
-                <div
-                  class="food-card w-100 border-1 border-green-500 rounded-md shadow-md p-4 transition-all duration-200 hover:shadow-lg hover:border-green-600"
-                >
-                  <div class="d-flex gap-4 flex-row align-items-center h-100">
-                    <div class="food-image-container">
-                      <img
-                        nz-image
-                        class="food-image rounded-lg drop-shadow-lg"
-                        [nzSrc]="getFoodImage(food.image)"
-                        [alt]="food.name"
-                        [nzFallback]="fallbackImage"
-                      />
-                    </div>
-                    <div class="d-flex h-100 flex-col justify-content-between pt-2 pb-3 w-100">
-                      <div>
-                        <div class="text-2xl text-start font-semibold">{{ food.name }}</div>
-                        <div class="text-lg text-start font-medium">{{ food.description }}</div>
-                      </div>
-                      <div class="d-flex flex-row w-100 justify-between">
-                        <div>
-                          @if (food.discountType === 'None') {
-                            <div class="text-2xl">Price - {{ food.price }}৳</div>
-                          } @else {
-                            <div class="text-xl line-through text-rose-800">
-                              Price - {{ food.price }}৳
-                            </div>
-                            <div class="text-2xl text-green-800">
-                              Price - {{ food.discountPrice }}৳!
-                            </div>
-                          }
-                        </div>
-                        <div>
-                          <button
-                            class="add-to-cart-button text-center transition-colors duration-200"
-                            (click)="addToCart(food, newOrderService.selectedTableId())"
-                            aria-label="Add {{ food.name }} to cart"
-                          >
-                            Add To Cart
-                          </button>
-                        </div>
-                      </div>
-                    </div>
+          <div class="col-12 col-xxl">
+            <div class="row g-3">
+              @for (_ of [1, 2, 3, 4, 5, 6]; track $index) {
+                <div class="col-12 col-md-6 col-xl-4">
+                  <div class="border-1 rounded-md shadow-sm p-3">
+                    <nz-skeleton
+                      [nzActive]="true"
+                      [nzAvatar]="{ size: 'large', shape: 'square' }"
+                      [nzTitle]="{ width: '60%' }"
+                      [nzParagraph]="{ rows: 2 }"
+                    ></nz-skeleton>
                   </div>
                 </div>
               }
             </div>
-          }
-        </div>
-      </div>
-      <!--      MOBILE-->
-      <div class="d-flex d-xxl-none row h-100 gap-0">
-        <div
-          class="col-12 top-section border-0 border-green-100 search-results"
-          infiniteScroll
-          [infiniteScrollDistance]="2"
-          [infiniteScrollThrottle]="50"
-          (scrolled)="onTableScroll()"
-          [scrollWindow]="false"
-        >
-          <div class="sticky-top d-flex align-items-center bg-white h-12">
-            <div class="text-lg text-center w-100">
-              SELECT A TABLE ({{ newOrderService.totalTable() }})
-            </div>
-          </div>
-          <div class="d-flex flex-row gap-3 p-1 pb-3 pt-0 overflow-auto">
-            @for (table of newOrderService.listOfTable(); track table.id) {
-              <div
-                class="table-card d-flex flex-column justify-content-center align-items-center border-1 border-green-500 rounded-md shadow-md transition-all duration-200 hover:shadow-lg hover:border-green-600 cursor-pointer"
-                (click)="onTableSelect(table)"
-                [class.active]="table.id.toString() === newOrderService.selectedTableId()"
-                role="button"
-                [attr.aria-label]="'Select table ' + table.tableNumber"
-                tabindex="0"
-                (keydown.enter)="onTableSelect(table)"
-                (keydown.space)="onTableSelect(table); $event.preventDefault()"
-              >
-                <div class="table-image-container d-flex justify-content-center">
-                  <img
-                    nzDisablePreview
-                    nz-image
-                    class="table-image rounded-lg drop-shadow-lg"
-                    [nzSrc]="getTableImage(table.image)"
-                    [alt]="'Table ' + table.tableNumber"
-                    [nzFallback]="fallbackImage"
-                  />
-                </div>
-                <div class="text-md text-center mt-2">{{ table.tableNumber }}</div>
-              </div>
-            }
           </div>
         </div>
-        <div
-          class="col-12 h-100 bottom-section overflow-auto border-0 border-green-100 search-results p-0"
-          infiniteScroll
-          [infiniteScrollDistance]="2"
-          [infiniteScrollThrottle]="50"
-          (scrolled)="onFoodScroll()"
-          [scrollWindow]="false"
-        >
-          @if (!newOrderService.selectedTableId()) {
-            <div
-              class="h-100 warning-table-banner position-relative rounded-lg d-flex flex-col justify-content-center align-items-center z-1"
-            >
-              <div class="drop-shadow-md text-gray-700 animate-pulse" style="font-size: 48px">
-                <div class="img-fluid w-52">
-                  <img src="select_table.svg" alt="Select a table illustration" />
-                </div>
-              </div>
-              <div class="mt-3 text-2xl text-gray-700">Select A Table First!</div>
-            </div>
-          } @else {
-            <div
-              class="sticky-top d-flex align-items-center justify-content-between bg-white h-14 md:h-16"
-            >
-              <div class="text-md md:text-lg text-start ps-4 d-none d-md-block">
-                ADD FOOD TO CART ({{ newOrderService.totalFood() }})
-              </div>
-              <div class="p-3 pe-md-4 w-full md:w-auto mb-2">
-                <nz-input-group nzSearch nzSize="large" [nzAddOnAfter]="suffixIconButtonMobile">
-                  <input
-                    placeholder="Search Food"
-                    nz-input
-                    [ngModel]="searchFoodInput()"
-                    (ngModelChange)="onSearchFoodInputChange($event)"
-                    aria-label="Search food items"
-                  />
-                </nz-input-group>
-                <ng-template #suffixIconButtonMobile>
-                  <button
-                    nz-button
-                    nzType="primary"
-                    nzSize="large"
-                    nzSearch
-                    aria-label="Search"
-                    title="Search"
-                  >
-                    <span nz-icon nzType="search" nzTheme="outline"></span>
-                  </button>
-                </ng-template>
+      } @else {
+        <!-- DESKTOP (xxl+) -->
+        <div class="d-none d-xxl-flex row h-100 g-0">
+          <!-- Tables column -->
+          <aside
+            class="col-xxl-3 h-100 overflow-auto search-results tables-column"
+            infiniteScroll
+            [infiniteScrollDistance]="2"
+            [infiniteScrollThrottle]="50"
+            (scrolled)="onTableScroll()"
+            [scrollWindow]="false"
+          >
+            <div class="sticky-top section-header">
+              <div class="section-title-text">
+                Select a Table
+                <span class="section-count">{{ newOrderService.totalTable() }}</span>
               </div>
             </div>
-            <div class="w-100 h-100 d-flex flex-column gap-3 p-3 pt-0 p-md-4">
-              @for (food of newOrderService.listOfFood(); track food.id) {
+            <div class="d-flex flex-column gap-2 p-2 pt-1">
+              @for (table of newOrderService.listOfTable(); track table.id) {
                 <div
-                  class="w-100 food-card d-flex gap-3 flex-row align-items-center border-1 border-green-500 rounded-md shadow-md p-2 transition-all duration-200 hover:shadow-lg hover:border-green-600"
+                  class="table-card"
+                  (click)="onTableSelect(table)"
+                  [class.active]="table.id.toString() === newOrderService.selectedTableId()"
+                  role="button"
+                  [attr.aria-label]="'Select table ' + table.tableNumber"
+                  tabindex="0"
+                  (keydown.enter)="onTableSelect(table)"
+                  (keydown.space)="onTableSelect(table); $event.preventDefault()"
                 >
-                  <div class="food-image-container">
+                  <div class="table-image-container">
                     <img
-                      nzDisablePreview
                       nz-image
-                      class="food-image rounded-lg drop-shadow-lg"
-                      [nzSrc]="getFoodImage(food.image)"
-                      [alt]="food.name"
+                      nzDisablePreview
+                      class="table-image"
+                      [nzSrc]="getTableImage(table.image)"
+                      [alt]="'Table ' + table.tableNumber"
                       [nzFallback]="fallbackImage"
                     />
                   </div>
-                  <div class="d-flex flex-col h-100 w-100 justify-content-between overflow-x-auto">
-                    <div class="max-w-full">
-                      <div class="text-lg text-start font-semibold">{{ food.name }}</div>
-                      <div class="text-md text-start font-medium truncate">
-                        {{ food.description }}
-                      </div>
-                    </div>
-                    <div class="d-flex flex-row w-100 justify-between">
-                      <div class="d-flex align-items-end">
-                        @if (food.discountType === 'None') {
-                          <div class="text-lg">
-                            <span class="d-none d-sm-inline">Price -</span> {{ food.price }}৳
-                          </div>
-                        } @else {
-                          <div>
-                            <div class="text-md line-through text-rose-800">
-                              <span class="d-none d-sm-inline">Price -</span> {{ food.price }}৳
-                            </div>
-                            <div class="text-lg text-green-800">
-                              <span class="d-none d-sm-inline">Price -</span>
-                              {{ food.discountPrice }}৳!
-                            </div>
-                          </div>
-                        }
-                      </div>
-                      <button
-                        class="add-to-cart-button text-center transition-colors duration-200"
-                        (click)="addToCart(food, newOrderService.selectedTableId())"
-                        aria-label="Add {{ food.name }} to cart"
-                      >
-                        Add To Cart
-                      </button>
-                    </div>
+                  <div class="table-card-meta">
+                    <div class="table-number">{{ table.tableNumber }}</div>
+                    <div class="table-seats">{{ table.numberOfSeats }} Seats</div>
                   </div>
                 </div>
               }
-              <div
-                class="w-100 food-card p-10 d-flex gap-3 flex-row align-items-center border-0 border-green-500 rounded-md shadow-md"
-              ></div>
             </div>
-          }
+          </aside>
+
+          <!-- Foods column -->
+          <section
+            class="col-xxl h-100 overflow-auto search-results position-relative foods-column"
+            infiniteScroll
+            [infiniteScrollDistance]="2"
+            [infiniteScrollThrottle]="50"
+            (scrolled)="onFoodScroll()"
+            [scrollWindow]="false"
+          >
+            @if (!newOrderService.selectedTableId()) {
+              <div class="warning-table-banner">
+                <div class="warning-banner-image">
+                  <img src="select_table.svg" alt="Select a table illustration" />
+                </div>
+                <div class="warning-banner-text">Select a table to start ordering</div>
+                <div class="warning-banner-subtext">Pick any table from the list on the left.</div>
+              </div>
+            } @else {
+              <div class="sticky-top foods-toolbar">
+                <div class="section-title-text">
+                  Add Food to Cart
+                  <span class="section-count">{{ newOrderService.totalFood() }}</span>
+                </div>
+                <div class="foods-search">
+                  <nz-input-group [nzPrefix]="searchPrefix" nzSize="large">
+                    <input
+                      placeholder="Search Food"
+                      nz-input
+                      [ngModel]="searchFoodInput()"
+                      (ngModelChange)="onSearchFoodInputChange($event)"
+                      aria-label="Search food items"
+                    />
+                  </nz-input-group>
+                  <ng-template #searchPrefix>
+                    <span nz-icon nzType="search" nzTheme="outline" class="search-icon"></span>
+                  </ng-template>
+                </div>
+              </div>
+              <div class="row g-3 p-3 pt-2">
+                @for (food of newOrderService.listOfFood(); track food.id) {
+                  <div class="col-12 col-xl-6 col-xxl-4">
+                    <article class="food-card-vertical">
+                      <div class="food-card-image-wrap">
+                        <img
+                          nz-image
+                          class="food-card-image"
+                          [nzSrc]="getFoodImage(food.image)"
+                          [alt]="food.name"
+                          [nzFallback]="fallbackImage"
+                        />
+                        @if (food.discountType !== 'None') {
+                          <span class="food-discount-badge">
+                            @if (food.discountType === 'Percentage') {
+                              -{{ food.discount }}%
+                            } @else {
+                              -{{ food.discount }}৳
+                            }
+                          </span>
+                        }
+                      </div>
+                      <div class="food-card-body">
+                        <h4 class="food-card-title">{{ food.name }}</h4>
+                        <p class="food-card-description">{{ food.description }}</p>
+                        <div class="food-card-footer">
+                          <div class="food-card-price">
+                            @if (food.discountType === 'None') {
+                              <span class="price-current">{{ food.price }}৳</span>
+                            } @else {
+                              <span class="price-current">{{ food.discountPrice }}৳</span>
+                              <span class="price-old">{{ food.price }}৳</span>
+                            }
+                          </div>
+                          <button
+                            class="add-to-cart-button"
+                            (click)="addToCart(food, newOrderService.selectedTableId())"
+                            aria-label="Add {{ food.name }} to cart"
+                          >
+                            <span nz-icon nzType="plus" nzTheme="outline"></span>
+                            <span>Add</span>
+                          </button>
+                        </div>
+                      </div>
+                    </article>
+                  </div>
+                }
+              </div>
+            }
+          </section>
         </div>
-      </div>
+
+        <!-- MOBILE / TABLET (< xxl) -->
+        <div class="d-flex d-xxl-none flex-column h-100">
+          <!-- Tables strip -->
+          <div
+            class="top-section search-results"
+            infiniteScroll
+            [infiniteScrollDistance]="2"
+            [infiniteScrollThrottle]="50"
+            (scrolled)="onTableScroll()"
+            [scrollWindow]="false"
+          >
+            <div class="section-header">
+              <div class="section-title-text">
+                Select a Table
+                <span class="section-count">{{ newOrderService.totalTable() }}</span>
+              </div>
+            </div>
+            <div class="d-flex flex-row gap-3 px-3 pb-2 overflow-auto">
+              @for (table of newOrderService.listOfTable(); track table.id) {
+                <div
+                  class="table-card-mobile"
+                  (click)="onTableSelect(table)"
+                  [class.active]="table.id.toString() === newOrderService.selectedTableId()"
+                  role="button"
+                  [attr.aria-label]="'Select table ' + table.tableNumber"
+                  tabindex="0"
+                  (keydown.enter)="onTableSelect(table)"
+                  (keydown.space)="onTableSelect(table); $event.preventDefault()"
+                >
+                  <div class="table-image-container-mobile">
+                    <img
+                      nzDisablePreview
+                      nz-image
+                      class="table-image"
+                      [nzSrc]="getTableImage(table.image)"
+                      [alt]="'Table ' + table.tableNumber"
+                      [nzFallback]="fallbackImage"
+                    />
+                  </div>
+                  <div class="table-number-mobile">{{ table.tableNumber }}</div>
+                </div>
+              }
+            </div>
+          </div>
+
+          <!-- Foods grid -->
+          <div
+            class="bottom-section overflow-auto search-results"
+            infiniteScroll
+            [infiniteScrollDistance]="2"
+            [infiniteScrollThrottle]="50"
+            (scrolled)="onFoodScroll()"
+            [scrollWindow]="false"
+          >
+            @if (!newOrderService.selectedTableId()) {
+              <div class="warning-table-banner">
+                <div class="warning-banner-image">
+                  <img src="select_table.svg" alt="Select a table illustration" />
+                </div>
+                <div class="warning-banner-text">Select a table to start ordering</div>
+              </div>
+            } @else {
+              <div class="sticky-top foods-toolbar">
+                <div class="section-title-text d-none d-md-block">
+                  Add Food to Cart
+                  <span class="section-count">{{ newOrderService.totalFood() }}</span>
+                </div>
+                <div class="foods-search w-100 w-md-auto">
+                  <nz-input-group [nzPrefix]="searchPrefixMobile" nzSize="large">
+                    <input
+                      placeholder="Search Food"
+                      nz-input
+                      [ngModel]="searchFoodInput()"
+                      (ngModelChange)="onSearchFoodInputChange($event)"
+                      aria-label="Search food items"
+                    />
+                  </nz-input-group>
+                  <ng-template #searchPrefixMobile>
+                    <span nz-icon nzType="search" nzTheme="outline" class="search-icon"></span>
+                  </ng-template>
+                </div>
+              </div>
+              <div class="row g-3 p-3 pt-2">
+                @for (food of newOrderService.listOfFood(); track food.id) {
+                  <div class="col-12 col-sm-6 col-xl-4">
+                    <article class="food-card-vertical">
+                      <div class="food-card-image-wrap">
+                        <img
+                          nzDisablePreview
+                          nz-image
+                          class="food-card-image"
+                          [nzSrc]="getFoodImage(food.image)"
+                          [alt]="food.name"
+                          [nzFallback]="fallbackImage"
+                        />
+                        @if (food.discountType !== 'None') {
+                          <span class="food-discount-badge">
+                            @if (food.discountType === 'Percentage') {
+                              -{{ food.discount }}%
+                            } @else {
+                              -{{ food.discount }}৳
+                            }
+                          </span>
+                        }
+                      </div>
+                      <div class="food-card-body">
+                        <h4 class="food-card-title">{{ food.name }}</h4>
+                        <p class="food-card-description">{{ food.description }}</p>
+                        <div class="food-card-footer">
+                          <div class="food-card-price">
+                            @if (food.discountType === 'None') {
+                              <span class="price-current">{{ food.price }}৳</span>
+                            } @else {
+                              <span class="price-current">{{ food.discountPrice }}৳</span>
+                              <span class="price-old">{{ food.price }}৳</span>
+                            }
+                          </div>
+                          <button
+                            class="add-to-cart-button"
+                            (click)="addToCart(food, newOrderService.selectedTableId())"
+                            aria-label="Add {{ food.name }} to cart"
+                          >
+                            <span nz-icon nzType="plus" nzTheme="outline"></span>
+                            <span>Add</span>
+                          </button>
+                        </div>
+                      </div>
+                    </article>
+                  </div>
+                }
+              </div>
+            }
+          </div>
+        </div>
+      }
     </div>
   </div>
 </div>
-
-<div
-  class="cart-button-wrapper"
-  [style.left.px]="cartButtonPosition().x || null"
-  [style.top.px]="cartButtonPosition().y || null"
-  [style.cursor]="isDragging() && hasMoved() ? 'grabbing' : 'grab'"
->
-  <button
-    class="d-flex align-items-center justify-content-center cart-button position-relative drop-shadow-md"
-    data-bs-toggle="offcanvas"
-    data-bs-target="#cartOffCanvas"
-    aria-label="Open shopping cart with {{ newOrderService.cartFood().length }} items"
-    (mousedown)="onCartButtonMouseDown($event)"
-    (window:mousemove)="onCartButtonMouseMove($event)"
-    (window:mouseup)="onCartButtonMouseUp($event)"
-  >
-    <div
-      class="w-100 h-100 d-flex align-items-center justify-content-center"
-      nz-icon
-      nzType="shopping-cart"
-      nzTheme="outline"
-    ></div>
-    <div
-      class="absolute inline-flex items-center justify-content-center w-7 h-7 text-xs text-white bg-red-500 border-2 border-white rounded-full -top-2 -end-2 dark:border-gray-900"
-      role="status"
-      aria-live="polite"
-    >
-      {{ newOrderService.cartFood().length }}
-    </div>
-  </button>
-</div>
-
-<app-cart></app-cart>

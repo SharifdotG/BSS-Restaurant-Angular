@@ -6,6 +6,7 @@ import { NzAvatarComponent } from 'ng-zorro-antd/avatar';
 import { NzIconDirective } from 'ng-zorro-antd/icon';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzTooltipDirective } from 'ng-zorro-antd/tooltip';
+import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 import { AddEmployee } from '../add-employee/add-employee';
 import { API_BASE_URL } from '../../app.config';
 import { ChangeDetectionStrategy } from '@angular/core';
@@ -21,6 +22,7 @@ export type ThemeType = 'fill' | 'outline' | 'twotone';
     NzIconDirective,
     AddEmployee,
     NzTooltipDirective,
+    NzSkeletonModule,
     DatePipe,
   ],
   templateUrl: './employee-list.html',

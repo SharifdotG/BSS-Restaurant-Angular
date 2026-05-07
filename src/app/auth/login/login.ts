@@ -2,14 +2,14 @@ import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@a
 import { NgOptimizedImage } from '@angular/common';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { NzCarouselModule } from 'ng-zorro-antd/carousel';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzCarouselModule } from 'ng-zorro-antd/carousel';
 
 import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-login',
-  imports: [NgOptimizedImage, ReactiveFormsModule, NzCarouselModule, NzIconModule],
+  imports: [NgOptimizedImage, ReactiveFormsModule, NzIconModule, NzCarouselModule],
   templateUrl: './login.html',
   styleUrl: './login.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

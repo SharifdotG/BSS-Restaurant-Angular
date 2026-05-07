@@ -5,6 +5,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 
 import { FoodsService } from '../../foods/foods.service';
 import { FoodItem } from '../../foods/foods.interface';
@@ -14,7 +15,15 @@ import { API_BASE_URL } from '../../app.config';
 @Component({
   selector: 'app-food-list',
   providers: [NzModalService],
-  imports: [NzTableModule, NzAvatarModule, NzIconModule, NzTooltipModule, NzButtonModule, AddFood],
+  imports: [
+    NzTableModule,
+    NzAvatarModule,
+    NzIconModule,
+    NzTooltipModule,
+    NzButtonModule,
+    NzSkeletonModule,
+    AddFood,
+  ],
   templateUrl: './food-list.html',
   styleUrl: './food-list.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

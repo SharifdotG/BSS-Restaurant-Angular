@@ -1,3 +1,7 @@
+.report-analytics-root {
+  padding: 0;
+}
+
 /* Section Header with period selectors */
 .section-header {
   display: flex;
@@ -40,10 +44,9 @@
   display: flex;
   align-items: center;
   gap: 12px;
+  height: 100%;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-  transition:
-    transform 0.2s,
-    box-shadow 0.2s;
+  transition: var(--transition-base);
 }
 
 .stat-card:hover {
@@ -116,16 +119,48 @@
   border: 1px solid #f0f0f0;
   border-radius: 12px;
   padding: 16px;
-  height: 440px;
+  min-height: 440px;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
-/* Ensure ngx-charts fills available space */
-ngx-charts-bar-vertical-2d,
+/* On mobile the bar chart legend moves to "Below", so give the wrapper
+   a bit more height to fit it cleanly. */
+@media screen and (max-width: 768px) {
+  .chart-wrapper {
+    min-height: 480px;
+    padding: 12px;
+  }
+}
+
+/* Bar chart fills the available width */
+ngx-charts-bar-vertical-2d {
+  flex: 1 1 auto;
+  min-height: 320px;
+  width: 100%;
+  display: block;
+}
+
+/* Pie chart sits centered in its wrapper, fixed view size */
 ngx-charts-pie-chart {
-  flex: 1;
-  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1 1 auto;
+  min-height: 320px;
+}
+
+::ng-deep .chart-wrapper .legend-labels {
+  background: transparent !important;
+}
+
+::ng-deep .chart-wrapper .legend-label {
+  font-size: 12px !important;
+}
+
+::ng-deep .chart-wrapper .legend-label-text {
+  color: var(--text-dark-primary) !important;
 }
 
 .chart-title {

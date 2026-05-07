@@ -1,5 +1,8 @@
-* {
-  font-family: 'Overpass', sans-serif;
+/* Use Poppins (display font) for every text inside the nav scope.
+   Routed views inside <nz-content> live in their own component scope,
+   so this :host * doesn't reach them via Angular view encapsulation. */
+:host * {
+  font-family: var(--font-secondary);
 }
 
 .header-title p {
@@ -8,12 +11,36 @@
   color: var(--text-dark-primary);
 }
 
+.header-cart-button {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 50%;
+  height: 44px;
+  width: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition-base);
+}
+
+.header-cart-button:hover {
+  background: var(--bg-primary-50);
+  border-color: var(--bg-primary-500);
+  transform: scale(1.05);
+}
+
+.header-cart-button .anticon {
+  font-size: 22px;
+  color: var(--bg-primary-700);
+}
+
 .trigger {
   font-size: 18px;
   line-height: 64px;
   padding: 0 24px;
   cursor: pointer;
-  transition: color 0.3s;
+  transition: color var(--transition-fast);
 }
 
 .trigger:hover {
@@ -93,7 +120,7 @@
 }
 
 ::ng-deep .ant-menu-item {
-  font-family: 'inter', sans-serif !important;
+  font-family: var(--font-secondary) !important;
   display: flex;
   align-items: center;
   height: 52px;
@@ -243,7 +270,7 @@
   font-weight: 600;
   border-radius: 8px;
   border: none;
-  transition: all 0.3s ease;
+  transition: var(--transition-base);
 }
 
 .logout-button:hover {
@@ -255,7 +282,7 @@
 }
 
 .logout-text {
-  transition: 1s ease-in;
+  transition: var(--transition-slow);
 }
 
 .inner-content {
@@ -306,7 +333,7 @@
   }
 
   ::ng-deep .mobile-menu .ant-menu-item {
-    font-family: 'inter', sans-serif !important;
+    font-family: var(--font-secondary) !important;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -358,11 +385,11 @@
 
 /* Animation for logo transition */
 .transition-all {
-  transition: all 0.3s ease;
+  transition: var(--transition-base);
 }
 
 .transition-opacity {
-  transition: opacity 0.3s ease;
+  transition: opacity var(--transition-base);
 }
 
 .delay-500 {
@@ -393,7 +420,7 @@
   text-align: center;
   background-image: none;
   box-shadow: 0 2px #0000000b;
-  transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  transition: var(--transition-base);
   -webkit-user-select: none;
   user-select: none;
   touch-action: manipulation;

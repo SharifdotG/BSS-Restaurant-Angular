@@ -1,23 +1,5 @@
 <div class="main-wrapper p-0 p-md-4 pb-md-0">
   <div class="bg-white drop-shadow-lg md:rounded-lg rounded-none pt-0 pt-md-3">
-    <ng-template #indicatorTemplate>
-      <div
-        class="loading h-100 w-100 d-flex justify-content-center align-items-center"
-        [style.background]="'rgba(255, 255, 255, 0.6)'"
-        role="status"
-        aria-label="Loading dashboard data"
-      >
-        <div
-          [style.fontSize.px]="50"
-          [style.color]="'darkseagreen'"
-          nz-icon
-          nzType="loading"
-          nzTheme="outline"
-          aria-hidden="true"
-        ></div>
-      </div>
-    </ng-template>
-
     <!-- Employee Table -->
     <nz-table
       nzShowSizeChanger
@@ -27,8 +9,6 @@
       nzTableLayout="auto"
       [nzData]="listOfEmployees()"
       [nzFrontPagination]="false"
-      [nzLoading]="employeeService.isSendingRequest()"
-      [nzLoadingIndicator]="indicatorTemplate"
       [nzTotal]="employeeService.totalEmployees()"
       [nzPageSize]="pageSize()"
       [nzPageIndex]="pageIndex()"
@@ -110,105 +90,121 @@
 
       <!-- Employee Rows -->
       <tbody>
-        @for (data of listOfEmployees(); track data.id) {
-          <tr class="custom-table-row">
-            <td>
-              <div class="d-flex justify-content-center">
-                <nz-avatar
-                  [nzSize]="52"
-                  nzIcon="user"
-                  [nzSrc]="getImageUrl(data.user.image)"
-                ></nz-avatar>
-              </div>
-            </td>
-            <td>
-              <div class="d-flex justify-content-between pe-3">
-                <p
-                  [nzTooltipTitle]="
-                    data.user.firstName + ' ' + data.user.middleName + ' ' + data.user.lastName
-                  "
-                  nzTooltipPlacement="topLeft"
-                  nz-tooltip
-                  class="truncate"
-                >
-                  {{ data.user.firstName + ' ' + data.user.middleName + ' ' + data.user.lastName }}
-                </p>
-                <!-- Converted span to button for accessibility focus management -->
-                <button
-                  class="border-0 bg-transparent p-0"
-                  [style.color]="'darkorange'"
-                  (click)="toggleStar()"
-                  aria-label="Toggle star mark"
-                >
-                  <span
-                    nz-icon
-                    nzType="star"
-                    [nzTheme]="starMarked()"
-                    nzTwotoneColor="darkorange"
-                    aria-hidden="true"
-                  ></span>
-                </button>
-              </div>
-            </td>
-            <td
-              [nzTooltipTitle]="data.user.email"
-              nzTooltipPlacement="topLeft"
-              nz-tooltip
-              class="truncate"
-            >
-              {{ data.user.email }}
-            </td>
-            <td
-              [nzTooltipTitle]="data.designation"
-              nzTooltipPlacement="topLeft"
-              nz-tooltip
-              class="truncate"
-            >
-              {{ data.designation }}
-            </td>
-            <td
-              [nzTooltipTitle]="data.joinDate | date: 'MMM dd, yyyy'"
-              nzTooltipPlacement="topLeft"
-              nz-tooltip
-              class="truncate"
-            >
-              {{ data.joinDate | date: 'MMM dd, yyyy' }}
-            </td>
-            <td
-              [nzTooltipTitle]="data.user.phoneNumber"
-              nzTooltipPlacement="topLeft"
-              nz-tooltip
-              class="truncate"
-            >
-              {{ data.user.phoneNumber }}
-            </td>
-            <td>
-              <div class="d-flex justify-content-center gap-2">
-                <button
-                  (click)="editEmployee(data.id)"
-                  class="drop-down-button drop-shadow-md"
-                  nz-tooltip
-                  nzTooltipTitle="Edit Employee"
-                  nzTooltipPlacement="top"
-                  title="Edit Employee"
-                  aria-label="Edit Employee"
-                >
-                  <span nz-icon nzType="edit" nzTheme="outline" aria-hidden="true"></span>
-                </button>
-                <button
-                  (click)="deleteUser(data.id)"
-                  class="drop-down-button drop-shadow-md"
-                  nz-tooltip
-                  nzTooltipTitle="Delete Employee"
-                  nzTooltipPlacement="top"
-                  title="Delete Employee"
-                  aria-label="Delete Employee"
-                >
-                  <span nz-icon nzType="delete" nzTheme="outline" aria-hidden="true"></span>
-                </button>
-              </div>
-            </td>
-          </tr>
+        @if (employeeService.isSendingRequest()) {
+          @for (_ of [1, 2, 3, 4, 5]; track $index) {
+            <tr class="custom-table-row">
+              <td colspan="7">
+                <nz-skeleton
+                  [nzActive]="true"
+                  [nzTitle]="false"
+                  [nzParagraph]="{ rows: 1, width: '100%' }"
+                ></nz-skeleton>
+              </td>
+            </tr>
+          }
+        } @else {
+          @for (data of listOfEmployees(); track data.id) {
+            <tr class="custom-table-row">
+              <td>
+                <div class="d-flex justify-content-center">
+                  <nz-avatar
+                    [nzSize]="52"
+                    nzIcon="user"
+                    [nzSrc]="getImageUrl(data.user.image)"
+                  ></nz-avatar>
+                </div>
+              </td>
+              <td>
+                <div class="d-flex justify-content-between pe-3">
+                  <p
+                    [nzTooltipTitle]="
+                      data.user.firstName + ' ' + data.user.middleName + ' ' + data.user.lastName
+                    "
+                    nzTooltipPlacement="topLeft"
+                    nz-tooltip
+                    class="truncate"
+                  >
+                    {{
+                      data.user.firstName + ' ' + data.user.middleName + ' ' + data.user.lastName
+                    }}
+                  </p>
+                  <!-- Converted span to button for accessibility focus management -->
+                  <button
+                    class="border-0 bg-transparent p-0"
+                    [style.color]="'darkorange'"
+                    (click)="toggleStar()"
+                    aria-label="Toggle star mark"
+                  >
+                    <span
+                      nz-icon
+                      nzType="star"
+                      [nzTheme]="starMarked()"
+                      nzTwotoneColor="darkorange"
+                      aria-hidden="true"
+                    ></span>
+                  </button>
+                </div>
+              </td>
+              <td
+                [nzTooltipTitle]="data.user.email"
+                nzTooltipPlacement="topLeft"
+                nz-tooltip
+                class="truncate"
+              >
+                {{ data.user.email }}
+              </td>
+              <td
+                [nzTooltipTitle]="data.designation"
+                nzTooltipPlacement="topLeft"
+                nz-tooltip
+                class="truncate"
+              >
+                {{ data.designation }}
+              </td>
+              <td
+                [nzTooltipTitle]="data.joinDate | date: 'MMM dd, yyyy'"
+                nzTooltipPlacement="topLeft"
+                nz-tooltip
+                class="truncate"
+              >
+                {{ data.joinDate | date: 'MMM dd, yyyy' }}
+              </td>
+              <td
+                [nzTooltipTitle]="data.user.phoneNumber"
+                nzTooltipPlacement="topLeft"
+                nz-tooltip
+                class="truncate"
+              >
+                {{ data.user.phoneNumber }}
+              </td>
+              <td>
+                <div class="d-flex justify-content-center gap-2">
+                  <button
+                    (click)="editEmployee(data.id)"
+                    class="drop-down-button drop-shadow-md"
+                    nz-tooltip
+                    nzTooltipTitle="Edit Employee"
+                    nzTooltipPlacement="top"
+                    title="Edit Employee"
+                    aria-label="Edit Employee"
+                  >
+                    <span nz-icon nzType="edit" nzTheme="outline" aria-hidden="true"></span>
+                  </button>
+                  <button
+                    (click)="deleteUser(data.id)"
+                    class="drop-down-button drop-shadow-md"
+                    nz-tooltip
+                    nzTooltipTitle="Delete Employee"
+                    nzTooltipPlacement="top"
+                    title="Delete Employee"
+                    aria-label="Delete Employee"
+                  >
+                    <span nz-icon nzType="delete" nzTheme="outline" aria-hidden="true"></span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
         }
       </tbody>
     </nz-table>

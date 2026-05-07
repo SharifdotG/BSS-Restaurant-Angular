@@ -1,55 +1,45 @@
-<div class="container-fluid login-page">
-  <div class="row">
-    <!-- Left Column - Carousel (Hidden on mobile) -->
-    <div
-      class="left-column d-none d-xl-flex col-xl-8 vh-100 align-items-center justify-content-center"
-    >
-      <div
-        class="login-info-container d-flex flex-col justify-content-center align-items-center p-10 w-1/2 h-[600px]"
-      >
-        <nz-carousel nzAutoPlay [nzLoop]="true">
-          <!-- Carousel Item 1 -->
-          <div nz-carousel-content class="d-flex justify-content-center">
-            <div
-              class="login-carousel-item h-100 d-flex flex-column align-items-center justify-content-center"
-            >
-              <img src="login_assets/login_illustration_2.svg" alt="Welcome illustration" />
-              <h1 class="mt-4 text-3xl text-center font-bold">
-                Welcome Back to BSS Restaurant Dashboard!
-              </h1>
-              <p class="mt-3 text-xl text-center">
-                Effortlessly manage your restaurant's heartbeat — from employees to every table's
-                orders. Let's make service seamless and delicious together!
+<div class="login-page">
+  <div class="row g-0 vh-100">
+    <!-- Carousel column -->
+    <div class="login-visual col-lg-7 d-none d-lg-flex">
+      <div class="login-carousel-wrap">
+        <nz-carousel nzAutoPlay [nzLoop]="true" class="login-carousel">
+          <div nz-carousel-content>
+            <div class="login-slide">
+              <img
+                src="login_assets/login_illustration_2.svg"
+                alt="Welcome illustration"
+                class="login-slide-img"
+              />
+              <h2 class="login-slide-title">Welcome to BSS Restaurant</h2>
+              <p class="login-slide-text">
+                Manage employees, tables, orders and revenue from a single dashboard.
               </p>
             </div>
           </div>
-
-          <!-- Carousel Item 2 -->
-          <div nz-carousel-content class="d-flex justify-content-center">
-            <div
-              class="login-carousel-item h-100 d-flex flex-column align-items-center justify-content-center"
-            >
-              <img src="login_assets/login_illustration_3.svg" alt="Management illustration" />
-              <h1 class="mt-4 text-3xl text-center font-bold">
-                Your Restaurant, Perfectly Managed.
-              </h1>
-              <p class="mt-3 text-xl text-center">
-                Enter your credentials to access a world of insights that empower your team and
-                delight your guests.
+          <div nz-carousel-content>
+            <div class="login-slide">
+              <img
+                src="login_assets/login_illustration_3.svg"
+                alt="Management illustration"
+                class="login-slide-img"
+              />
+              <h2 class="login-slide-title">Your Restaurant, Perfectly Managed</h2>
+              <p class="login-slide-text">
+                Insights and tools that empower your team and delight your guests.
               </p>
             </div>
           </div>
-
-          <!-- Carousel Item 3 -->
-          <div nz-carousel-content class="d-flex justify-content-center">
-            <div
-              class="login-carousel-item h-100 d-flex flex-column align-items-center justify-content-center"
-            >
-              <img src="login_assets/login_illustration_4.svg" alt="Success illustration" />
-              <h1 class="mt-4 text-3xl text-center font-bold">Simplify. Serve. Succeed.</h1>
-              <p class="mt-3 text-xl text-center">
-                Your all-in-one dashboard to streamline operations, delight customers, and empower
-                your team. Let's create dining experiences worth remembering.
+          <div nz-carousel-content>
+            <div class="login-slide">
+              <img
+                src="login_assets/login_illustration_4.svg"
+                alt="Success illustration"
+                class="login-slide-img"
+              />
+              <h2 class="login-slide-title">Simplify. Serve. Succeed.</h2>
+              <p class="login-slide-text">
+                Streamline operations and create dining experiences worth remembering.
               </p>
             </div>
           </div>
@@ -57,149 +47,117 @@
       </div>
     </div>
 
-    <!-- Right Column - Login Form -->
-    <div
-      class="right-column shadow-2xl col-xl-4 col-12 vh-100 d-flex align-items-center justify-content-center"
-    >
-      <div
-        class="login-form-container bg-green-50 bg-opacity-90 backdrop-blur-md d-flex flex-column align-items-center"
-      >
-        <!-- Form Header -->
-        <div class="login-form-header d-flex flex-column align-items-center">
-          <div class="login-form-image" style="position: relative">
+    <!-- Form column -->
+    <div class="login-form-column col-lg-5 col-12 d-flex align-items-center justify-content-center">
+      <div class="login-form-card">
+        <div class="login-form-header text-center">
+          <div class="login-form-image mx-auto" style="position: relative">
             <img [ngSrc]="chefLogo" fill alt="BSS Restaurant Logo" priority />
           </div>
-          <div class="login-form-title mt-3">
-            <p>BSS RESTAURANT</p>
+          <h2 class="login-form-title mt-3">BSS Restaurant</h2>
+          <p class="login-form-tagline">Sign in to your account</p>
+        </div>
+
+        <form class="mt-4" [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
+          <div class="mb-3">
+            <label for="userNameInput" class="form-label login-text-input-label">Username</label>
+            <input
+              type="text"
+              class="form-control login-text-input-field"
+              id="userNameInput"
+              [formControl]="loginForm.controls.email"
+              autocomplete="username"
+              placeholder="Enter your username"
+            />
           </div>
-        </div>
 
-        <!-- Form Container -->
-        <div class="form-container w-100 mt-4">
-          <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
-            <!-- Username Field -->
-            <div class="mb-3 w-100">
-              <label for="userNameInput" class="form-label login-text-input-label">Username</label>
+          <div class="mb-3">
+            <label for="inputPassword" class="form-label login-text-input-label">Password</label>
+            <div class="password-input-wrapper position-relative">
               <input
-                type="text"
-                class="form-control login-text-input-field"
-                id="userNameInput"
-                [formControl]="loginForm.controls.email"
-                autocomplete="username"
-                placeholder="Enter your username"
+                [type]="showPassword() ? 'text' : 'password'"
+                class="form-control login-text-input-field pe-5"
+                id="inputPassword"
+                [formControl]="loginForm.controls.password"
+                autocomplete="current-password"
+                placeholder="Enter your password"
               />
+              <button
+                type="button"
+                class="password-toggle-button"
+                (click)="togglePasswordVisibility()"
+                [attr.aria-pressed]="showPassword()"
+                aria-label="Toggle password visibility"
+              >
+                <span
+                  nz-icon
+                  [nzType]="showPassword() ? 'eye-invisible' : 'eye'"
+                  nzTheme="outline"
+                ></span>
+              </button>
             </div>
+          </div>
 
-            <!-- Password Field -->
-            <div class="mb-3 w-100">
-              <label for="inputPassword" class="form-label login-text-input-label">Password</label>
-              <div class="password-input-wrapper position-relative">
-                <input
-                  [type]="showPassword() ? 'text' : 'password'"
-                  class="form-control login-text-input-field pe-5"
-                  id="inputPassword"
-                  [formControl]="loginForm.controls.password"
-                  autocomplete="current-password"
-                  placeholder="Enter your password"
-                />
-                <button
-                  type="button"
-                  class="password-toggle-button"
-                  (click)="togglePasswordVisibility()"
-                  [attr.aria-pressed]="showPassword()"
-                  aria-label="Toggle password visibility"
-                >
-                  <span
-                    nz-icon
-                    [nzType]="showPassword() ? 'eye-invisible' : 'eye'"
-                    nzTheme="outline"
-                  >
-                  </span>
-                </button>
-              </div>
-            </div>
+          <div class="d-flex align-items-center mb-3">
+            <input
+              id="RememberMeCheckbox"
+              type="checkbox"
+              class="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-green-500 focus:ring-2"
+              [checked]="rememberMe()"
+              (change)="onRememberMeChange($event)"
+            />
+            <label for="RememberMeCheckbox" class="ms-2 text-gray-700">Remember me</label>
+          </div>
 
-            <!-- Remember Me Checkbox -->
-            <div class="flex items-center">
-              <input
-                id="RememberMeCheckbox"
-                type="checkbox"
-                class="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-green-500 focus:ring-2"
-                [checked]="rememberMe()"
-                (change)="onRememberMeChange($event)"
-              />
-              <label for="RememberMeCheckbox" class="ms-2 text-lg font-medium text-gray-900">
-                Remember me
-              </label>
-            </div>
-
-            <!-- Submit Button -->
-            <button type="submit" class="btn login-button w-100 mb-3 mt-3" [disabled]="loggingIn()">
-              @if (loggingIn()) {
-                <span>LOGGING IN...</span>
-              } @else {
-                <span>LOGIN</span>
-              }
-            </button>
-          </form>
-        </div>
+          <button type="submit" class="btn login-button w-100" [disabled]="loggingIn()">
+            @if (loggingIn()) {
+              <span>LOGGING IN...</span>
+            } @else {
+              <span>LOGIN</span>
+            }
+          </button>
+        </form>
       </div>
     </div>
   </div>
 
   <!-- Notification Messages -->
-  <div class="position-absolute top-10 left-1/2 translate-middle-x w-50 drop-shadow-lg">
+  <div class="login-notification">
     @if (loggingIn()) {
       <div
-        class="position-absolute mt-0 flex w-100 items-center justify-between p-3 leading-normal text-blue-600 bg-blue-100 rounded-lg"
+        class="d-flex w-100 items-center justify-between p-3 leading-normal text-blue-600 bg-blue-100 rounded-lg"
         role="alert"
       >
-        <p>Logging in...</p>
+        <p class="m-0">Logging in...</p>
       </div>
     } @else if (loginStatus() === 'valid' && !notificationDismissed()) {
       <div
-        class="position-absolute mt-0 w-100 flex items-center justify-between p-3 leading-normal text-green-600 bg-green-100 rounded-lg"
+        class="d-flex w-100 items-center justify-between p-3 leading-normal text-green-600 bg-green-100 rounded-lg"
         role="alert"
       >
-        <p>Logged in Successfully</p>
+        <p class="m-0">Logged in Successfully</p>
         <button
           type="button"
           (click)="dismissNotification()"
           aria-label="Dismiss success notification"
           style="background: none; border: none; padding: 0; cursor: pointer"
         >
-          <svg
-            class="inline w-4 h-4 fill-current ml-2 hover:opacity-80 cursor-pointer"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 512 512"
-          >
-            <path
-              d="M256 0C114.6 0 0 114.6 0 256s114.6 256 256 256s256-114.6 256-256S397.4 0 256 0zM256 464c-114.7 0-208-93.31-208-208S141.3 48 256 48s208 93.31 208 208S370.7 464 256 464zM359.5 133.7c-10.11-8.578-25.28-7.297-33.83 2.828L256 218.8L186.3 136.5C177.8 126.4 162.6 125.1 152.5 133.7C142.4 142.2 141.1 157.4 149.7 167.5L224.6 256l-74.88 88.5c-8.562 10.11-7.297 25.27 2.828 33.83C157 382.1 162.5 384 167.1 384c6.812 0 13.59-2.891 18.34-8.5L256 293.2l69.67 82.34C330.4 381.1 337.2 384 344 384c5.469 0 10.98-1.859 15.48-5.672c10.12-8.562 11.39-23.72 2.828-33.83L287.4 256l74.88-88.5C370.9 157.4 369.6 142.2 359.5 133.7z"
-            />
-          </svg>
+          <span nz-icon nzType="close" nzTheme="outline"></span>
         </button>
       </div>
     } @else if (loginStatus() === 'invalid' && !notificationDismissed()) {
       <div
-        class="position-absolute mt-0 w-100 flex items-center justify-between p-3 leading-normal text-red-600 bg-red-100 rounded-lg animate-pulse"
+        class="d-flex w-100 items-center justify-between p-3 leading-normal text-red-600 bg-red-100 rounded-lg animate-pulse"
         role="alert"
       >
-        <p>Error Trying To Log In</p>
+        <p class="m-0">Error Trying To Log In</p>
         <button
           type="button"
           (click)="dismissNotification()"
           aria-label="Dismiss error notification"
           style="background: none; border: none; padding: 0; cursor: pointer"
         >
-          <svg
-            class="inline w-4 h-4 fill-current ml-2 hover:opacity-80 cursor-pointer"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 512 512"
-          >
-            <path
-              d="M256 0C114.6 0 0 114.6 0 256s114.6 256 256 256s256-114.6 256-256S397.4 0 256 0zM256 464c-114.7 0-208-93.31-208-208S141.3 48 256 48s208 93.31 208 208S370.7 464 256 464zM359.5 133.7c-10.11-8.578-25.28-7.297-33.83 2.828L256 218.8L186.3 136.5C177.8 126.4 162.6 125.1 152.5 133.7C142.4 142.2 141.1 157.4 149.7 167.5L224.6 256l-74.88 88.5c-8.562 10.11-7.297 25.27 2.828 33.83C157 382.1 162.5 384 167.1 384c6.812 0 13.59-2.891 18.34-8.5L256 293.2l69.67 82.34C330.4 381.1 337.2 384 344 384c5.469 0 10.98-1.859 15.48-5.672c10.12-8.562 11.39-23.72 2.828-33.83L287.4 256l74.88-88.5C370.9 157.4 369.6 142.2 359.5 133.7z"
-            />
-          </svg>
+          <span nz-icon nzType="close" nzTheme="outline"></span>
         </button>
       </div>
     }

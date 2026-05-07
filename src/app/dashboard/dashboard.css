@@ -7,9 +7,7 @@
   align-items: center;
   gap: 12px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-  transition:
-    transform 0.2s,
-    box-shadow 0.2s;
+  transition: var(--transition-base);
 }
 
 .stat-card:hover {
@@ -105,7 +103,7 @@
   padding: 8px 10px;
   border-radius: 8px;
   background: #fafafa;
-  transition: background 0.2s;
+  transition: background var(--transition-base);
 }
 
 .top-food-item:hover {

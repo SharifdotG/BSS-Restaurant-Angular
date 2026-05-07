@@ -1,18 +1,5 @@
 <div class="main-wrapper p-0 p-md-4 pb-md-0">
   <div class="bg-white drop-shadow-lg md:rounded-lg rounded-none pt-0 pt-md-3">
-    <ng-template #indicatorTemplate>
-      <div
-        class="loading h-100 w-100 d-flex justify-content-center align-items-center"
-        style="background: rgba(255, 255, 255, 0.6)"
-      >
-        <div
-          style="font-size: 50px; color: darkseagreen"
-          nz-icon
-          nzType="loading"
-          nzTheme="outline"
-        ></div>
-      </div>
-    </ng-template>
     <nz-table
       nzShowSizeChanger
       nzPaginationType="default"
@@ -21,8 +8,6 @@
       nzTableLayout="auto"
       [nzData]="listOfFood()"
       [nzFrontPagination]="false"
-      [nzLoading]="foodService.isSendingRequest()"
-      [nzLoadingIndicator]="indicatorTemplate"
       [nzTotal]="foodService.totalFood()"
       [nzPageSize]="pageSize"
       [nzPageIndex]="pageIndex"
@@ -95,89 +80,103 @@
         </tr>
       </thead>
       <tbody>
-        @for (data of listOfFood(); track data.id) {
-          <tr class="custom-table-row">
-            <td>
-              <div class="d-flex justify-content-center">
-                <nz-avatar
-                  [nzSize]="52"
-                  nzIcon="warning"
-                  [nzSrc]="getImageUrl(data.image)"
-                ></nz-avatar>
-              </div>
-            </td>
-            <td
-              [nzTooltipOverlayStyle]="{ 'min-width': '40px' }"
-              nzTooltipTitle="{{ data.name }}"
-              nzTooltipPlacement="topLeft"
-              nz-tooltip
-              class="truncate"
-            >
-              {{ data.name }}
-            </td>
-            <td
-              [nzTooltipOverlayStyle]="{ 'min-width': '40px' }"
-              nzTooltipTitle="{{ data.price }}"
-              nzTooltipPlacement="topLeft"
-              nz-tooltip
-              class="truncate"
-            >
-              {{ data.price }}
-            </td>
-            <td
-              [nzTooltipOverlayStyle]="{ 'min-width': '40px' }"
-              nzTooltipTitle="{{ data.discountType }}"
-              nzTooltipPlacement="topLeft"
-              nz-tooltip
-              class="truncate"
-            >
-              {{ data.discountType }}
-            </td>
-            <td
-              [nzTooltipOverlayStyle]="{ 'min-width': '40px' }"
-              nzTooltipTitle="{{ getDiscountDisplay(data) }}"
-              nzTooltipPlacement="topLeft"
-              nz-tooltip
-              class="truncate"
-            >
-              {{ getDiscountDisplay(data) }}
-            </td>
-            <td
-              [nzTooltipOverlayStyle]="{ 'min-width': '40px' }"
-              nzTooltipTitle="{{ data.discountPrice }}"
-              nzTooltipPlacement="topLeft"
-              nz-tooltip
-              class="truncate"
-            >
-              {{ data.discountPrice }}
-            </td>
-            <td>
-              <div class="d-flex justify-content-center gap-2">
-                <button
-                  (click)="editFood(data.id)"
-                  class="drop-down-button drop-shadow-md"
-                  nz-tooltip
-                  nzTooltipTitle="Edit Food"
-                  nzTooltipPlacement="top"
-                  title="Edit Food"
-                  aria-label="Edit Food"
-                >
-                  <span nz-icon nzType="edit" nzTheme="outline"></span>
-                </button>
-                <button
-                  (click)="deleteFood(data.id)"
-                  class="drop-down-button drop-shadow-md"
-                  nz-tooltip
-                  nzTooltipTitle="Delete Food"
-                  nzTooltipPlacement="top"
-                  title="Delete Food"
-                  aria-label="Delete Food"
-                >
-                  <span nz-icon nzType="delete" nzTheme="outline"></span>
-                </button>
-              </div>
-            </td>
-          </tr>
+        @if (foodService.isSendingRequest()) {
+          @for (_ of [1, 2, 3, 4, 5]; track $index) {
+            <tr class="custom-table-row">
+              <td colspan="7">
+                <nz-skeleton
+                  [nzActive]="true"
+                  [nzTitle]="false"
+                  [nzParagraph]="{ rows: 1, width: '100%' }"
+                ></nz-skeleton>
+              </td>
+            </tr>
+          }
+        } @else {
+          @for (data of listOfFood(); track data.id) {
+            <tr class="custom-table-row">
+              <td>
+                <div class="d-flex justify-content-center">
+                  <nz-avatar
+                    [nzSize]="52"
+                    nzIcon="warning"
+                    [nzSrc]="getImageUrl(data.image)"
+                  ></nz-avatar>
+                </div>
+              </td>
+              <td
+                [nzTooltipOverlayStyle]="{ 'min-width': '40px' }"
+                nzTooltipTitle="{{ data.name }}"
+                nzTooltipPlacement="topLeft"
+                nz-tooltip
+                class="truncate"
+              >
+                {{ data.name }}
+              </td>
+              <td
+                [nzTooltipOverlayStyle]="{ 'min-width': '40px' }"
+                nzTooltipTitle="{{ data.price }}"
+                nzTooltipPlacement="topLeft"
+                nz-tooltip
+                class="truncate"
+              >
+                {{ data.price }}
+              </td>
+              <td
+                [nzTooltipOverlayStyle]="{ 'min-width': '40px' }"
+                nzTooltipTitle="{{ data.discountType }}"
+                nzTooltipPlacement="topLeft"
+                nz-tooltip
+                class="truncate"
+              >
+                {{ data.discountType }}
+              </td>
+              <td
+                [nzTooltipOverlayStyle]="{ 'min-width': '40px' }"
+                nzTooltipTitle="{{ getDiscountDisplay(data) }}"
+                nzTooltipPlacement="topLeft"
+                nz-tooltip
+                class="truncate"
+              >
+                {{ getDiscountDisplay(data) }}
+              </td>
+              <td
+                [nzTooltipOverlayStyle]="{ 'min-width': '40px' }"
+                nzTooltipTitle="{{ data.discountPrice }}"
+                nzTooltipPlacement="topLeft"
+                nz-tooltip
+                class="truncate"
+              >
+                {{ data.discountPrice }}
+              </td>
+              <td>
+                <div class="d-flex justify-content-center gap-2">
+                  <button
+                    (click)="editFood(data.id)"
+                    class="drop-down-button drop-shadow-md"
+                    nz-tooltip
+                    nzTooltipTitle="Edit Food"
+                    nzTooltipPlacement="top"
+                    title="Edit Food"
+                    aria-label="Edit Food"
+                  >
+                    <span nz-icon nzType="edit" nzTheme="outline"></span>
+                  </button>
+                  <button
+                    (click)="deleteFood(data.id)"
+                    class="drop-down-button drop-shadow-md"
+                    nz-tooltip
+                    nzTooltipTitle="Delete Food"
+                    nzTooltipPlacement="top"
+                    title="Delete Food"
+                    aria-label="Delete Food"
+                  >
+                    <span nz-icon nzType="delete" nzTheme="outline"></span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
         }
       </tbody>
     </nz-table>

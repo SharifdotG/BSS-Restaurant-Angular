@@ -72,6 +72,31 @@
   --ant-primary-5: #66bb6a;
   --ant-primary-6: #66bb6a;
   --ant-primary-7: #4caf50;
+
+  /* Font families */
+  --font-primary: 'Work Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-secondary: 'Poppins', 'Work Sans', system-ui, sans-serif;
+
+  /* Type scale (rem-based, 16px root) */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-md: 1.0625rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.5rem;
+  --text-2xl: 1.875rem;
+  --text-3xl: 2.25rem;
+  --text-4xl: 2.75rem;
+  --text-5xl: 3.25rem;
+
+  /* Line heights */
+  --leading-tight: 1.2;
+  --leading-normal: 1.5;
+
+  /* Animation tokens */
+  --transition-fast: 120ms ease-out;
+  --transition-base: 200ms ease-out;
+  --transition-slow: 320ms ease-out;
 }
 
 /* CRITICAL: Override NzZorro primary button color with maximum specificity */
@@ -160,21 +185,10 @@
   color: #fff !important;
 }
 
-/* Font faces */
-@font-face {
-  font-family: 'Overpass';
-  src:
-    url('../public/Overpass-Regular.woff2') format('woff2'),
-    url('../public/Overpass-Regular.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-
 /* Global styles */
 * {
   box-sizing: border-box;
-  font-family: 'Overpass', sans-serif;
+  font-family: var(--font-primary);
 }
 
 *::selection {
@@ -190,10 +204,80 @@ html,
 body {
   height: 100%;
   margin: 0;
+  font-family: var(--font-primary);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  color: var(--text-dark-primary);
 }
 
-body {
-  font-family: 'Overpass', Roboto, 'Helvetica Neue', sans-serif;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-secondary);
+  line-height: var(--leading-tight);
+  font-weight: 600;
+  margin: 0;
+}
+
+h1 {
+  font-size: var(--text-5xl);
+  font-weight: 700;
+}
+h2 {
+  font-size: var(--text-4xl);
+  font-weight: 700;
+}
+h3 {
+  font-size: var(--text-3xl);
+}
+h4 {
+  font-size: var(--text-2xl);
+}
+h5 {
+  font-size: var(--text-xl);
+}
+h6 {
+  font-size: var(--text-lg);
+}
+
+p {
+  margin: 0;
+}
+
+.ant-modal-title {
+  font-family: var(--font-secondary);
+  font-weight: 600;
+}
+
+/* Poppins for display sizes and heading-like classes */
+.text-xl,
+.text-2xl,
+.text-3xl,
+.text-4xl,
+.text-5xl,
+.text-6xl,
+.text-7xl,
+.section-title,
+.chart-title,
+.stat-value,
+.food-name,
+.food-rank,
+.add-table-button,
+.add-food-button,
+.add-employee-button,
+.add-expense-button,
+.add-table-button span,
+.add-food-button span,
+.add-employee-button span,
+.add-expense-button span,
+.modal-header h3,
+.login-form-header p,
+.custom-table-title,
+.custom-table-title-button {
+  font-family: var(--font-secondary);
 }
 
 /* Component styles */
@@ -201,7 +285,7 @@ body {
   background-color: var(--bg-primary-600);
   color: var(--text-primary);
   height: 52px;
-  transition: all 0.3s ease-in-out;
+  transition: var(--transition-base);
 }
 
 .button-primary:hover {
@@ -213,7 +297,7 @@ body {
   background-color: var(--bg-secondary-light);
   color: var(--text-dark-primary);
   height: 52px;
-  transition: all 0.3s ease-in-out;
+  transition: var(--transition-base);
 }
 
 .button-secondary:hover {
@@ -224,7 +308,7 @@ body {
   background-color: var(--bg-primary-600);
   color: white;
   height: 52px;
-  transition: all 0.3s ease-in-out;
+  transition: var(--transition-base);
 }
 
 .login-button:hover {
@@ -243,7 +327,7 @@ body {
   height: 40px;
   width: 40px;
   border: none;
-  transition: all 0.5s ease-in-out;
+  transition: var(--transition-base);
 }
 
 .drop-down-button span {
@@ -251,7 +335,7 @@ body {
   font-size: 20px;
   font-weight: 800;
   letter-spacing: 2px;
-  transition: color 0.5s ease-in-out;
+  transition: color var(--transition-fast);
 }
 
 .drop-down-button:hover {
@@ -292,7 +376,7 @@ body {
   height: 40px;
   width: 40px;
   border: none;
-  transition: all 0.5s ease-in-out;
+  transition: var(--transition-base);
 }
 
 .edit-button span {
@@ -300,7 +384,7 @@ body {
   font-size: 20px;
   font-weight: 800;
   letter-spacing: 2px;
-  transition: color 0.5s ease-in-out;
+  transition: color var(--transition-fast);
 }
 
 .edit-button:hover {
@@ -324,7 +408,7 @@ body {
   color: var(--text-dark-primary);
   font-weight: 400;
   font-size: 18px;
-  transition: all 0.5s ease-in-out;
+  transition: var(--transition-base);
 }
 
 .delete-button:hover {
@@ -502,6 +586,38 @@ button.ant-btn-primary:not(:disabled):not(.ant-btn-disabled):active,
   border-radius: 0 0 16px 16px !important;
 }
 
+/* Blurred, dimmed backdrop for every modal */
+.ant-modal-mask,
+.ant-image-preview-mask {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  background-color: rgba(15, 23, 42, 0.45);
+}
+
+/* Guarantee top + bottom breathing room for every modal,
+   and let the body scroll instead of letting tall content touch the edges. */
+.ant-modal-wrap {
+  padding-top: 24px;
+  padding-bottom: 24px;
+}
+
+.ant-modal {
+  top: 0 !important;
+  padding-bottom: 0 !important;
+  max-height: calc(100vh - 48px);
+}
+
+.ant-modal-content {
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 48px);
+}
+
+.ant-modal-body {
+  overflow-y: auto;
+  flex: 1 1 auto;
+}
+
 /* Confirmation modal button styling */
 .ant-modal-confirm .ant-modal-confirm-btns {
   display: flex !important;
@@ -516,7 +632,7 @@ button.ant-btn-primary:not(:disabled):not(.ant-btn-disabled):active,
   border-radius: 8px !important;
   font-weight: 500 !important;
   font-size: 16px !important;
-  transition: all 0.3s ease !important;
+  transition: var(--transition-base) !important;
 }
 
 /* Cancel button - light gray background (left side) */

@@ -6,7 +6,7 @@
 ::ng-deep .ant-form-item-explain,
 ::ng-deep .ant-form-item-extra {
   min-height: 22px;
-  transition: all 0.3s ease;
+  transition: var(--transition-base);
 }
 
 ::ng-deep .ant-form-item-explain-error {
@@ -29,7 +29,7 @@
 ::ng-deep .ant-select-selector,
 ::ng-deep .ant-input-number {
   border-radius: 8px !important;
-  transition: all 0.3s ease-in-out;
+  transition: var(--transition-base);
 }
 
 ::ng-deep .ant-input:hover,

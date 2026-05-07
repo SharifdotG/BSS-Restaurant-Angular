@@ -4,13 +4,21 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzImageModule } from 'ng-zorro-antd/image';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 
 import { NewOrderService } from '../new-order.service';
 import { PostOrder, PostOrderItem } from '../../orders/orders.model';
 
 @Component({
   selector: 'app-cart',
-  imports: [FormsModule, NzIconModule, NzImageModule, NzInputNumberModule, NzInputModule],
+  imports: [
+    FormsModule,
+    NzIconModule,
+    NzImageModule,
+    NzInputNumberModule,
+    NzInputModule,
+    NzDrawerModule,
+  ],
   templateUrl: './cart.html',
   styleUrl: './cart.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -40,6 +48,10 @@ export class Cart {
     this.newOrderService.cartFood.update((items) =>
       items.map((item) => (item.food.id === foodId ? { ...item, quantity: newQuantity } : item)),
     );
+  }
+
+  closeCart(): void {
+    this.newOrderService.showCart.set(false);
   }
 
   confirmOrder(): void {
@@ -75,5 +87,6 @@ export class Cart {
     };
 
     this.newOrderService.createOrder(postData);
+    this.closeCart();
   }
 }

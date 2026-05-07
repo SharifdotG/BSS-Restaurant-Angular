@@ -4,6 +4,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 
 import { ExpensesService } from '../../expenses/expenses.service';
 import { AddExpense } from '../add-expense/add-expense';
@@ -11,7 +12,14 @@ import { AddExpense } from '../add-expense/add-expense';
 @Component({
   selector: 'app-expense-list',
   providers: [NzModalService],
-  imports: [NzTableModule, NzIconModule, NzTooltipModule, NzButtonModule, AddExpense],
+  imports: [
+    NzTableModule,
+    NzIconModule,
+    NzTooltipModule,
+    NzButtonModule,
+    NzSkeletonModule,
+    AddExpense,
+  ],
   templateUrl: './expense-list.html',
   styleUrl: './expense-list.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
