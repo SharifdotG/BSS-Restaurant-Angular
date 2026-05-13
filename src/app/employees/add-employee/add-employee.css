@@ -1,3 +1,5 @@
+/* Add/Edit Employee modal — most chrome comes from src/styles.css global rules. */
+
 .upload-text {
   margin-top: 8px;
 }
@@ -10,6 +12,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  background: var(--ds-canvas-soft);
+  border: 1px dashed var(--ds-hairline-strong);
+  border-radius: var(--ds-radius-md);
+  min-height: 240px;
+  padding: 20px;
+  color: var(--ds-body);
+  transition: var(--transition-fast);
+}
+
+.file-upload:hover {
+  border-color: var(--ds-ink);
 }
 
 .file-upload ::ng-deep .ant-upload-picture-card-wrapper {
@@ -18,88 +31,9 @@
   width: 100%;
 }
 
-/* Ensure consistent spacing for form items */
-nz-form-item {
-  margin-bottom: 16px;
-}
-
 /* Reserve space for error messages to prevent layout shift */
 ::ng-deep .ant-form-item-explain,
 ::ng-deep .ant-form-item-extra {
-  min-height: 24px;
+  min-height: 20px;
   transition: var(--transition-base);
-}
-
-::ng-deep .ant-form-item-explain-error {
-  font-size: 14px;
-  line-height: 1.5;
-}
-
-/* Ensure form control always has consistent spacing */
-::ng-deep .ant-form-item-control {
-  min-height: 56px;
-}
-
-/* Input field styling with green border on hover and border radius */
-::ng-deep .ant-input,
-::ng-deep .ant-picker,
-::ng-deep .ant-select-selector {
-  border-radius: 8px !important;
-  transition: var(--transition-base);
-}
-
-::ng-deep .ant-input:hover,
-::ng-deep .ant-picker:hover,
-::ng-deep .ant-select-selector:hover {
-  border-color: #66bb6a !important;
-}
-
-::ng-deep .ant-input:focus,
-::ng-deep .ant-picker:focus,
-::ng-deep .ant-select-selector:focus {
-  border-color: #66bb6a !important;
-  box-shadow: 0 0 0 2px rgba(102, 187, 106, 0.2) !important;
-}
-
-/* Ensure select dropdown also has green border on hover */
-::ng-deep .ant-select:hover .ant-select-selector {
-  border-color: #66bb6a !important;
-}
-
-/* When select is focused */
-::ng-deep .ant-select-focused .ant-select-selector {
-  border-color: #66bb6a !important;
-  box-shadow: 0 0 0 2px rgba(102, 187, 106, 0.2) !important;
-}
-
-/* Date picker specific styling */
-::ng-deep .ant-picker:hover,
-::ng-deep .ant-picker-focused {
-  border-color: #66bb6a !important;
-}
-
-::ng-deep .ant-picker-focused {
-  box-shadow: 0 0 0 2px rgba(102, 187, 106, 0.2) !important;
-}
-
-:host ::ng-deep .ant-modal-footer {
-  border-top: 1px solid #f0f0f0;
-  padding: 16px 24px;
-  text-align: center;
-}
-
-:host ::ng-deep .ant-modal-footer .ant-btn-primary {
-  background-color: var(--bg-primary-600) !important;
-  border-color: var(--bg-primary-600) !important;
-}
-
-:host ::ng-deep .ant-modal-footer .ant-btn-primary:hover {
-  background-color: var(--bg-primary-700) !important;
-  border-color: var(--bg-primary-700) !important;
-}
-
-:host ::ng-deep .ant-modal-footer .ant-btn-primary:active,
-:host ::ng-deep .ant-modal-footer .ant-btn-primary:focus {
-  background-color: var(--bg-primary-800) !important;
-  border-color: var(--bg-primary-800) !important;
 }

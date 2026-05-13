@@ -1,29 +1,153 @@
-/* Stat Cards */
-.stat-card {
-  background: white;
-  border-radius: 12px;
-  padding: 14px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+.dashboard-root {
+  padding: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .dashboard-root {
+    padding: 16px 12px;
+  }
+}
+
+/* ----- Tabs (the Vercel `tab-ghost` pill row) ----- */
+.dashboard-tabs ::ng-deep .ant-tabs-nav {
+  margin-bottom: 24px;
+}
+
+.dashboard-tabs ::ng-deep .ant-tabs-nav::before {
+  border-bottom: none !important;
+}
+
+.dashboard-tabs ::ng-deep .ant-tabs-nav-wrap {
+  padding: 4px 0;
+}
+
+.dashboard-tabs ::ng-deep .ant-tabs-tab {
+  padding: 0 var(--ds-space-md) !important;
+  margin: 0 4px 0 0 !important;
+  height: 36px;
+  border-radius: var(--ds-radius-pill-sm) !important;
+  font-family: var(--font-sans) !important;
+  font-size: var(--ds-body-sm-size) !important;
+  font-weight: 500 !important;
+  color: var(--ds-body) !important;
+  background: transparent !important;
+  border: 1px solid transparent !important;
   transition: var(--transition-base);
 }
 
+.dashboard-tabs ::ng-deep .ant-tabs-tab:hover {
+  background: var(--ds-canvas-soft) !important;
+  color: var(--ds-ink) !important;
+}
+
+.dashboard-tabs ::ng-deep .ant-tabs-tab.ant-tabs-tab-active {
+  background: var(--ds-canvas-soft) !important;
+  border-color: var(--ds-hairline) !important;
+}
+
+.dashboard-tabs ::ng-deep .ant-tabs-tab-active .ant-tabs-tab-btn,
+.dashboard-tabs ::ng-deep .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: var(--ds-ink) !important;
+  font-weight: 600 !important;
+  text-shadow: none !important;
+}
+
+.dashboard-tabs ::ng-deep .ant-tabs-ink-bar {
+  background: transparent !important;
+  display: none !important;
+}
+
+/* ----- Greeting band (mesh-gradient backdrop) ----- */
+.greeting-band {
+  background: var(--ds-canvas);
+  border: 1px solid var(--ds-hairline);
+  border-radius: var(--ds-radius-lg);
+  padding: 32px 28px;
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+
+.greeting-band-skeleton {
+  min-height: 132px;
+}
+
+.greeting-eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--ds-caption-size);
+  line-height: var(--ds-caption-line);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ds-mute);
+  margin: 0 0 12px 0;
+}
+
+.greeting-headline {
+  font-family: var(--font-sans);
+  font-size: var(--ds-display-lg-size);
+  line-height: var(--ds-display-lg-line);
+  letter-spacing: var(--ds-display-lg-tracking);
+  font-weight: 600;
+  color: var(--ds-ink);
+  margin: 0 0 8px 0;
+}
+
+.greeting-body {
+  font-family: var(--font-sans);
+  font-size: var(--ds-body-md-size);
+  line-height: var(--ds-body-md-line);
+  color: var(--ds-body);
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .greeting-band {
+    padding: 24px 20px;
+  }
+  .greeting-headline {
+    font-size: 24px;
+    line-height: 28px;
+    letter-spacing: -0.96px;
+  }
+}
+
+/* ----- Stat cards ----- */
+.stat-card {
+  background: var(--ds-canvas);
+  border-radius: var(--ds-radius-md);
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: var(--ds-shadow-2);
+  transition:
+    box-shadow var(--transition-base),
+    border-color var(--transition-base),
+    transform var(--transition-fast);
+  height: 100%;
+}
+
 .stat-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  box-shadow: var(--ds-shadow-3);
 }
 
 .stat-icon {
-  width: 44px;
-  height: 44px;
-  border-radius: 10px;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--ds-radius-sm);
+  background: var(--ds-canvas-soft);
+  border: 1px solid var(--ds-hairline);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 20px;
   flex-shrink: 0;
+  color: var(--ds-ink);
+}
+
+.stat-icon .anticon {
+  font-size: 18px;
+  color: var(--ds-ink) !important;
 }
 
 .stat-info {
@@ -31,65 +155,142 @@
 }
 
 .stat-label {
-  margin: 0;
-  font-size: 11px;
-  color: #9e9e9e;
-  font-weight: 500;
+  font-family: var(--font-mono);
+  font-size: var(--ds-caption-size);
+  line-height: var(--ds-caption-line);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ds-mute);
+  margin: 0 0 4px 0;
 }
 
 .stat-value {
   margin: 0;
-  font-size: 18px;
-  font-weight: 700;
-  color: #333;
-  line-height: 1.2;
+  font-family: var(--font-sans);
+  font-size: var(--ds-display-md-size);
+  line-height: var(--ds-display-md-line);
+  letter-spacing: var(--ds-display-md-tracking);
+  font-weight: 600;
+  color: var(--ds-ink);
 }
 
 .stat-total {
-  font-size: 13px;
+  font-size: var(--ds-body-md-size);
   font-weight: 500;
-  color: #9e9e9e;
+  color: var(--ds-mute);
+  letter-spacing: 0;
+  margin-left: 4px;
 }
 
-/* Table scroll wrapper for mobile */
-.table-scroll-wrapper {
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
+@media (max-width: 768px) {
+  .stat-card {
+    padding: 14px;
+    gap: 12px;
+  }
+  .stat-icon {
+    width: 36px;
+    height: 36px;
+  }
+  .stat-value {
+    font-size: 20px;
+    line-height: 24px;
+    letter-spacing: -0.6px;
+  }
 }
 
-.table-scroll-wrapper ::ng-deep nz-table {
-  min-width: 500px;
-}
-
-/* Section Cards */
+/* ----- Section cards ----- */
 .dashboard-section {
-  background: white;
-  border-radius: 12px;
-  padding: 14px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  background: var(--ds-canvas);
+  border-radius: var(--ds-radius-md);
+  padding: 24px;
+  box-shadow: var(--ds-shadow-2);
   height: 100%;
 }
 
+.section-head {
+  margin-bottom: 16px;
+}
+
+.section-eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--ds-caption-size);
+  line-height: var(--ds-caption-line);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ds-mute);
+  margin: 0 0 4px 0;
+}
+
 .section-title {
-  font-size: 14px;
+  font-family: var(--font-sans);
+  font-size: var(--ds-display-sm-size);
+  line-height: var(--ds-display-sm-line);
+  letter-spacing: var(--ds-display-sm-tracking);
   font-weight: 600;
-  color: #333;
-  margin-bottom: 12px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #f0f0f0;
+  color: var(--ds-ink);
+  margin: 0;
 }
 
-/* Status Badge */
-.status-badge {
-  display: inline-block;
-  padding: 2px 8px;
-  border-radius: 12px;
-  font-size: 11px;
+@media (max-width: 768px) {
+  .dashboard-section {
+    padding: 16px;
+  }
+}
+
+/* ----- Recent orders table ----- */
+.table-scroll-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 0 -24px -24px -24px;
+}
+
+.table-scroll-wrapper ::ng-deep nz-table {
+  min-width: 560px;
+}
+
+.table-scroll-wrapper ::ng-deep .ant-table {
+  background: transparent !important;
+}
+
+.table-scroll-wrapper ::ng-deep .ant-table-thead > tr > th {
+  background: var(--ds-canvas-soft) !important;
+  padding: 12px 24px !important;
+}
+
+.table-scroll-wrapper ::ng-deep .ant-table-tbody > tr > td {
+  padding: 14px 24px !important;
+  border-bottom: 1px solid var(--ds-hairline) !important;
+}
+
+.table-scroll-wrapper ::ng-deep .ant-table-tbody > tr:last-child > td {
+  border-bottom: none !important;
+}
+
+.cell-strong {
+  font-family: var(--font-mono);
+  font-size: var(--ds-body-sm-size);
   font-weight: 500;
-  white-space: nowrap;
+  color: var(--ds-ink) !important;
 }
 
-/* Top Selling Foods */
+.cell-mute {
+  color: var(--ds-mute) !important;
+  font-size: var(--ds-body-sm-size) !important;
+}
+
+@media (max-width: 768px) {
+  .table-scroll-wrapper {
+    margin: 0 -16px -16px -16px;
+  }
+  .table-scroll-wrapper ::ng-deep .ant-table-thead > tr > th {
+    padding: 10px 16px !important;
+  }
+  .table-scroll-wrapper ::ng-deep .ant-table-tbody > tr > td {
+    padding: 12px 16px !important;
+  }
+}
+
+/* ----- Top selling items list ----- */
 .top-food-list {
   display: flex;
   flex-direction: column;
@@ -100,127 +301,72 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 10px;
-  border-radius: 8px;
-  background: #fafafa;
-  transition: background var(--transition-base);
+  padding: 12px;
+  border-radius: var(--ds-radius-sm);
+  background: var(--ds-canvas-soft);
+  border: 1px solid var(--ds-hairline);
+  transition: var(--transition-fast);
 }
 
 .top-food-item:hover {
-  background: #f0f0f0;
+  border-color: var(--ds-hairline-strong);
+  background: var(--ds-canvas-soft-2);
 }
 
 .food-rank {
-  font-size: 13px;
-  font-weight: 700;
-  color: #66bb6a;
+  font-family: var(--font-mono);
+  font-size: var(--ds-body-sm-size);
+  font-weight: 500;
+  color: var(--ds-mute);
   min-width: 24px;
 }
 
 .food-image {
-  width: 36px;
-  height: 36px;
-  border-radius: 8px;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--ds-radius-sm);
   object-fit: cover;
+  border: 1px solid var(--ds-hairline);
 }
 
 .food-name {
   margin: 0;
-  font-size: 13px;
-  font-weight: 600;
-  color: #333;
+  font-family: var(--font-sans);
+  font-size: var(--ds-body-sm-size);
+  line-height: var(--ds-body-sm-line);
+  font-weight: 500;
+  color: var(--ds-ink);
+  letter-spacing: var(--ds-body-sm-tracking);
 }
 
 .food-price {
   margin: 0;
+  font-family: var(--font-mono);
   font-size: 11px;
-  color: #9e9e9e;
+  line-height: 14px;
+  color: var(--ds-mute);
 }
 
 .food-qty {
   margin: 0;
-  font-size: 12px;
-  font-weight: 600;
-  color: #66bb6a;
+  font-family: var(--font-sans);
+  font-size: var(--ds-body-sm-size);
+  font-weight: 500;
+  color: var(--ds-ink);
+  letter-spacing: var(--ds-body-sm-tracking);
 }
 
 .food-revenue {
   margin: 0;
+  font-family: var(--font-mono);
   font-size: 11px;
-  color: #9e9e9e;
+  line-height: 14px;
+  color: var(--ds-mute);
 }
 
-/* Desktop (md+) */
-@media screen and (min-width: 768px) {
-  .stat-card {
-    padding: 20px;
-    gap: 16px;
-  }
-
-  .stat-icon {
-    width: 56px;
-    height: 56px;
-    font-size: 26px;
-    border-radius: 12px;
-  }
-
-  .stat-label {
-    font-size: 13px;
-  }
-
-  .stat-value {
-    font-size: 24px;
-  }
-
-  .stat-total {
-    font-size: 15px;
-  }
-
-  .dashboard-section {
-    padding: 20px;
-  }
-
-  .section-title {
-    font-size: 16px;
-    margin-bottom: 16px;
-    padding-bottom: 12px;
-  }
-
-  .status-badge {
-    padding: 2px 10px;
-    font-size: 12px;
-  }
-
-  .top-food-list {
-    gap: 12px;
-  }
-
-  .top-food-item {
-    padding: 10px 12px;
-  }
-
-  .food-image {
-    width: 40px;
-    height: 40px;
-  }
-
-  .food-rank {
-    font-size: 14px;
-  }
-
-  .food-name {
-    font-size: 14px;
-  }
-
-  .food-price {
-    font-size: 12px;
-  }
-
-  .food-qty {
-    font-size: 13px;
-  }
-
-  .food-revenue {
-    font-size: 12px;
-  }
+/* ----- Empty state on dark ----- */
+::ng-deep .ant-empty-description {
+  color: var(--ds-mute) !important;
+  font-family: var(--font-sans);
+  font-size: var(--ds-body-sm-size);
 }

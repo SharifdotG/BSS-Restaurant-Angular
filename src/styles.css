@@ -9,75 +9,233 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Color Variables */
+/* Vercel Design System Tokens */
 :root {
-  /* Primary colors (Green theme) */
-  --bg-primary-50: #e8f5e9;
-  --bg-primary-100: #c8e6c9;
-  --bg-primary-200: #a5d6a7;
-  --bg-primary-300: #81c784;
-  --bg-primary-400: #66bb6a;
-  --bg-primary-500: #4caf50;
-  --bg-primary-600: #43a047;
-  --bg-primary-700: #388e3c;
-  --bg-primary-800: #2e7d32;
-  --bg-primary-900: #1b5e20;
+  /* Surface ladder */
+  --ds-canvas: #ffffff;
+  --ds-canvas-soft: #fafafa;
+  --ds-canvas-soft-2: #f5f5f5;
 
-  /* Secondary colors */
-  --bg-secondary-light: #f5f5f5;
-  --bg-secondary-dark: #424242;
+  /* Ink (primary) — black ink IS the conversion target */
+  --ds-ink: #171717;
+  --ds-on-primary: #ffffff;
 
-  /* Ternary colors */
-  --bg-ternary-light: #e8f5e9;
+  /* Text scale */
+  --ds-body: #4d4d4d;
+  --ds-mute: #888888;
 
-  /* Warning colors */
-  --bg-warning-50: #fff3e0;
-  --bg-warning-100: #ffe0b2;
-  --bg-warning-200: #ffcc80;
-  --bg-warning-300: #ffb74d;
-  --bg-warning-400: #ffa726;
-  --bg-warning-500: #ff9800;
-  --bg-warning-600: #fb8c00;
+  /* Hairlines */
+  --ds-hairline: #ebebeb;
+  --ds-hairline-strong: #a1a1a1;
 
-  /* Text colors */
-  --text-dark-primary: #212121;
-  --text-dark-secondary: #757575;
-  --text-light-primary: #ffffff;
-  --text-light-secondary: #b0bec5;
+  /* Link / informational */
+  --ds-link: #0070f3;
+  --ds-link-deep: #0761d1;
+  --ds-link-bg-soft: #d3e5ff;
 
-  /* Other colors */
-  --color-white: #ffffff;
-  --color-black: #000000;
-  --color-gray-100: #f5f5f5;
-  --color-gray-200: #eeeeee;
-  --color-gray-300: #e0e0e0;
-  --color-gray-400: #bdbdbd;
-  --color-gray-500: #9e9e9e;
-  --color-gray-600: #757575;
-  --color-gray-700: #616161;
-  --color-gray-800: #424242;
-  --color-gray-900: #212121;
+  /* Semantic */
+  --ds-success: #0070f3;
+  --ds-success-soft: #d3e5ff;
+  --ds-success-deep: #0761d1;
+  --ds-error: #ee0000;
+  --ds-error-soft: #f7d4d6;
+  --ds-error-deep: #c50000;
+  --ds-warning: #f5a623;
+  --ds-warning-soft: #ffefcf;
+  --ds-warning-deep: #ab570a;
+
+  /* Accents */
+  --ds-violet: #7928ca;
+  --ds-violet-soft: #d8ccf1;
+  --ds-violet-deep: #4c2889;
+  --ds-cyan: #50e3c2;
+  --ds-cyan-soft: #aaffec;
+  --ds-cyan-deep: #29bc9b;
+  --ds-highlight-pink: #ff0080;
+  --ds-highlight-magenta: #eb367f;
+
+  /* Brand gradient (mesh) */
+  --ds-gradient-develop-start: #007cf0;
+  --ds-gradient-develop-end: #00dfd8;
+  --ds-gradient-preview-start: #7928ca;
+  --ds-gradient-preview-end: #ff0080;
+  --ds-gradient-ship-start: #ff4d4d;
+  --ds-gradient-ship-end: #f9cb28;
+
+  /* Selection */
+  --ds-selection-bg: #171717;
+  --ds-selection-fg: #f2f2f2;
+
+  /* Radius */
+  --ds-radius-none: 0;
+  --ds-radius-xs: 4px;
+  --ds-radius-sm: 6px;
+  --ds-radius-md: 8px;
+  --ds-radius-lg: 12px;
+  --ds-radius-xl: 16px;
+  --ds-radius-pill-sm: 64px;
+  --ds-radius-pill: 100px;
+  --ds-radius-full: 9999px;
+
+  /* Spacing */
+  --ds-space-xxs: 4px;
+  --ds-space-xs: 8px;
+  --ds-space-sm: 12px;
+  --ds-space-md: 16px;
+  --ds-space-lg: 24px;
+  --ds-space-xl: 32px;
+  --ds-space-2xl: 40px;
+  --ds-space-3xl: 48px;
+  --ds-space-4xl: 64px;
+  --ds-space-5xl: 96px;
+  --ds-space-6xl: 128px;
+  --ds-space-section: 192px;
+
+  /* Stacked-shadow elevation ladder */
+  --ds-shadow-1: 0 0 0 1px rgba(0, 0, 0, 0.08) inset;
+  --ds-shadow-2:
+    0 1px 1px rgba(0, 0, 0, 0.02), 0 2px 2px rgba(0, 0, 0, 0.04),
+    0 0 0 1px rgba(0, 0, 0, 0.06) inset;
+  --ds-shadow-3:
+    0 2px 2px rgba(0, 0, 0, 0.04), 0 8px 8px -8px rgba(0, 0, 0, 0.04),
+    0 0 0 1px rgba(0, 0, 0, 0.06) inset;
+  --ds-shadow-4:
+    0 2px 2px rgba(0, 0, 0, 0.04), 0 8px 16px -4px rgba(0, 0, 0, 0.05),
+    0 0 0 1px rgba(0, 0, 0, 0.06) inset;
+  --ds-shadow-5:
+    0 1px 1px rgba(0, 0, 0, 0.02), 0 8px 16px -4px rgba(0, 0, 0, 0.04),
+    0 24px 32px -8px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(0, 0, 0, 0.06) inset;
+
+  /* Font stacks */
+  --font-sans: 'Geist', 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
+
+  /* Type scale */
+  --ds-display-xl-size: 48px;
+  --ds-display-xl-line: 48px;
+  --ds-display-xl-tracking: -2.4px;
+  --ds-display-lg-size: 32px;
+  --ds-display-lg-line: 40px;
+  --ds-display-lg-tracking: -1.28px;
+  --ds-display-md-size: 24px;
+  --ds-display-md-line: 32px;
+  --ds-display-md-tracking: -0.96px;
+  --ds-display-sm-size: 20px;
+  --ds-display-sm-line: 28px;
+  --ds-display-sm-tracking: -0.6px;
+  --ds-body-lg-size: 18px;
+  --ds-body-lg-line: 28px;
+  --ds-body-md-size: 16px;
+  --ds-body-md-line: 24px;
+  --ds-body-sm-size: 14px;
+  --ds-body-sm-line: 20px;
+  --ds-body-sm-tracking: -0.28px;
+  --ds-caption-size: 12px;
+  --ds-caption-line: 16px;
+
+  /* Animation */
+  --transition-fast: 120ms ease-out;
+  --transition-base: 200ms ease-out;
+  --transition-slow: 320ms ease-out;
 }
 
-/* CRITICAL: Set CSS custom properties for NzZorro theme BEFORE any other styles */
+/* Dark Mode */
+[data-theme='dark'] {
+  --ds-canvas: #0a0a0a;
+  --ds-canvas-soft: #111111;
+  --ds-canvas-soft-2: #171717;
+
+  --ds-ink: #fafafa;
+  --ds-on-primary: #0a0a0a;
+
+  --ds-body: #a1a1a1;
+  --ds-mute: #737373;
+
+  --ds-hairline: #1f1f1f;
+  --ds-hairline-strong: #2e2e2e;
+
+  /* Softs become slightly tinted dark tones for badges */
+  --ds-link-bg-soft: rgba(0, 112, 243, 0.18);
+  --ds-success-soft: rgba(0, 112, 243, 0.18);
+  --ds-error-soft: rgba(238, 0, 0, 0.18);
+  --ds-warning-soft: rgba(245, 166, 35, 0.18);
+  --ds-violet-soft: rgba(121, 40, 202, 0.22);
+  --ds-cyan-soft: rgba(80, 227, 194, 0.18);
+
+  /* Deeps become brighter so soft-bg + deep-text remains legible */
+  --ds-link-deep: #79b8ff;
+  --ds-success-deep: #79b8ff;
+  --ds-error-deep: #ff6b6b;
+  --ds-warning-deep: #f5a623;
+  --ds-violet-deep: #c4a5f5;
+  --ds-cyan-deep: #6ff0d2;
+
+  /* Subtler shadows on dark surfaces */
+  --ds-shadow-1: 0 0 0 1px rgba(255, 255, 255, 0.06) inset;
+  --ds-shadow-2:
+    0 1px 1px rgba(0, 0, 0, 0.5), 0 2px 2px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.06) inset;
+  --ds-shadow-3:
+    0 2px 2px rgba(0, 0, 0, 0.5), 0 8px 8px -8px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.06) inset;
+  --ds-shadow-4:
+    0 2px 2px rgba(0, 0, 0, 0.5), 0 8px 16px -4px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.06) inset;
+  --ds-shadow-5:
+    0 1px 1px rgba(0, 0, 0, 0.5), 0 8px 16px -4px rgba(0, 0, 0, 0.5),
+    0 24px 32px -8px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.08) inset;
+
+  --ds-selection-bg: #fafafa;
+  --ds-selection-fg: #0a0a0a;
+}
+
+/* Legacy Token Aliases */
 :root {
-  --ant-primary-color: #66bb6a;
-  --ant-primary-color-hover: #5cb660;
-  --ant-primary-color-active: #4caf50;
-  --ant-primary-color-outline: rgba(102, 187, 106, 0.2);
-  --ant-primary-1: #f0f9f1;
-  --ant-primary-2: #d4efd6;
-  --ant-primary-3: #a5d6a7;
-  --ant-primary-4: #81c784;
-  --ant-primary-5: #66bb6a;
-  --ant-primary-6: #66bb6a;
-  --ant-primary-7: #4caf50;
+  --bg-primary-50: var(--ds-canvas-soft);
+  --bg-primary-100: var(--ds-canvas-soft-2);
+  --bg-primary-200: var(--ds-hairline);
+  --bg-primary-300: var(--ds-hairline-strong);
+  --bg-primary-400: var(--ds-ink);
+  --bg-primary-500: var(--ds-ink);
+  --bg-primary-600: var(--ds-ink);
+  --bg-primary-700: var(--ds-ink);
+  --bg-primary-800: var(--ds-ink);
+  --bg-primary-900: var(--ds-ink);
 
-  /* Font families */
-  --font-primary: 'Work Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  --font-secondary: 'Poppins', 'Work Sans', system-ui, sans-serif;
+  --bg-secondary-light: var(--ds-canvas-soft);
+  --bg-secondary-dark: var(--ds-canvas-soft-2);
+  --bg-ternary-light: var(--ds-canvas-soft);
 
-  /* Type scale (rem-based, 16px root) */
+  --bg-warning-50: var(--ds-warning-soft);
+  --bg-warning-100: var(--ds-warning-soft);
+  --bg-warning-200: var(--ds-warning-soft);
+  --bg-warning-300: var(--ds-warning);
+  --bg-warning-400: var(--ds-warning);
+  --bg-warning-500: var(--ds-warning);
+  --bg-warning-600: var(--ds-warning-deep);
+
+  --text-dark-primary: var(--ds-ink);
+  --text-dark-secondary: var(--ds-body);
+  --text-light-primary: var(--ds-on-primary);
+  --text-light-secondary: var(--ds-body);
+
+  --color-white: var(--ds-canvas);
+  --color-black: var(--ds-ink);
+  --color-gray-100: var(--ds-canvas-soft);
+  --color-gray-200: var(--ds-canvas-soft-2);
+  --color-gray-300: var(--ds-hairline);
+  --color-gray-400: var(--ds-hairline-strong);
+  --color-gray-500: var(--ds-mute);
+  --color-gray-600: var(--ds-body);
+  --color-gray-700: var(--ds-body);
+  --color-gray-800: var(--ds-ink);
+  --color-gray-900: var(--ds-ink);
+
+  /* Geist */
+  --font-primary: var(--font-sans);
+  --font-secondary: var(--font-sans);
+
+  /* Legacy type scale stays (in rem) */
   --text-xs: 0.75rem;
   --text-sm: 0.875rem;
   --text-base: 1rem;
@@ -89,125 +247,69 @@
   --text-4xl: 2.75rem;
   --text-5xl: 3.25rem;
 
-  /* Line heights */
   --leading-tight: 1.2;
   --leading-normal: 1.5;
-
-  /* Animation tokens */
-  --transition-fast: 120ms ease-out;
-  --transition-base: 200ms ease-out;
-  --transition-slow: 320ms ease-out;
 }
 
-/* CRITICAL: Override NzZorro primary button color with maximum specificity */
-.ant-btn-primary,
-.ant-btn.ant-btn-primary {
-  font-size: 15px !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  height: 44px !important;
-  padding: 12px !important;
-  background: #f1faf5 !important;
-  background-color: #f1faf5 !important;
-  border: #66bb6a 1px solid !important;
-  border-color: #66bb6a !important;
-  border-radius: 8px !important;
-  color: #000 !important;
+/* ng-zorro theme */
+:root {
+  --ant-primary-color: var(--ds-ink);
+  --ant-primary-color-hover: var(--ds-ink);
+  --ant-primary-color-active: var(--ds-ink);
+  --ant-primary-color-outline: rgba(23, 23, 23, 0.16);
+  --ant-primary-1: var(--ds-canvas-soft);
+  --ant-primary-2: var(--ds-canvas-soft-2);
+  --ant-primary-3: var(--ds-hairline);
+  --ant-primary-4: var(--ds-hairline-strong);
+  --ant-primary-5: var(--ds-ink);
+  --ant-primary-6: var(--ds-ink);
+  --ant-primary-7: var(--ds-ink);
 }
 
-.ant-btn-primary:hover,
-.ant-btn-primary:focus,
-.ant-btn.ant-btn-primary:hover,
-.ant-btn.ant-btn-primary:focus {
-  background: #d2e6d2 !important;
-  background-color: #d2e6d2 !important;
-  border-color: #66bb6a !important;
-  color: #000 !important;
+[data-theme='dark'] {
+  --ant-primary-color-outline: rgba(250, 250, 250, 0.16);
 }
 
-.ant-btn-primary:active,
-.ant-btn.ant-btn-primary:active {
-  background: #c8e0c8 !important;
-  background-color: #c8e0c8 !important;
-  border-color: #66bb6a !important;
-  color: #000 !important;
-}
-
-.ant-btn-primary:not(:disabled):not(.ant-btn-disabled):hover,
-.ant-btn.ant-btn-primary:not(:disabled):not(.ant-btn-disabled):hover {
-  background: #d2e6d2 !important;
-  background-color: #d2e6d2 !important;
-  border-color: #66bb6a !important;
-  color: #000 !important;
-}
-
-.ant-btn-primary:not(:disabled):not(.ant-btn-disabled):active,
-.ant-btn.ant-btn-primary:not(:disabled):not(.ant-btn-disabled):active {
-  background: #c8e0c8 !important;
-  background-color: #c8e0c8 !important;
-  border-color: #66bb6a !important;
-  color: #000 !important;
-}
-
-/* Danger button (Cancel button) styling */
-.ant-btn-dangerous.ant-btn-default,
-.ant-btn.ant-btn-dangerous.ant-btn-default {
-  font-size: 15px !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  height: 44px !important;
-  padding: 12px !important;
-  background: #fff !important;
-  background-color: #fff !important;
-  border-color: #d9d9d9 !important;
-  border-radius: 8px !important;
-  color: rgba(0, 0, 0, 0.88) !important;
-  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.016) !important;
-}
-
-.ant-btn-dangerous.ant-btn-default:hover,
-.ant-btn-dangerous.ant-btn-default:focus,
-.ant-btn.ant-btn-dangerous.ant-btn-default:hover,
-.ant-btn.ant-btn-dangerous.ant-btn-default:focus {
-  background: #ff4d4f !important;
-  background-color: #ff4d4f !important;
-  border-color: #ff4d4f !important;
-  color: #fff !important;
-}
-
-.ant-btn-dangerous.ant-btn-default:active,
-.ant-btn.ant-btn-dangerous.ant-btn-default:active {
-  background: #d9363e !important;
-  background-color: #d9363e !important;
-  border-color: #d9363e !important;
-  color: #fff !important;
-}
-
-/* Global styles */
+/* Global Styles */
 * {
   box-sizing: border-box;
-  font-family: var(--font-primary);
+  font-family: var(--font-sans);
 }
 
 *::selection {
-  color: black;
-  background: #c8e6c9;
+  color: var(--ds-selection-fg);
+  background: var(--ds-selection-bg);
 }
 
 *::-webkit-scrollbar {
-  width: 4px;
+  width: 6px;
+  height: 6px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background: var(--ds-hairline-strong);
+  border-radius: 9999px;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--ds-body);
 }
 
 html,
 body {
   height: 100%;
   margin: 0;
-  font-family: var(--font-primary);
+  font-family: var(--font-sans);
   font-size: var(--text-base);
   line-height: var(--leading-normal);
-  color: var(--text-dark-primary);
+  color: var(--ds-ink);
+  background: var(--ds-canvas);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition:
+    background-color var(--transition-base),
+    color var(--transition-base);
 }
 
 h1,
@@ -216,389 +318,447 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: var(--font-secondary);
-  line-height: var(--leading-tight);
+  font-family: var(--font-sans);
   font-weight: 600;
   margin: 0;
+  color: var(--ds-ink);
+  letter-spacing: -0.6px;
+  line-height: var(--leading-tight);
 }
 
 h1 {
-  font-size: var(--text-5xl);
-  font-weight: 700;
+  font-size: var(--ds-display-xl-size);
+  line-height: var(--ds-display-xl-line);
+  letter-spacing: var(--ds-display-xl-tracking);
 }
 h2 {
-  font-size: var(--text-4xl);
-  font-weight: 700;
+  font-size: var(--ds-display-lg-size);
+  line-height: var(--ds-display-lg-line);
+  letter-spacing: var(--ds-display-lg-tracking);
 }
 h3 {
-  font-size: var(--text-3xl);
+  font-size: var(--ds-display-md-size);
+  line-height: var(--ds-display-md-line);
+  letter-spacing: var(--ds-display-md-tracking);
 }
 h4 {
-  font-size: var(--text-2xl);
+  font-size: var(--ds-display-sm-size);
+  line-height: var(--ds-display-sm-line);
+  letter-spacing: var(--ds-display-sm-tracking);
 }
 h5 {
-  font-size: var(--text-xl);
+  font-size: var(--ds-body-lg-size);
+  line-height: var(--ds-body-lg-line);
 }
 h6 {
-  font-size: var(--text-lg);
+  font-size: var(--ds-body-md-size);
+  line-height: var(--ds-body-md-line);
 }
 
 p {
   margin: 0;
 }
 
-.ant-modal-title {
-  font-family: var(--font-secondary);
-  font-weight: 600;
+/* Mono caption */
+.ds-caption-mono {
+  font-family: var(--font-mono);
+  font-size: var(--ds-caption-size);
+  line-height: var(--ds-caption-line);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ds-mute);
 }
 
-/* Poppins for display sizes and heading-like classes */
-.text-xl,
-.text-2xl,
-.text-3xl,
-.text-4xl,
-.text-5xl,
-.text-6xl,
-.text-7xl,
-.section-title,
-.chart-title,
-.stat-value,
-.food-name,
-.food-rank,
-.add-table-button,
-.add-food-button,
-.add-employee-button,
-.add-expense-button,
-.add-table-button span,
-.add-food-button span,
-.add-employee-button span,
-.add-expense-button span,
-.modal-header h3,
-.login-form-header p,
-.custom-table-title,
-.custom-table-title-button {
-  font-family: var(--font-secondary);
+/* Mesh-gradient backdrop */
+.ds-mesh {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+.ds-mesh::before {
+  content: '';
+  position: absolute;
+  inset: -40% -10% auto -10%;
+  height: 280px;
+  background:
+    radial-gradient(circle at 18% 30%, var(--ds-gradient-develop-end) 0%, transparent 45%),
+    radial-gradient(circle at 50% 20%, var(--ds-gradient-develop-start) 0%, transparent 50%),
+    radial-gradient(circle at 75% 60%, var(--ds-gradient-preview-start) 0%, transparent 55%),
+    radial-gradient(circle at 90% 40%, var(--ds-highlight-pink) 0%, transparent 45%),
+    radial-gradient(circle at 30% 80%, var(--ds-gradient-ship-end) 0%, transparent 45%);
+  filter: blur(70px) saturate(120%);
+  opacity: 0.32;
+  z-index: -1;
+  pointer-events: none;
+}
+[data-theme='dark'] .ds-mesh::before {
+  opacity: 0.42;
+  filter: blur(80px) saturate(140%);
 }
 
-/* Component styles */
+/* Primary buttons */
+.ant-btn-primary,
+.ant-btn.ant-btn-primary {
+  background: var(--ds-ink);
+  background-color: var(--ds-ink);
+  border: 1px solid var(--ds-ink);
+  border-color: var(--ds-ink);
+  border-radius: var(--ds-radius-sm);
+  color: var(--ds-on-primary);
+  font-family: var(--font-sans);
+  font-size: var(--ds-body-sm-size);
+  font-weight: 500;
+  letter-spacing: var(--ds-body-sm-tracking);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  padding: 0 var(--ds-space-md);
+  box-shadow: none;
+  transition:
+    background-color var(--transition-base),
+    border-color var(--transition-base),
+    color var(--transition-base),
+    transform var(--transition-fast);
+}
+
+.ant-btn-primary:hover,
+.ant-btn-primary:focus,
+.ant-btn.ant-btn-primary:hover,
+.ant-btn.ant-btn-primary:focus,
+.ant-btn-primary:not(:disabled):not(.ant-btn-disabled):hover,
+.ant-btn.ant-btn-primary:not(:disabled):not(.ant-btn-disabled):hover {
+  background: var(--ds-body);
+  background-color: var(--ds-body);
+  border-color: var(--ds-body);
+  color: var(--ds-on-primary);
+}
+
+.ant-btn-primary:active,
+.ant-btn.ant-btn-primary:active,
+.ant-btn-primary:not(:disabled):not(.ant-btn-disabled):active,
+.ant-btn.ant-btn-primary:not(:disabled):not(.ant-btn-disabled):active {
+  background: var(--ds-ink);
+  background-color: var(--ds-ink);
+  border-color: var(--ds-ink);
+  color: var(--ds-on-primary);
+  transform: translateY(1px);
+}
+
+/* Default ng-zorro buttons */
+.ant-btn-default,
+.ant-btn.ant-btn-default {
+  background: var(--ds-canvas);
+  border: 1px solid var(--ds-hairline);
+  border-radius: var(--ds-radius-sm);
+  color: var(--ds-ink);
+  font-family: var(--font-sans);
+  font-size: var(--ds-body-sm-size);
+  font-weight: 500;
+  height: 40px;
+  padding: 0 var(--ds-space-md);
+  box-shadow: none;
+  transition:
+    background-color var(--transition-base),
+    border-color var(--transition-base),
+    color var(--transition-base);
+}
+
+.ant-btn-default:hover,
+.ant-btn-default:focus,
+.ant-btn.ant-btn-default:hover,
+.ant-btn.ant-btn-default:focus,
+.ant-btn-default:not(:disabled):not(.ant-btn-disabled):hover {
+  background: var(--ds-canvas-soft);
+  border-color: var(--ds-hairline-strong);
+  color: var(--ds-ink);
+}
+
+/* Danger (Cancel-style) buttons */
+.ant-btn-dangerous.ant-btn-default,
+.ant-btn.ant-btn-dangerous.ant-btn-default {
+  background: var(--ds-canvas);
+  border: 1px solid var(--ds-hairline);
+  border-radius: var(--ds-radius-sm);
+  color: var(--ds-ink);
+  font-family: var(--font-sans);
+  font-size: var(--ds-body-sm-size);
+  font-weight: 500;
+  height: 40px;
+  padding: 0 var(--ds-space-md);
+  box-shadow: none;
+}
+
+.ant-btn-dangerous.ant-btn-default:hover,
+.ant-btn-dangerous.ant-btn-default:focus {
+  background: var(--ds-error);
+  border-color: var(--ds-error);
+  color: var(--ds-on-primary);
+}
+
+.ant-btn-dangerous.ant-btn-default:active {
+  background: var(--ds-error-deep);
+  border-color: var(--ds-error-deep);
+  color: var(--ds-on-primary);
+}
+
+/* Primary button */
 .button-primary {
-  background-color: var(--bg-primary-600);
-  color: var(--text-primary);
-  height: 52px;
+  background-color: var(--ds-ink);
+  color: var(--ds-on-primary);
+  height: 48px;
+  border-radius: var(--ds-radius-pill);
+  font-weight: 500;
+  letter-spacing: 0;
   transition: var(--transition-base);
 }
 
 .button-primary:hover {
-  color: var(--text-primary);
-  background-color: var(--bg-primary-700);
+  color: var(--ds-on-primary);
+  background-color: var(--ds-body);
 }
 
 .button-secondary {
-  background-color: var(--bg-secondary-light);
-  color: var(--text-dark-primary);
-  height: 52px;
+  background-color: var(--ds-canvas);
+  color: var(--ds-ink);
+  height: 48px;
+  border: 1px solid var(--ds-hairline);
+  border-radius: var(--ds-radius-pill);
+  font-weight: 500;
   transition: var(--transition-base);
 }
 
 .button-secondary:hover {
-  background-color: var(--bg-secondary-light-100);
+  background-color: var(--ds-canvas-soft);
+  border-color: var(--ds-hairline-strong);
 }
 
 .login-button {
-  background-color: var(--bg-primary-600);
-  color: white;
-  height: 52px;
+  background-color: var(--ds-ink);
+  color: var(--ds-on-primary);
+  height: 48px;
+  border: none;
+  border-radius: var(--ds-radius-pill);
+  font-weight: 500;
   transition: var(--transition-base);
 }
 
-.login-button:hover {
-  color: white;
-  background-color: var(--bg-primary-700);
-}
-
+.login-button:hover,
 .login-button:active,
 .login-button:focus {
-  color: white;
+  color: var(--ds-on-primary);
+  background-color: var(--ds-body);
 }
 
-.drop-down-button {
-  background-color: white;
-  border-radius: 8px;
-  height: 40px;
-  width: 40px;
-  border: none;
+.drop-down-button,
+.edit-button {
+  background-color: var(--ds-canvas);
+  border-radius: var(--ds-radius-sm);
+  height: 36px;
+  width: 36px;
+  border: 1px solid var(--ds-hairline);
   transition: var(--transition-base);
+  color: var(--ds-ink);
 }
 
-.drop-down-button span {
-  color: var(--text-dark-primary);
-  font-size: 20px;
-  font-weight: 800;
-  letter-spacing: 2px;
+.drop-down-button span,
+.edit-button span {
+  color: var(--ds-ink);
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 1px;
   transition: color var(--transition-fast);
 }
 
-.drop-down-button:hover {
-  background-color: var(--bg-warning-600);
-  transform: scale(1.1);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+.drop-down-button:hover,
+.edit-button:hover {
+  background-color: var(--ds-canvas-soft);
+  border-color: var(--ds-hairline-strong);
+  box-shadow: var(--ds-shadow-2);
 }
 
-.drop-down-button:hover span {
-  color: white;
+.drop-down-button:active,
+.edit-button:active {
+  transform: translateY(1px);
 }
 
-.drop-down-button:active {
-  transform: scale(0.95);
+/* Edit affordance hovers blue (link), Delete stays destructive red */
+.drop-down-button:has([nzType='edit']):hover,
+.edit-button:hover {
+  background-color: var(--ds-link);
+  border-color: var(--ds-link);
 }
 
-/* Edit button specific hover - red background */
-.drop-down-button:has([nzType='edit']):hover {
-  background-color: #ff4d4f !important;
+.drop-down-button:has([nzType='edit']):hover span,
+.edit-button:hover span {
+  color: var(--ds-on-primary);
 }
 
-.drop-down-button:has([nzType='edit']):hover span {
-  color: white;
-}
-
-/* Delete button specific hover - red background */
 .drop-down-button:has([nzType='delete']):hover {
-  background-color: #ff4d4f !important;
+  background-color: var(--ds-error);
+  border-color: var(--ds-error);
 }
 
 .drop-down-button:has([nzType='delete']):hover span {
-  color: white;
-}
-
-.edit-button {
-  background-color: white;
-  border-radius: 8px;
-  height: 40px;
-  width: 40px;
-  border: none;
-  transition: var(--transition-base);
-}
-
-.edit-button span {
-  color: var(--text-dark-primary);
-  font-size: 20px;
-  font-weight: 800;
-  letter-spacing: 2px;
-  transition: color var(--transition-fast);
-}
-
-.edit-button:hover {
-  background-color: #ff4d4f;
-  transform: scale(1.1);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-.edit-button:hover span {
-  color: white;
-}
-
-.edit-button:active {
-  transform: scale(0.95);
+  color: var(--ds-on-primary);
 }
 
 .delete-button {
   border-radius: 0;
-  height: 48px;
+  height: 44px;
   background: transparent;
-  color: var(--text-dark-primary);
+  color: var(--ds-ink);
   font-weight: 400;
-  font-size: 18px;
+  font-size: 15px;
   transition: var(--transition-base);
 }
 
 .delete-button:hover {
-  color: white;
-  background: var(--bg-warning-600) !important;
+  color: var(--ds-on-primary);
+  background: var(--ds-error) !important;
 }
 
 .delete-button:active {
-  color: whitesmoke;
-  background: var(--bg-warning-600);
+  color: var(--ds-on-primary);
+  background: var(--ds-error-deep);
 }
 
 .file-upload {
-  border: 1px dashed #ccc;
-  border-radius: 8px;
+  border: 1px dashed var(--ds-hairline-strong);
+  border-radius: var(--ds-radius-md);
   min-height: 300px;
+  background: var(--ds-canvas-soft);
+  color: var(--ds-body);
 }
 
-/* Data table styles */
+/* Data tables */
 .data-table {
   width: 100%;
   border-collapse: collapse;
 }
 
 .data-table thead {
-  background-color: var(--bg-ternary-light);
+  background-color: var(--ds-canvas-soft);
 }
 
 .data-table th {
-  padding: 12px;
+  padding: var(--ds-space-sm);
   text-align: left;
-  font-weight: 600;
-  color: var(--text-dark-primary);
-  border-bottom: 2px solid var(--bg-secondary-light);
+  font-family: var(--font-mono);
+  font-size: var(--ds-caption-size);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 500;
+  color: var(--ds-mute);
+  border-bottom: 1px solid var(--ds-hairline);
 }
 
 .data-table td {
-  padding: 12px;
-  border-bottom: 1px solid var(--bg-secondary-light);
+  padding: var(--ds-space-sm);
+  border-bottom: 1px solid var(--ds-hairline);
+  color: var(--ds-ink);
+  font-size: var(--ds-body-sm-size);
+}
+
+.data-table tbody tr {
+  transition: background-color var(--transition-fast);
 }
 
 .data-table tbody tr:hover {
-  background-color: var(--bg-ternary-light);
+  background-color: var(--ds-canvas-soft);
 }
 
-/* Modal styles */
+/* Modal chrome */
 .modal-header {
-  padding: 24px;
-  background-color: var(--bg-primary-600);
-  color: white;
+  padding: var(--ds-space-lg);
+  background-color: var(--ds-canvas);
+  color: var(--ds-ink);
+  border-bottom: 1px solid var(--ds-hairline);
 }
 
 .modal-header h3 {
   margin: 0;
-  font-size: 1.5rem;
+  font-size: var(--ds-display-sm-size);
+  line-height: var(--ds-display-sm-line);
+  letter-spacing: var(--ds-display-sm-tracking);
   font-weight: 600;
+  color: var(--ds-ink);
 }
 
 .modal-content {
-  padding: 24px;
+  padding: var(--ds-space-lg);
+  background: var(--ds-canvas);
+  color: var(--ds-ink);
 }
 
 .modal-footer {
-  padding: 16px 24px;
-  background-color: var(--bg-ternary-light);
+  padding: var(--ds-space-md) var(--ds-space-lg);
+  background-color: var(--ds-canvas);
+  border-top: 1px solid var(--ds-hairline);
   display: flex;
   justify-content: flex-end;
-  gap: 12px;
+  gap: var(--ds-space-sm);
 }
 
-/* Override NzZorro primary button color globally for modals */
-.ant-modal-footer .ant-btn-primary {
-  background-color: #66bb6a !important;
-  border-color: #66bb6a !important;
-  color: white !important;
-}
-
-.ant-modal-footer .ant-btn-primary:hover {
-  background-color: #5cb660 !important;
-  border-color: #5cb660 !important;
-  color: white !important;
-}
-
-.ant-modal-footer .ant-btn-primary:active,
-.ant-modal-footer .ant-btn-primary:focus {
-  background-color: #4caf50 !important;
-  border-color: #4caf50 !important;
-  color: white !important;
-}
-
-.ant-modal-footer .ant-btn-primary:not(:disabled):not(.ant-btn-disabled):hover {
-  background-color: #5cb660 !important;
-  border-color: #5cb660 !important;
-}
-
-.ant-modal-footer .ant-btn-primary:not(:disabled):not(.ant-btn-disabled):active {
-  background-color: #4caf50 !important;
-  border-color: #4caf50 !important;
-}
-
-/* Global override for all primary buttons (NzZorro theme override) */
-.ant-btn-primary,
-button.ant-btn-primary,
-.ant-btn.ant-btn-primary {
-  background-color: #66bb6a !important;
-  border-color: #66bb6a !important;
-  color: white !important;
-}
-
-.ant-btn-primary:hover,
-.ant-btn-primary:focus,
-button.ant-btn-primary:hover,
-button.ant-btn-primary:focus,
-.ant-btn.ant-btn-primary:hover,
-.ant-btn.ant-btn-primary:focus {
-  background-color: #5cb660 !important;
-  border-color: #5cb660 !important;
-  color: white !important;
-}
-
-.ant-btn-primary:active,
-button.ant-btn-primary:active,
-.ant-btn.ant-btn-primary:active {
-  background-color: #4caf50 !important;
-  border-color: #4caf50 !important;
-  color: white !important;
-}
-
-.ant-btn-primary:not(:disabled):not(.ant-btn-disabled),
-button.ant-btn-primary:not(:disabled):not(.ant-btn-disabled),
-.ant-btn.ant-btn-primary:not(:disabled):not(.ant-btn-disabled) {
-  background-color: #66bb6a !important;
-  border-color: #66bb6a !important;
-}
-
-.ant-btn-primary:not(:disabled):not(.ant-btn-disabled):hover,
-.ant-btn-primary:not(:disabled):not(.ant-btn-disabled):focus,
-button.ant-btn-primary:not(:disabled):not(.ant-btn-disabled):hover,
-button.ant-btn-primary:not(:disabled):not(.ant-btn-disabled):focus,
-.ant-btn.ant-btn-primary:not(:disabled):not(.ant-btn-disabled):hover,
-.ant-btn.ant-btn-primary:not(:disabled):not(.ant-btn-disabled):focus {
-  background-color: #5cb660 !important;
-  border-color: #5cb660 !important;
-}
-
-.ant-btn-primary:not(:disabled):not(.ant-btn-disabled):active,
-button.ant-btn-primary:not(:disabled):not(.ant-btn-disabled):active,
-.ant-btn.ant-btn-primary:not(:disabled):not(.ant-btn-disabled):active {
-  background-color: #4caf50 !important;
-  border-color: #4caf50 !important;
-}
-
-/* Specific override for modal buttons */
-.ant-modal .ant-modal-footer .ant-btn-primary {
-  background-color: #66bb6a !important;
-  border-color: #66bb6a !important;
-}
-
-.ant-modal .ant-modal-footer .ant-btn-primary:hover {
-  background-color: #5cb660 !important;
-  border-color: #5cb660 !important;
-}
-
-/* Global modal border radius styling */
+/* ng-zorro modal */
 .ant-modal-content {
-  border-radius: 16px !important;
+  border-radius: var(--ds-radius-xl) !important;
   overflow: hidden;
+  background: var(--ds-canvas) !important;
+  box-shadow: var(--ds-shadow-5) !important;
 }
 
 .ant-modal-header {
-  border-radius: 16px 16px 0 0 !important;
+  border-radius: var(--ds-radius-xl) var(--ds-radius-xl) 0 0 !important;
+  background: var(--ds-canvas) !important;
+  border-bottom: 1px solid var(--ds-hairline) !important;
+}
+
+.ant-modal-title {
+  font-family: var(--font-sans) !important;
+  font-weight: 600 !important;
+  color: var(--ds-ink) !important;
+  font-size: var(--ds-display-sm-size) !important;
+  letter-spacing: var(--ds-display-sm-tracking) !important;
+}
+
+.ant-modal-body {
+  background: var(--ds-canvas) !important;
+  color: var(--ds-ink) !important;
+  overflow-y: auto;
+  flex: 1 1 auto;
 }
 
 .ant-modal-footer {
-  border-radius: 0 0 16px 16px !important;
+  border-radius: 0 0 var(--ds-radius-xl) var(--ds-radius-xl) !important;
+  background: var(--ds-canvas) !important;
+  border-top: 1px solid var(--ds-hairline) !important;
 }
 
-/* Blurred, dimmed backdrop for every modal */
+.ant-modal-close-x {
+  color: var(--ds-mute) !important;
+}
+
+.ant-modal-close-x:hover {
+  color: var(--ds-ink) !important;
+}
+
 .ant-modal-mask,
 .ant-image-preview-mask {
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  background-color: rgba(15, 23, 42, 0.45);
+  background-color: rgba(10, 10, 10, 0.55);
 }
 
-/* Guarantee top + bottom breathing room for every modal,
-   and let the body scroll instead of letting tall content touch the edges. */
+[data-theme='dark'] .ant-modal-mask,
+[data-theme='dark'] .ant-image-preview-mask {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
 .ant-modal-wrap {
-  padding-top: 24px;
-  padding-bottom: 24px;
+  padding-top: var(--ds-space-lg);
+  padding-bottom: var(--ds-space-lg);
 }
 
 .ant-modal {
@@ -613,95 +773,174 @@ button.ant-btn-primary:not(:disabled):not(.ant-btn-disabled):active,
   max-height: calc(100vh - 48px);
 }
 
-.ant-modal-body {
-  overflow-y: auto;
-  flex: 1 1 auto;
-}
-
-/* Confirmation modal button styling */
+/* Confirmation modal buttons (e.g. delete dialog) */
 .ant-modal-confirm .ant-modal-confirm-btns {
   display: flex !important;
-  gap: 12px !important;
-  justify-content: center !important;
+  gap: var(--ds-space-sm) !important;
+  justify-content: flex-end !important;
 }
 
 .ant-modal-confirm .ant-modal-confirm-btns .ant-btn {
-  flex: 1 !important;
-  min-width: 140px !important;
-  height: 48px !important;
-  border-radius: 8px !important;
+  min-width: 96px !important;
+  height: 40px !important;
+  border-radius: var(--ds-radius-sm) !important;
   font-weight: 500 !important;
-  font-size: 16px !important;
+  font-size: var(--ds-body-sm-size) !important;
   transition: var(--transition-base) !important;
 }
 
-/* Cancel button - light gray background (left side) */
-.ant-modal-confirm .ant-modal-confirm-btns .ant-btn-default,
-.ant-modal-confirm .ant-modal-confirm-btns button:first-child {
-  background-color: #e8e8e8 !important;
-  border: 2px solid #e8e8e8 !important;
-  color: #000000 !important;
-  box-shadow: none !important;
+.ant-modal-confirm .ant-modal-confirm-btns .ant-btn-default {
+  background-color: var(--ds-canvas) !important;
+  border: 1px solid var(--ds-hairline) !important;
+  color: var(--ds-ink) !important;
 }
 
-.ant-modal-confirm .ant-modal-confirm-btns .ant-btn-default a,
-.ant-modal-confirm .ant-modal-confirm-btns button:first-child a {
-  color: #000000 !important;
+.ant-modal-confirm .ant-modal-confirm-btns .ant-btn-default:hover {
+  background-color: var(--ds-canvas-soft) !important;
+  border-color: var(--ds-hairline-strong) !important;
+  color: var(--ds-ink) !important;
 }
 
-.ant-modal-confirm .ant-modal-confirm-btns .ant-btn-default:hover,
-.ant-modal-confirm .ant-modal-confirm-btns .ant-btn-default:focus,
-.ant-modal-confirm .ant-modal-confirm-btns .ant-btn-default:active,
-.ant-modal-confirm .ant-modal-confirm-btns button:first-child:hover,
-.ant-modal-confirm .ant-modal-confirm-btns button:first-child:focus,
-.ant-modal-confirm .ant-modal-confirm-btns button:first-child:active {
-  background-color: var(--bg-primary-600) !important;
-  border: 2px solid var(--bg-primary-600) !important;
-  color: white !important;
-  box-shadow: none !important;
-}
-
-.ant-modal-confirm .ant-modal-confirm-btns .ant-btn-default:hover a,
-.ant-modal-confirm .ant-modal-confirm-btns .ant-btn-default:focus a,
-.ant-modal-confirm .ant-modal-confirm-btns .ant-btn-default:active a,
-.ant-modal-confirm .ant-modal-confirm-btns button:first-child:hover a,
-.ant-modal-confirm .ant-modal-confirm-btns button:first-child:focus a,
-.ant-modal-confirm .ant-modal-confirm-btns button:first-child:active a {
-  color: white !important;
-}
-
-/* OK/Delete button - red (right side) */
-.ant-modal-confirm .ant-modal-confirm-btns .ant-btn-primary {
-  background-color: #dc2626 !important;
-  border: none !important;
-  color: white !important;
+.ant-modal-confirm .ant-modal-confirm-btns .ant-btn-primary,
+.ant-modal-confirm .ant-modal-confirm-btns .ant-btn-primary.ant-btn-dangerous {
+  background-color: var(--ds-error) !important;
+  border-color: var(--ds-error) !important;
+  color: var(--ds-on-primary) !important;
 }
 
 .ant-modal-confirm .ant-modal-confirm-btns .ant-btn-primary:hover,
-.ant-modal-confirm .ant-modal-confirm-btns .ant-btn-primary:focus {
-  background-color: #b91c1c !important;
-  border: none !important;
-  color: white !important;
+.ant-modal-confirm .ant-modal-confirm-btns .ant-btn-primary.ant-btn-dangerous:hover {
+  background-color: var(--ds-error-deep) !important;
+  border-color: var(--ds-error-deep) !important;
 }
 
-/* Additional specificity for danger buttons */
-.ant-modal-confirm .ant-modal-confirm-btns .ant-btn-primary.ant-btn-dangerous {
-  background-color: #dc2626 !important;
-  border: none !important;
-  color: white !important;
+.ant-modal-confirm .ant-modal-confirm-body {
+  color: var(--ds-ink) !important;
 }
 
-.ant-modal-confirm .ant-modal-confirm-btns .ant-btn-primary.ant-btn-dangerous:hover,
-.ant-modal-confirm .ant-modal-confirm-btns .ant-btn-primary.ant-btn-dangerous:focus {
-  background-color: #b91c1c !important;
-  border: none !important;
-  color: white !important;
+.ant-modal-confirm .ant-modal-confirm-title,
+.ant-modal-confirm .ant-modal-confirm-content {
+  color: var(--ds-ink) !important;
 }
 
-/* Employee assignment dropdown height increase */
-.ant-select-dropdown {
+/* Modal-footer primary keeps the ink black pill */
+.ant-modal-footer .ant-btn-primary {
+  background-color: var(--ds-ink) !important;
+  border-color: var(--ds-ink) !important;
+  color: var(--ds-on-primary) !important;
+}
+
+.ant-modal-footer .ant-btn-primary:hover {
+  background-color: var(--ds-body) !important;
+  border-color: var(--ds-body) !important;
+  color: var(--ds-on-primary) !important;
+}
+
+/* Input fields */
+.ant-input,
+.ant-input-affix-wrapper,
+.ant-input-number,
+.ant-select-selector,
+.ant-picker {
+  background: var(--ds-canvas) !important;
+  border-color: var(--ds-hairline) !important;
+  color: var(--ds-ink) !important;
+  border-radius: var(--ds-radius-sm) !important;
+  font-family: var(--font-sans) !important;
+}
+
+.ant-input::placeholder,
+.ant-input-affix-wrapper input::placeholder {
+  color: var(--ds-mute) !important;
+}
+
+.ant-input:hover,
+.ant-input-affix-wrapper:hover,
+.ant-input-number:hover,
+.ant-select:hover .ant-select-selector,
+.ant-picker:hover {
+  border-color: var(--ds-hairline-strong) !important;
+}
+
+.ant-input:focus,
+.ant-input-affix-wrapper-focused,
+.ant-input-number-focused,
+.ant-select-focused .ant-select-selector,
+.ant-picker-focused {
+  border-color: var(--ds-ink) !important;
+  box-shadow: 0 0 0 3px var(--ant-primary-color-outline) !important;
+}
+
+.ant-select-dropdown,
+.ant-picker-dropdown {
+  background: var(--ds-canvas) !important;
+  border: 1px solid var(--ds-hairline) !important;
+  border-radius: var(--ds-radius-md) !important;
+  box-shadow: var(--ds-shadow-5) !important;
   max-height: 400px !important;
   min-height: 200px !important;
+}
+
+/* Select / DatePicker caret arrow — keep visible in both themes & vertically centered */
+.ant-select .ant-select-arrow,
+.ant-picker .ant-picker-suffix {
+  color: var(--ds-mute) !important;
+  font-size: 12px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  margin-top: 0 !important;
+  right: 12px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: auto !important;
+  line-height: 1 !important;
+}
+
+.ant-select:hover .ant-select-arrow,
+.ant-select-focused .ant-select-arrow,
+.ant-picker:hover .ant-picker-suffix,
+.ant-picker-focused .ant-picker-suffix {
+  color: var(--ds-ink) !important;
+}
+
+.ant-select-clear {
+  background: var(--ds-canvas) !important;
+  color: var(--ds-mute) !important;
+}
+
+/* Input-number stepper buttons */
+.ant-input-number-handler-wrap {
+  background: var(--ds-canvas) !important;
+  border-left: 1px solid var(--ds-hairline) !important;
+}
+
+.ant-input-number-handler {
+  color: var(--ds-mute) !important;
+}
+
+.ant-input-number-handler:hover .ant-input-number-handler-up-inner,
+.ant-input-number-handler:hover .ant-input-number-handler-down-inner {
+  color: var(--ds-ink) !important;
+}
+
+.ant-input-number-handler-up-inner,
+.ant-input-number-handler-down-inner {
+  color: var(--ds-mute) !important;
+}
+
+.ant-select-item {
+  color: var(--ds-ink) !important;
+  font-family: var(--font-sans) !important;
+}
+
+.ant-select-item-option-selected,
+.ant-select-item-option-active {
+  background: var(--ds-canvas-soft) !important;
+}
+
+.ant-select-item-option-selected {
+  font-weight: 500 !important;
 }
 
 .ant-select-dropdown .ant-select-item-option-content {
@@ -709,33 +948,205 @@ button.ant-btn-primary:not(:disabled):not(.ant-btn-disabled):active,
   align-items: center;
 }
 
-/* Target the inner scrollable container */
-.cdk-virtual-scroll-viewport {
-  max-height: 400px !important;
-  min-height: 200px !important;
-}
-
-.rc-virtual-list-holder {
-  max-height: 400px !important;
-  min-height: 200px !important;
-}
-
+.cdk-virtual-scroll-viewport,
+.rc-virtual-list-holder,
 .rc-virtual-list {
   max-height: 400px !important;
   min-height: 200px !important;
+  background: transparent !important;
 }
 
 .rc-virtual-list-holder-inner {
   min-height: auto !important;
 }
 
-/* Image preview modal centering */
-.ant-image-preview-wrap {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
+/* Tables (ng-zorro) */
+.ant-table {
+  background: var(--ds-canvas) !important;
+  color: var(--ds-ink) !important;
+  font-family: var(--font-sans) !important;
 }
 
+.ant-table-thead > tr > th {
+  background: var(--ds-canvas) !important;
+  color: var(--ds-mute) !important;
+  font-family: var(--font-mono) !important;
+  font-size: var(--ds-caption-size) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.04em !important;
+  font-weight: 500 !important;
+  border-bottom: 1px solid var(--ds-hairline) !important;
+}
+
+/* Vertical column dividers — stronger so they read in dark mode */
+.ant-table-thead > tr > th::before {
+  background-color: var(--ds-hairline-strong) !important;
+  height: 1.2em !important;
+  opacity: 0.5;
+}
+
+[data-theme='dark'] .ant-table-thead > tr > th::before {
+  background-color: var(--ds-hairline-strong) !important;
+  opacity: 0.8;
+}
+
+/* Filler header cell + the right-side scrollbar gutter that sits after the last
+   column. Match the body / canvas color so the seam is invisible. */
+.ant-table-thead > tr > th.ant-table-cell-ellipsis,
+.ant-table-thead > tr > th[class*='ant-table-cell-scrollbar'],
+.ant-table-cell-scrollbar,
+.ant-table-thead .ant-table-cell-scrollbar,
+.ant-table-header.nz-table-hide-scrollbar,
+.ant-table-fixed-header .ant-table-header {
+  background: var(--ds-canvas) !important;
+}
+
+/* The fixed-header wrapper itself + its right edge gutter */
+.ant-table.ant-table-fixed-header,
+.ant-table.ant-table-fixed-header .ant-table-header,
+.ant-table-fixed-column .ant-table-header,
+.ant-table-header {
+  background: var(--ds-canvas) !important;
+}
+
+/* nz-table reserves space for a scrollbar by setting `overflow: hidden scroll`
+   on `.ant-table-header.nz-table-hide-scrollbar`. Tint the gutter scrollbar
+   so it blends with the canvas. */
+.ant-table-header.nz-table-hide-scrollbar,
+.ant-table-header.ant-table-hide-scrollbar {
+  background-color: var(--ds-canvas) !important;
+  scrollbar-color: var(--ds-canvas) var(--ds-canvas);
+}
+
+.ant-table-header.nz-table-hide-scrollbar::-webkit-scrollbar,
+.ant-table-header.ant-table-hide-scrollbar::-webkit-scrollbar {
+  background-color: var(--ds-canvas) !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+.ant-table-header.nz-table-hide-scrollbar::-webkit-scrollbar-track,
+.ant-table-header.ant-table-hide-scrollbar::-webkit-scrollbar-track,
+.ant-table-header.nz-table-hide-scrollbar::-webkit-scrollbar-thumb,
+.ant-table-header.ant-table-hide-scrollbar::-webkit-scrollbar-thumb,
+.ant-table-header.nz-table-hide-scrollbar::-webkit-scrollbar-corner,
+.ant-table-header.ant-table-hide-scrollbar::-webkit-scrollbar-corner {
+  background-color: var(--ds-canvas) !important;
+}
+
+/* The empty <th class="ant-table-cell-scrollbar"> ng-zorro injects so the
+   header row visually aligns with the scrollbar gutter below. */
+.ant-table-thead > tr > th.ant-table-cell-scrollbar,
+.ant-table-cell.ant-table-cell-scrollbar {
+  background: var(--ds-canvas) !important;
+  border-bottom: 1px solid var(--ds-hairline) !important;
+  box-shadow: none !important;
+}
+
+/* Container that ng-zorro paints behind the scroll viewport */
+.ant-table-container::after,
+.ant-table-content::after {
+  background: var(--ds-canvas) !important;
+}
+
+/* nz-table scroll filler cell (the white sliver visible after last column in dark mode).
+   NOTE: .ant-table-header is intentionally overridden ABOVE to match header bg. */
+.ant-table-body,
+.ant-table-content,
+.ant-table-container,
+.ant-table {
+  background: var(--ds-canvas) !important;
+}
+
+.ant-table-body table {
+  background: var(--ds-canvas) !important;
+}
+
+.ant-table-header table {
+  background: var(--ds-canvas) !important;
+}
+
+.ant-table-tbody > tr > td {
+  border-bottom: 1px solid var(--ds-hairline) !important;
+  color: var(--ds-ink) !important;
+  font-size: var(--ds-body-sm-size) !important;
+  background: var(--ds-canvas) !important;
+}
+
+.ant-table-tbody > tr:hover > td {
+  background: var(--ds-canvas-soft) !important;
+}
+
+.ant-table-placeholder {
+  background: var(--ds-canvas) !important;
+}
+
+/* Empty state */
+.ant-empty-description {
+  color: var(--ds-mute) !important;
+}
+
+/* Tabs (default chrome — Dashboard overrides further) */
+.ant-tabs {
+  color: var(--ds-ink) !important;
+  font-family: var(--font-sans) !important;
+}
+
+.ant-tabs-tab {
+  color: var(--ds-body) !important;
+  font-family: var(--font-sans) !important;
+}
+
+.ant-tabs-tab-active .ant-tabs-tab-btn,
+.ant-tabs-tab:hover {
+  color: var(--ds-ink) !important;
+}
+
+.ant-tabs-ink-bar {
+  background: var(--ds-ink) !important;
+}
+
+/* Badge */
+.ant-badge-count {
+  background: var(--ds-ink) !important;
+  color: var(--ds-on-primary) !important;
+  box-shadow: 0 0 0 1px var(--ds-canvas) !important;
+}
+
+/* Dropdown menu */
+.ant-dropdown-menu {
+  background: var(--ds-canvas) !important;
+  border: 1px solid var(--ds-hairline) !important;
+  border-radius: var(--ds-radius-md) !important;
+  box-shadow: var(--ds-shadow-4) !important;
+  padding: var(--ds-space-xxs) !important;
+}
+
+.ant-dropdown-menu-item {
+  color: var(--ds-ink) !important;
+  border-radius: var(--ds-radius-xs) !important;
+  font-size: var(--ds-body-sm-size) !important;
+}
+
+.ant-dropdown-menu-item:hover {
+  background: var(--ds-canvas-soft) !important;
+  color: var(--ds-ink) !important;
+}
+
+/* Skeleton */
+.ant-skeleton-content .ant-skeleton-title,
+.ant-skeleton-content .ant-skeleton-paragraph > li,
+.ant-skeleton-avatar {
+  background: linear-gradient(
+    90deg,
+    var(--ds-canvas-soft) 25%,
+    var(--ds-canvas-soft-2) 37%,
+    var(--ds-canvas-soft) 63%
+  ) !important;
+}
+
+/* Image preview modal */
+.ant-image-preview-wrap,
 .ant-image-preview-img-wrapper {
   display: flex !important;
   align-items: center !important;
@@ -746,4 +1157,758 @@ button.ant-btn-primary:not(:disabled):not(.ant-btn-disabled):active,
   max-width: 90vw !important;
   max-height: 90vh !important;
   object-fit: contain !important;
+}
+
+/* ng-zorro messages (color-coded) */
+.ant-message {
+  font-family: var(--font-sans);
+}
+
+.ant-message-notice {
+  padding: 0 !important;
+  text-align: center;
+}
+
+.ant-message-notice-content {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px !important;
+  background: var(--ds-canvas) !important;
+  border: 1px solid var(--ds-hairline) !important;
+  border-radius: var(--ds-radius-md) !important;
+  box-shadow: var(--ds-shadow-4) !important;
+  font-family: var(--font-sans);
+  font-size: var(--ds-body-sm-size) !important;
+  color: var(--ds-ink) !important;
+  max-width: min(560px, calc(100vw - 32px));
+}
+
+.ant-message-notice-content .anticon {
+  font-size: 16px !important;
+}
+
+/* Success — link blue (Vercel's success token) */
+.ant-message-success {
+  color: var(--ds-success-deep) !important;
+}
+.ant-message-notice-content:has(.ant-message-success) {
+  background: var(--ds-success-soft) !important;
+  border-color: var(--ds-link) !important;
+  color: var(--ds-success-deep) !important;
+}
+
+/* Error — red */
+.ant-message-error {
+  color: var(--ds-error-deep) !important;
+}
+.ant-message-notice-content:has(.ant-message-error) {
+  background: var(--ds-error-soft) !important;
+  border-color: var(--ds-error) !important;
+  color: var(--ds-error-deep) !important;
+}
+
+/* Warning — amber */
+.ant-message-warning {
+  color: var(--ds-warning-deep) !important;
+}
+.ant-message-notice-content:has(.ant-message-warning) {
+  background: var(--ds-warning-soft) !important;
+  border-color: var(--ds-warning) !important;
+  color: var(--ds-warning-deep) !important;
+}
+
+/* Info — ink (neutral) */
+.ant-message-info {
+  color: var(--ds-ink) !important;
+}
+.ant-message-notice-content:has(.ant-message-info) {
+  background: var(--ds-canvas) !important;
+  border-color: var(--ds-hairline-strong) !important;
+  color: var(--ds-ink) !important;
+}
+
+/* Loading — neutral with mute color */
+.ant-message-loading {
+  color: var(--ds-mute) !important;
+}
+
+/* Notification (richer toast variant) */
+.ant-notification-notice {
+  background: var(--ds-canvas) !important;
+  border: 1px solid var(--ds-hairline) !important;
+  border-radius: var(--ds-radius-md) !important;
+  box-shadow: var(--ds-shadow-4) !important;
+  font-family: var(--font-sans);
+}
+
+.ant-notification-notice-message {
+  color: var(--ds-ink) !important;
+  font-family: var(--font-sans);
+  font-weight: 600;
+}
+
+.ant-notification-notice-description {
+  color: var(--ds-body) !important;
+}
+
+.ant-notification-notice-close {
+  color: var(--ds-mute) !important;
+}
+
+.ant-notification-notice-close:hover {
+  color: var(--ds-ink) !important;
+}
+
+/* Feature table card */
+.feature-table-card {
+  background: var(--ds-canvas);
+  border-radius: var(--ds-radius-md);
+  box-shadow: var(--ds-shadow-2);
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  /* 64px header + 48px outer page padding = 112 desktop. Mobile: 56px header +
+     64px mobile footer + 16px gutters = 136. */
+  height: calc(100vh - 112px);
+  min-height: 420px;
+}
+
+@media (max-width: 768px) {
+  .feature-table-card {
+    height: calc(100vh - 136px);
+    border-radius: 0;
+  }
+}
+
+/* The nz-table inside fills the card flex-vertically; the inner scroll body
+   handles overflow and the pagination row sits flush at the bottom. */
+.feature-table-card .ant-table-wrapper,
+.feature-table-card nz-table {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.feature-table-card .ant-spin-nested-loading,
+.feature-table-card .ant-spin-container {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.feature-table-card .ant-table {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.feature-table-card .ant-table-container {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.feature-table-card .ant-table-body {
+  flex: 1 1 auto;
+}
+
+.feature-table-card .ant-table-pagination.ant-pagination {
+  flex: 0 0 auto;
+  border-top: 1px solid var(--ds-hairline);
+  margin: 0 !important;
+  padding: 10px 16px !important;
+  background: var(--ds-canvas) !important;
+}
+
+/* Pagination */
+.ant-pagination {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 6px;
+  padding: 16px;
+  font-family: var(--font-sans) !important;
+}
+
+.ant-pagination-item,
+.ant-pagination-prev .ant-pagination-item-link,
+.ant-pagination-next .ant-pagination-item-link,
+.ant-pagination-jump-prev,
+.ant-pagination-jump-next {
+  background: var(--ds-canvas) !important;
+  border: 1px solid var(--ds-hairline) !important;
+  border-radius: var(--ds-radius-sm) !important;
+  color: var(--ds-body) !important;
+  min-width: 32px !important;
+  height: 32px !important;
+  line-height: 30px !important;
+  transition: var(--transition-fast) !important;
+}
+
+.ant-pagination-item a {
+  color: var(--ds-body) !important;
+  font-family: var(--font-sans);
+  font-size: var(--ds-body-sm-size);
+  font-weight: 500;
+}
+
+.ant-pagination-item:hover,
+.ant-pagination-prev:hover .ant-pagination-item-link,
+.ant-pagination-next:hover .ant-pagination-item-link {
+  background: var(--ds-canvas-soft) !important;
+  border-color: var(--ds-hairline-strong) !important;
+  color: var(--ds-ink) !important;
+}
+
+.ant-pagination-item:hover a {
+  color: var(--ds-ink) !important;
+}
+
+.ant-pagination-item-active {
+  background: var(--ds-ink) !important;
+  border-color: var(--ds-ink) !important;
+}
+
+.ant-pagination-item-active a,
+.ant-pagination-item-active:hover a {
+  color: var(--ds-on-primary) !important;
+}
+
+.ant-pagination-item-active:hover {
+  background: var(--ds-body) !important;
+  border-color: var(--ds-body) !important;
+}
+
+.ant-pagination-disabled .ant-pagination-item-link,
+.ant-pagination-disabled:hover .ant-pagination-item-link {
+  background: var(--ds-canvas-soft) !important;
+  border-color: var(--ds-hairline) !important;
+  color: var(--ds-mute) !important;
+}
+
+.ant-pagination-options .ant-pagination-options-size-changer {
+  margin-left: 8px;
+}
+
+.ant-pagination-options .ant-select-selector {
+  background: var(--ds-canvas) !important;
+  border: 1px solid var(--ds-hairline) !important;
+  border-radius: var(--ds-radius-sm) !important;
+  height: 32px !important;
+  color: var(--ds-ink) !important;
+}
+
+.ant-pagination-total-text {
+  color: var(--ds-mute) !important;
+  font-family: var(--font-mono);
+  font-size: var(--ds-caption-size);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* nz-table scroll-wrapper backgrounds */
+.ant-table-container,
+.ant-table-content,
+.ant-table-body,
+.ant-table-header,
+.ant-table-cell-fix-left,
+.ant-table-cell-fix-right {
+  background: var(--ds-canvas) !important;
+}
+
+.ant-table-tbody > tr.ant-table-row:hover > td,
+.ant-table-tbody > tr > td.ant-table-cell-row-hover {
+  background: var(--ds-canvas-soft) !important;
+}
+
+.ant-table-pagination {
+  background: var(--ds-canvas);
+  border-top: 1px solid var(--ds-hairline);
+  margin: 0 !important;
+  padding: 12px 16px;
+}
+
+/* Header actions */
+.ds-header-action,
+.add-employee-button,
+.add-table-button,
+.add-food-button,
+.add-expense-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 12px;
+  background: var(--ds-ink);
+  color: var(--ds-on-primary);
+  border: 1px solid var(--ds-ink);
+  border-radius: var(--ds-radius-sm);
+  font-family: var(--font-sans);
+  font-size: var(--ds-body-sm-size);
+  font-weight: 500;
+  letter-spacing: var(--ds-body-sm-tracking);
+  cursor: pointer;
+  transition: var(--transition-base);
+  white-space: nowrap;
+}
+
+.ds-header-action:hover,
+.add-employee-button:hover,
+.add-table-button:hover,
+.add-food-button:hover,
+.add-expense-button:hover {
+  background: var(--ds-body);
+  border-color: var(--ds-body);
+  color: var(--ds-on-primary);
+}
+
+.ds-header-action:active,
+.add-employee-button:active,
+.add-table-button:active,
+.add-food-button:active,
+.add-expense-button:active {
+  transform: translateY(1px);
+}
+
+.ds-header-action .anticon,
+.add-employee-button .anticon,
+.add-table-button .anticon,
+.add-food-button .anticon,
+.add-expense-button .anticon {
+  font-size: 14px;
+}
+
+/* Add employee-to-table button */
+.add-employee-to-table-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  background: var(--ds-canvas);
+  color: var(--ds-ink);
+  border: 1px dashed var(--ds-hairline-strong);
+  border-radius: var(--ds-radius-full);
+  cursor: pointer;
+  transition: var(--transition-fast);
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.add-employee-to-table-button:hover {
+  background: var(--ds-canvas-soft);
+  border-color: var(--ds-ink);
+  border-style: solid;
+}
+
+.add-employee-to-table-button .anticon {
+  font-size: 18px;
+  color: var(--ds-ink);
+}
+
+/* Vertical form layout */
+
+/* Form group spacing */
+.ant-form-item {
+  margin-bottom: var(--ds-space-md) !important;
+}
+
+.ant-form-item:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* Label row */
+.ant-form-item-label {
+  padding-bottom: 6px !important;
+  line-height: 1 !important;
+}
+
+.ant-form-item-label > label {
+  font-family: var(--font-sans) !important;
+  font-size: var(--ds-body-sm-size) !important;
+  line-height: var(--ds-body-sm-line) !important;
+  font-weight: 500 !important;
+  letter-spacing: var(--ds-body-sm-tracking) !important;
+  color: var(--ds-ink) !important;
+  height: auto !important;
+}
+
+.ant-form-item-label > label::before,
+.ant-form-item-label > label::after {
+  color: var(--ds-error) !important;
+}
+
+/* Input row — uniform 40px height everywhere (form-input spec from DESIGN.md) */
+.ant-form-item .ant-input,
+.ant-form-item .ant-input-affix-wrapper,
+.ant-form-item .ant-input-number,
+.ant-form-item .ant-input-number-input,
+.ant-form-item .ant-select-selector,
+.ant-form-item .ant-picker {
+  height: 40px !important;
+  border-radius: var(--ds-radius-sm) !important;
+  font-family: var(--font-sans) !important;
+  font-size: var(--ds-body-sm-size) !important;
+  line-height: var(--ds-body-sm-line) !important;
+  background: var(--ds-canvas) !important;
+  border: 1px solid var(--ds-hairline) !important;
+  color: var(--ds-ink) !important;
+  box-shadow: none !important;
+}
+
+.ant-form-item .ant-input-affix-wrapper .ant-input {
+  height: auto !important;
+  border: none !important;
+  background: transparent !important;
+}
+
+.ant-form-item .ant-select-selector .ant-select-selection-item,
+.ant-form-item .ant-select-selector .ant-select-selection-placeholder {
+  line-height: 38px !important;
+}
+
+.ant-form-item .ant-input-number-input-wrap,
+.ant-form-item .ant-input-number-input {
+  height: 38px !important;
+  line-height: 38px !important;
+}
+
+/* Make the inner picker input fill the wrapper height */
+.ant-form-item .ant-picker .ant-picker-input > input {
+  font-family: var(--font-sans) !important;
+  font-size: var(--ds-body-sm-size) !important;
+  color: var(--ds-ink) !important;
+  height: 100% !important;
+}
+
+/* Focus ring */
+.ant-form-item .ant-input:focus,
+.ant-form-item .ant-input-affix-wrapper-focused,
+.ant-form-item .ant-input-number-focused,
+.ant-form-item .ant-select-focused .ant-select-selector,
+.ant-form-item .ant-picker-focused {
+  border-color: var(--ds-ink) !important;
+  box-shadow: 0 0 0 3px var(--ant-primary-color-outline) !important;
+}
+
+/* Hover */
+.ant-form-item .ant-input:hover,
+.ant-form-item .ant-input-affix-wrapper:hover,
+.ant-form-item .ant-input-number:hover,
+.ant-form-item .ant-select:hover .ant-select-selector,
+.ant-form-item .ant-picker:hover {
+  border-color: var(--ds-hairline-strong) !important;
+}
+
+/* Validation states */
+.ant-form-item-has-error .ant-input,
+.ant-form-item-has-error .ant-input-affix-wrapper,
+.ant-form-item-has-error .ant-select-selector,
+.ant-form-item-has-error .ant-picker {
+  border-color: var(--ds-error) !important;
+}
+
+.ant-form-item-explain-error {
+  font-family: var(--font-sans) !important;
+  font-size: var(--ds-caption-size) !important;
+  color: var(--ds-error) !important;
+  margin-top: 4px !important;
+}
+
+/* Modal footer buttons — consistent Vercel pair (cancel = canvas, primary = ink) */
+.ant-modal-footer {
+  padding: 16px 24px !important;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.ant-modal-footer .ant-btn {
+  height: 40px !important;
+  padding: 0 16px !important;
+  border-radius: var(--ds-radius-sm) !important;
+  font-family: var(--font-sans) !important;
+  font-size: var(--ds-body-sm-size) !important;
+  font-weight: 500 !important;
+  box-shadow: none !important;
+}
+
+.ant-modal-footer .ant-btn-default,
+.ant-modal-footer .ant-btn.ant-btn-dangerous.ant-btn-default {
+  background: var(--ds-canvas) !important;
+  border: 1px solid var(--ds-hairline) !important;
+  color: var(--ds-ink) !important;
+}
+
+.ant-modal-footer .ant-btn-default:hover,
+.ant-modal-footer .ant-btn.ant-btn-dangerous.ant-btn-default:hover {
+  background: var(--ds-canvas-soft) !important;
+  border-color: var(--ds-hairline-strong) !important;
+}
+
+.ant-modal-footer .ant-btn-primary {
+  background: var(--ds-ink) !important;
+  border-color: var(--ds-ink) !important;
+  color: var(--ds-on-primary) !important;
+}
+
+.ant-modal-footer .ant-btn-primary:hover,
+.ant-modal-footer .ant-btn-primary:focus {
+  background: var(--ds-body) !important;
+  border-color: var(--ds-body) !important;
+}
+
+/* Form modal */
+.ds-form-modal .ant-modal-content {
+  border-radius: var(--ds-radius-lg) !important;
+}
+
+.ds-form-modal .ant-modal-header {
+  padding: 18px 24px !important;
+  border-bottom: 1px solid var(--ds-hairline) !important;
+}
+
+.ds-form-modal .ant-modal-body {
+  padding: 20px 24px !important;
+  background: var(--ds-canvas) !important;
+}
+
+.ds-modal-title {
+  font-family: var(--font-sans);
+  font-size: var(--ds-display-sm-size);
+  line-height: var(--ds-display-sm-line);
+  letter-spacing: var(--ds-display-sm-tracking);
+  font-weight: 600;
+  color: var(--ds-ink);
+}
+
+.ds-form {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Section eyebrow inside a form */
+.ds-form-section-eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--ds-caption-size);
+  line-height: var(--ds-caption-line);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ds-mute);
+  margin: 24px 0 12px 0;
+}
+
+.ds-form-section-eyebrow:first-of-type {
+  margin-top: 4px;
+}
+
+/* Avatar uploader row */
+.ds-form-avatar-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 4px 0 12px 0;
+  border-bottom: 1px solid var(--ds-hairline);
+}
+
+.ds-form-avatar-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ds-form-avatar-title {
+  font-family: var(--font-sans);
+  font-size: var(--ds-body-sm-size);
+  font-weight: 500;
+  color: var(--ds-ink);
+  margin: 0;
+}
+
+.ds-form-avatar-hint {
+  font-family: var(--font-sans);
+  font-size: var(--ds-caption-size);
+  color: var(--ds-mute);
+  margin: 0;
+}
+
+/* The 96px circular avatar slot for picture-card upload */
+.ds-avatar-upload .ant-upload.ant-upload-select,
+.ds-avatar-upload .ant-upload.ant-upload-select-picture-card {
+  width: 96px !important;
+  height: 96px !important;
+  border-radius: var(--ds-radius-full) !important;
+  background: var(--ds-canvas-soft) !important;
+  border: 1px dashed var(--ds-hairline-strong) !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  transition: var(--transition-fast);
+}
+
+/* Square variant (for food / table image uploads — rectangular thumbnail) */
+.ds-avatar-upload .ant-upload.ant-upload-select:has(.ds-avatar-slot--square),
+.ds-avatar-upload .ant-upload.ant-upload-select-picture-card:has(.ds-avatar-slot--square) {
+  border-radius: var(--ds-radius-md) !important;
+}
+
+.ds-form-label-unit {
+  color: var(--ds-mute);
+  font-weight: 400;
+  margin-left: 4px;
+}
+
+/* Inline eyebrow on the avatar row (used by assign-employee modal) */
+.ds-form-section-eyebrow--inline {
+  margin: 0 0 4px 0 !important;
+}
+
+/* Static avatar slot — same chrome as the uploader but non-interactive */
+.ds-avatar-static {
+  width: 96px;
+  height: 96px;
+  background: var(--ds-canvas-soft);
+  border: 1px solid var(--ds-hairline);
+  border-radius: var(--ds-radius-full);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--ds-mute);
+  font-size: 22px;
+}
+
+.ds-avatar-static--square {
+  border-radius: var(--ds-radius-md);
+}
+
+/* Light wrapper for a single labeled field inside ds-form */
+.ds-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ds-field-label {
+  font-family: var(--font-sans);
+  font-size: var(--ds-body-sm-size);
+  font-weight: 500;
+  letter-spacing: var(--ds-body-sm-tracking);
+  color: var(--ds-ink);
+}
+
+.ds-avatar-upload .ant-upload.ant-upload-select:hover,
+.ds-avatar-upload .ant-upload.ant-upload-select-picture-card:hover {
+  border-color: var(--ds-ink) !important;
+  border-style: solid !important;
+}
+
+.ds-avatar-slot {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ds-mute);
+  font-size: 22px;
+}
+
+.ds-avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.ds-avatar-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  color: var(--ds-on-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.ds-avatar-upload .ant-upload:hover .ds-avatar-overlay {
+  opacity: 1;
+}
+
+@media (max-width: 600px) {
+  .ds-form-modal .ant-modal-body {
+    padding: 16px !important;
+  }
+  .ds-form-avatar-row {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+  }
+}
+
+/* File upload (nz-upload picture-card) inside add/edit modals */
+.ant-upload.ant-upload-select-picture-card,
+.ant-upload-list-picture-card .ant-upload-list-item {
+  background: var(--ds-canvas-soft) !important;
+  border: 1px dashed var(--ds-hairline-strong) !important;
+  border-radius: var(--ds-radius-md) !important;
+  color: var(--ds-body) !important;
+}
+
+.ant-upload.ant-upload-select-picture-card:hover {
+  border-color: var(--ds-ink) !important;
+}
+
+/* Badge */
+.ds-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 10px;
+  border-radius: var(--ds-radius-pill-sm);
+  font-family: var(--font-sans);
+  font-size: var(--ds-caption-size);
+  line-height: var(--ds-caption-line);
+  font-weight: 500;
+  white-space: nowrap;
+  border: 1px solid transparent;
+}
+
+.ds-badge--neutral {
+  background: var(--ds-canvas-soft);
+  color: var(--ds-body);
+  border-color: var(--ds-hairline);
+}
+.ds-badge--success {
+  background: var(--ds-success-soft);
+  color: var(--ds-success-deep);
+}
+.ds-badge--warning {
+  background: var(--ds-warning-soft);
+  color: var(--ds-warning-deep);
+}
+.ds-badge--violet {
+  background: var(--ds-violet-soft);
+  color: var(--ds-violet-deep);
+}
+.ds-badge--cyan {
+  background: var(--ds-cyan-soft);
+  color: var(--ds-cyan-deep);
+}
+.ds-badge--error {
+  background: var(--ds-error-soft);
+  color: var(--ds-error-deep);
+}
+.ds-badge--ink {
+  background: var(--ds-ink);
+  color: var(--ds-on-primary);
 }

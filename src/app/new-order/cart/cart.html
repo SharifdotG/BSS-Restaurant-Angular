@@ -1,98 +1,130 @@
 <nz-drawer
   [nzVisible]="newOrderService.showCart()"
   nzPlacement="right"
-  [nzWidth]="600"
-  nzTitle="Order Cart"
+  [nzWidth]="drawerWidth()"
+  [nzTitle]="cartTitleTpl"
   (nzOnClose)="closeCart()"
   [nzBodyStyle]="{ padding: '0' }"
+  [nzMaskClosable]="true"
+  nzWrapClassName="cart-drawer"
 >
+  <ng-template #cartTitleTpl>
+    <div class="cart-title-row">
+      <span class="cart-title">Order cart</span>
+      @if (newOrderService.hasCartItems()) {
+        <span class="cart-title-count"
+          >{{ totalUnits() }} items · {{ newOrderService.cartTableCount() }} tables</span
+        >
+      }
+    </div>
+  </ng-template>
+
   <ng-container *nzDrawerContent>
-    @if (newOrderService.cartFood().length) {
-      <div class="d-flex flex-column justify-between h-100 overflow-y-clip">
-        <div class="overflow-auto">
-          @for (item of newOrderService.cartFood(); track item.food.id) {
-            <div
-              class="cart-item border-b-2 border-green-700 border-opacity-30 transition-colors duration-150"
-            >
-              <div class="d-flex w-100 align-items-center h-100 p-3">
-                <img
-                  nz-image
-                  class="food-image rounded-lg drop-shadow-md"
-                  [nzSrc]="getFoodImage(item.food.image)"
-                  [alt]="item.food.name"
-                  [nzFallback]="fallbackImage"
-                />
-                <div class="h-100 w-100 d-flex justify-content-between">
-                  <div class="d-flex flex-column justify-content-between p-3 pt-0 pb-0 gap-2 pe-0">
-                    <div class="text-lg md:text-xl">{{ item.food.name }}</div>
-                    <div>
-                      <span class="text-lg me-1 d-none d-sm-inline-block">Qty. </span>
-                      <nz-input-number
-                        [ngModel]="item.quantity"
-                        (ngModelChange)="updateQuantity(item.food.id, $event)"
-                        [nzMin]="1"
-                        [nzMax]="10"
-                        [nzStep]="1"
-                        style="width: 100px"
-                        aria-label="Quantity for {{ item.food.name }}"
-                      ></nz-input-number>
+    @if (newOrderService.hasCartItems()) {
+      <div class="cart-shell">
+        <div class="cart-groups">
+          @for (group of cartGroups(); track group.tableId) {
+            <section class="cart-group">
+              <header class="cart-group-head">
+                <div>
+                  <p class="cart-group-eyebrow">TABLE</p>
+                  <p class="cart-group-name">{{ group.tableNumber }}</p>
+                </div>
+                <button
+                  type="button"
+                  class="cart-group-clear"
+                  (click)="removeTableGroup(group.tableId)"
+                  [attr.aria-label]="'Clear all items for ' + group.tableNumber"
+                >
+                  Clear
+                </button>
+              </header>
+              @for (item of group.items; track item.food.id) {
+                <div class="cart-row">
+                  <img
+                    nz-image
+                    class="cart-row-image"
+                    [nzSrc]="getFoodImage(item.food.image)"
+                    [alt]="item.food.name"
+                    [nzFallback]="fallbackImage"
+                  />
+                  <div class="cart-row-body">
+                    <div class="cart-row-head">
+                      <p class="cart-row-name">{{ item.food.name }}</p>
+                      <button
+                        type="button"
+                        class="cart-row-remove"
+                        (click)="removeFromCart(item.food.id, item.tableId)"
+                        [attr.aria-label]="'Remove ' + item.food.name"
+                      >
+                        <span nz-icon nzType="delete" nzTheme="outline" aria-hidden="true"></span>
+                      </button>
+                    </div>
+                    <div class="cart-row-foot">
+                      <div class="cart-row-qty">
+                        <span class="cart-row-label">Qty</span>
+                        <nz-input-number
+                          [ngModel]="item.quantity"
+                          (ngModelChange)="updateQuantity(item.food.id, item.tableId, $event)"
+                          [nzMin]="1"
+                          [nzMax]="10"
+                          [nzStep]="1"
+                        ></nz-input-number>
+                      </div>
+                      <p class="cart-row-price">৳{{ item.amount * item.quantity }}</p>
                     </div>
                   </div>
-                  <div class="d-flex flex-column justify-content-between align-items-end">
-                    <button
-                      (click)="removeFromCart(item.food.id)"
-                      class="drop-down-button drop-shadow-md mt-1 transition-colors duration-150"
-                      aria-label="Remove {{ item.food.name }} from cart"
-                      title="Remove from cart"
-                    >
-                      <span nz-icon nzType="delete" nzTheme="outline" aria-hidden="true"></span>
-                    </button>
-                    <div class="text-md md:text-lg">Price: {{ item.amount * item.quantity }} ৳</div>
-                  </div>
                 </div>
+              }
+
+              <!-- Per-table phone input -->
+              <div class="cart-field cart-field--inline">
+                <label [for]="'phone-' + group.tableId" class="cart-field-label">
+                  Phone for {{ group.tableNumber }}
+                  <span class="cart-field-optional">(optional)</span>
+                </label>
+                <input
+                  [id]="'phone-' + group.tableId"
+                  [ngModel]="getPhoneNumber(group.tableId)"
+                  (ngModelChange)="setPhoneNumber(group.tableId, $event)"
+                  placeholder="Customer phone number"
+                  type="tel"
+                  class="cart-input"
+                />
               </div>
-            </div>
+
+              <div class="cart-group-subtotal">
+                <span>Subtotal</span>
+                <span>৳{{ group.subtotal }}</span>
+              </div>
+            </section>
           }
         </div>
-        <div class="sub-total-container shadow-lg">
-          <div
-            class="w-100 d-flex justify-between border-b-2 border-t-2 border-green-700 border-opacity-30 p-4"
-          >
-            <div class="sub-total text-2xl">Sub-Total</div>
-            <div class="sub-total text-2xl" aria-live="polite">{{ subtotal() }} ৳</div>
+
+        <div class="cart-summary">
+          <div class="cart-summary-row">
+            <span class="cart-summary-label">Total</span>
+            <span class="cart-summary-value" aria-live="polite">৳{{ subtotal() }}</span>
           </div>
-          <div class="w-100 p-4 pb-2">
-            <label for="phoneNumberInput" class="d-block mb-2 font-semibold text-gray-700"
-              >Phone Number (Optional)</label
-            >
-            <input
-              id="phoneNumberInput"
-              nz-input
-              [ngModel]="phoneNumber()"
-              (ngModelChange)="phoneNumber.set($event)"
-              placeholder="Enter customer phone number"
-              type="tel"
-              class="w-100 phone-input"
-            />
-          </div>
-          <div class="w-100 p-4 pt-2">
-            <button
-              (click)="confirmOrder()"
-              [disabled]="!newOrderService.selectedTableId()"
-              class="submit-button text-center text-2xl transition-colors duration-200"
-            >
-              @if (newOrderService.selectedTableId()) {
-                Confirm Order
-              } @else {
-                Select a table from New Order first
-              }
-            </button>
-          </div>
+          <button type="button" (click)="confirmOrder()" class="cart-cta">
+            Place {{ newOrderService.cartTableCount() }}
+            @if (newOrderService.cartTableCount() === 1) {
+              order
+            } @else {
+              orders
+            }
+          </button>
         </div>
       </div>
     } @else {
-      <div class="h-100 d-flex align-items-center justify-content-center" role="status">
-        <div class="text-4xl text-gray-700">The Cart Is Empty!</div>
+      <div class="cart-empty" role="status">
+        <div class="cart-empty-icon" aria-hidden="true">
+          <span nz-icon nzType="shopping-cart" nzTheme="outline"></span>
+        </div>
+        <p class="cart-empty-title">Your cart is empty</p>
+        <p class="cart-empty-body">
+          Pick a table and add items from the menu to start a new order.
+        </p>
       </div>
     }
   </ng-container>

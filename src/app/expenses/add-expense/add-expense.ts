@@ -67,10 +67,10 @@ export class AddExpense {
     });
 
     this.responsive
-      .observe([Breakpoints.Large, Breakpoints.XLarge])
+      .observe(['(max-width: 600px)'])
       .pipe(takeUntilDestroyed())
       .subscribe((result) => {
-        this.modalWidth.set(result.matches ? '60vw' : '100vw');
+        this.modalWidth.set(result.matches ? '100vw' : '640px');
       });
   }
 

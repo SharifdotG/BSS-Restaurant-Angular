@@ -1,9 +1,9 @@
 <div class="main-wrapper p-0 p-md-4 pb-md-0">
-  <div class="bg-white drop-shadow-lg md:rounded-lg rounded-none pt-0 pt-md-3">
+  <div class="feature-table-card">
     <nz-table
       nzShowSizeChanger
       nzPaginationType="default"
-      [nzScroll]="{ y: 'calc(100vh - 300px)', x: '768px' }"
+      [nzScroll]="{ y: 'calc(100% - 56px)', x: '768px' }"
       [nzWidthConfig]="['auto', 'auto', 'auto', 'auto', 'auto', '180px']"
       nzTableLayout="auto"
       [nzData]="listOfExpenses()"
@@ -19,61 +19,18 @@
       </ng-template>
       <thead>
         <tr>
-          <th
-            nzTooltipTitle="Title"
-            nzTooltipPlacement="topLeft"
-            nz-tooltip
-            class="custom-table-title truncate"
-            nzColumnKey="title"
-            [nzSortFn]="true"
-          >
-            Title
-          </th>
-          <th
-            nzTooltipTitle="Category"
-            nzTooltipPlacement="topLeft"
-            nz-tooltip
-            class="custom-table-title truncate"
-            nzColumnKey="category"
-            [nzSortFn]="true"
-          >
+          <th class="custom-table-title truncate" nzColumnKey="title" [nzSortFn]="true">Title</th>
+          <th class="custom-table-title truncate" nzColumnKey="category" [nzSortFn]="true">
             Category
           </th>
-          <th
-            nzTooltipTitle="Amount"
-            nzTooltipPlacement="topLeft"
-            nz-tooltip
-            class="custom-table-title truncate"
-            nzColumnKey="amount"
-            [nzSortFn]="true"
-          >
-            Amount
-          </th>
-          <th
-            nzTooltipTitle="Date"
-            nzTooltipPlacement="topLeft"
-            nz-tooltip
-            class="custom-table-title truncate"
-            nzColumnKey="expensedate"
-            [nzSortFn]="true"
-          >
+          <th class="custom-table-title truncate" nzColumnKey="amount" [nzSortFn]="true">Amount</th>
+          <th class="custom-table-title truncate" nzColumnKey="expensedate" [nzSortFn]="true">
             Date
           </th>
-          <th
-            nzTooltipTitle="Notes"
-            nzTooltipPlacement="topLeft"
-            nz-tooltip
-            class="custom-table-title truncate"
-            nzColumnKey="notes"
-          >
-            Notes
-          </th>
+          <th class="custom-table-title truncate" nzColumnKey="notes">Notes</th>
           <th class="custom-table-title-button" nzColumnKey="action">
             <button
               class="add-expense-button"
-              nz-tooltip
-              nzTooltipTitle="Add New Expense"
-              nzTooltipPlacement="top"
               aria-label="Add New Expense"
               (click)="expensesService.showAddModal.set(true)"
             >
@@ -102,7 +59,7 @@
               <td
                 [nzTooltipOverlayStyle]="{ 'min-width': '40px' }"
                 [nzTooltipTitle]="data.title"
-                nzTooltipPlacement="topLeft"
+                nzTooltipPlacement="top"
                 nz-tooltip
                 class="truncate"
               >
@@ -111,7 +68,7 @@
               <td
                 [nzTooltipOverlayStyle]="{ 'min-width': '40px' }"
                 [nzTooltipTitle]="data.category"
-                nzTooltipPlacement="topLeft"
+                nzTooltipPlacement="top"
                 nz-tooltip
                 class="truncate"
               >
@@ -122,7 +79,7 @@
               <td
                 [nzTooltipOverlayStyle]="{ 'min-width': '40px' }"
                 [nzTooltipTitle]="data.amount.toString()"
-                nzTooltipPlacement="topLeft"
+                nzTooltipPlacement="top"
                 nz-tooltip
                 class="truncate amount-cell"
               >
@@ -131,7 +88,7 @@
               <td
                 [nzTooltipOverlayStyle]="{ 'min-width': '40px' }"
                 [nzTooltipTitle]="formatDate(data.expenseDate)"
-                nzTooltipPlacement="topLeft"
+                nzTooltipPlacement="top"
                 nz-tooltip
                 class="truncate"
               >
@@ -140,7 +97,7 @@
               <td
                 [nzTooltipOverlayStyle]="{ 'min-width': '40px' }"
                 [nzTooltipTitle]="data.notes"
-                nzTooltipPlacement="topLeft"
+                nzTooltipPlacement="top"
                 nz-tooltip
                 class="truncate"
               >
@@ -151,10 +108,6 @@
                   <button
                     (click)="editExpense(data.id)"
                     class="drop-down-button drop-shadow-md"
-                    nz-tooltip
-                    nzTooltipTitle="Edit Expense"
-                    nzTooltipPlacement="top"
-                    title="Edit Expense"
                     aria-label="Edit Expense"
                   >
                     <span nz-icon nzType="edit" nzTheme="outline"></span>
@@ -162,10 +115,6 @@
                   <button
                     (click)="deleteExpense(data.id)"
                     class="drop-down-button drop-shadow-md"
-                    nz-tooltip
-                    nzTooltipTitle="Delete Expense"
-                    nzTooltipPlacement="top"
-                    title="Delete Expense"
                     aria-label="Delete Expense"
                   >
                     <span nz-icon nzType="delete" nzTheme="outline"></span>

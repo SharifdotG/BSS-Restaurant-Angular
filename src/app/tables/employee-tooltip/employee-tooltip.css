@@ -39,7 +39,7 @@
 
 .delete-container {
   color: white !important;
-  background: #dc2626 !important;
+  background: var(--ds-error) !important;
   padding: 0 !important;
   transition: var(--transition-base);
   display: flex !important;
@@ -48,7 +48,7 @@
 }
 
 .delete-container:hover {
-  background: #b91c1c !important;
+  background: var(--ds-error-deep) !important;
 }
 
 .delete-container .delete-button {

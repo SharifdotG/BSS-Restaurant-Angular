@@ -33,7 +33,8 @@
   nzTrigger="click"
   [nzDropdownMenu]="menu"
   nz-tooltip
-  [nzTooltipTitle]="employeeName()"
+  [nzTooltipTitle]="employeeName() + ' — click to remove'"
+  nzTooltipPlacement="top"
   [attr.aria-label]="'Open menu for ' + employeeName()"
 >
   <nz-avatar [nzSize]="52" nzIcon="user" [nzSrc]="employeeImageUrl()"></nz-avatar>

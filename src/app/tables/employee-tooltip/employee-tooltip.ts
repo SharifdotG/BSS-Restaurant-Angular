@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, computed, inject, Component, input } from '@angular/core';
-import { NzTooltipDirective } from 'ng-zorro-antd/tooltip';
 import { NzAvatarComponent } from 'ng-zorro-antd/avatar';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzIconDirective } from 'ng-zorro-antd/icon';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzMenuDirective, NzMenuItemComponent } from 'ng-zorro-antd/menu';
+import { NzTooltipDirective } from 'ng-zorro-antd/tooltip';
 
 import { TablesService } from '../tables.service';
 import { Employee } from '../../employees/employees.interface';
@@ -13,12 +13,12 @@ import { API_BASE_URL } from '../../app.config';
 @Component({
   selector: 'app-employee-tooltip',
   imports: [
-    NzTooltipDirective,
     NzAvatarComponent,
     NzIconDirective,
     NzDropDownModule,
     NzMenuDirective,
     NzMenuItemComponent,
+    NzTooltipDirective,
   ],
   providers: [NzModalService],
   templateUrl: './employee-tooltip.html',

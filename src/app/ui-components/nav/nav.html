@@ -7,30 +7,22 @@
     [nzCollapsed]="isCollapsed()"
     (nzCollapsedChange)="isCollapsed.set($event)"
     [nzTrigger]="null"
-    [nzWidth]="250"
+    [nzWidth]="240"
   >
-    <div class="d-flex vh-100 flex-col justify-content-between">
+    <div class="d-flex vh-100 flex-col justify-content-between sider-inner">
       <div class="text-nowrap">
-        <div class="logo text-nowrap position-relative">
+        <div class="logo position-relative">
           <img
             ngSrc="chef_green.png"
-            width="48"
-            height="48"
+            width="32"
+            height="32"
             priority
-            [class.position-absolute]="isCollapsed()"
-            [class.translate-y-50]="isCollapsed()"
-            [class.translate-x-50]="isCollapsed()"
-            class="transition-all delay-500 duration-300 ease-out"
+            class="logo-mark"
             alt="BSS Restaurant Logo"
           />
-          <p
-            [class.opacity-0]="isCollapsed()"
-            class="text-nowrap transition-opacity duration-75 ease-out"
-          >
-            BSS RESTAURANT
-          </p>
+          <span [class.opacity-0]="isCollapsed()" class="logo-word">BSS RESTAURANT</span>
         </div>
-        <ul nz-menu nzTheme="dark" nzMode="inline" role="menu" aria-label="Main navigation">
+        <ul nz-menu nzMode="inline" role="menu" aria-label="Main navigation" class="ds-side-menu">
           @for (menuItem of sideBarItems; track menuItem.route) {
             <li
               nz-menu-item
@@ -49,92 +41,80 @@
       <button
         type="button"
         (click)="onLogout()"
-        class="btn logout-button align-self-center mb-6 w-3/4 drop-shadow-lg overflow-clip text-nowrap"
+        class="logout-button align-self-stretch mx-3 mb-3 text-nowrap"
         aria-label="Logout"
       >
         <span nz-icon nzType="poweroff" nzTheme="outline" aria-hidden="true"></span>
         @if (!isCollapsed()) {
-          <span class="logout-text ms-1 overflow-clip text-nowrap"> Logout </span>
+          <span class="logout-text"> Logout </span>
         }
       </button>
     </div>
   </nz-sider>
   <nz-layout>
     <nz-header>
-      <div class="d-flex justify-content-between align-items-center w-100 ps-0 pe-3 pe-md-4">
-        <div class="d-flex flex-row">
-          <div class="d-flex align-items-center">
-            <button
-              type="button"
-              class="trigger d-none d-md-block text-xl ps-3 pe-3"
-              nz-icon
-              [nzType]="isCollapsed() ? 'menu-unfold' : 'menu-fold'"
-              (click)="isCollapsed.update((v) => !v)"
-              aria-label="Toggle sidebar"
-            ></button>
-          </div>
-          <div class="header-title ps-3 pe-2 ps-md-0 truncate">
-            <p>{{ headerTitle() }}</p>
-          </div>
-        </div>
-        <div class="d-flex w-auto justify-content-end align-items-center gap-3">
+      <div class="d-flex justify-content-between align-items-center w-100 header-inner">
+        <div class="d-flex flex-row align-items-center">
           <button
             type="button"
-            class="header-cart-button"
+            class="trigger d-none d-md-inline-flex"
+            (click)="isCollapsed.update((v) => !v)"
+            aria-label="Toggle sidebar"
+          >
+            <span
+              nz-icon
+              [nzType]="isCollapsed() ? 'menu-unfold' : 'menu-fold'"
+              aria-hidden="true"
+            ></span>
+          </button>
+          <div class="header-title-block">
+            <p class="header-title">{{ headerTitle() }}</p>
+          </div>
+        </div>
+        <div class="d-flex w-auto justify-content-end align-items-center header-cluster">
+          <button
+            type="button"
+            class="header-icon-btn"
+            (click)="cycleTheme()"
+            [attr.aria-label]="themeLabel()"
+          >
+            <span nz-icon [nzType]="themeIcon()" nzTheme="outline" aria-hidden="true"></span>
+          </button>
+          <button
+            type="button"
+            class="header-icon-btn cart-button"
+            [class.is-active]="cartActive()"
+            [class.is-flashing]="cartFlash()"
             (click)="openCart()"
             aria-label="Open cart"
-            title="Cart"
           >
-            <nz-badge [nzCount]="cartItemCount()" [nzOverflowCount]="99">
-              <span nz-icon nzType="shopping-cart" nzTheme="outline" aria-hidden="true"></span>
-            </nz-badge>
+            <span nz-icon nzType="shopping-cart" nzTheme="outline" aria-hidden="true"></span>
+            @if (cartActive()) {
+              <span class="cart-dot" aria-hidden="true"></span>
+            }
           </button>
-          <div class="d-none d-md-flex flex-col gap-1 justify-end">
-            <div class="text-sm text-end text-gray-700">
-              {{ authService.currentUserProfile().email }}
-            </div>
-            <div class="text-xl font-semibold text-end text-gray-700">
-              {{ authService.currentUserProfile().fullName }}
-            </div>
+          <div class="d-none d-md-flex flex-col user-meta">
+            <span class="user-name">{{ authService.currentUserProfile().fullName }}</span>
+            <span class="user-email">{{ authService.currentUserProfile().email }}</span>
           </div>
           <nz-avatar
             nz-dropdown
             [nzDropdownMenu]="menu"
-            [nzSize]="60"
+            [nzSize]="36"
             nzIcon="user"
             [nzSrc]="userImageUrl()"
-            class="drop-shadow-md"
-            style="background-color: #66bb6a"
+            class="user-avatar"
             aria-label="User menu"
             aria-haspopup="true"
           ></nz-avatar>
           <nz-dropdown-menu #menu="nzDropdownMenu">
-            <ul nz-menu nzSelectable role="menu" aria-label="User menu options">
-              <li
-                (click)="authService.showProfile.set(true)"
-                nz-menu-item
-                class="h-11 text-lg"
-                role="menuitem"
-              >
-                <span
-                  nz-icon
-                  nzType="user"
-                  class="ps-1 pe-1"
-                  nzTheme="outline"
-                  style="color: #66bb6a"
-                  aria-hidden="true"
-                ></span>
+            <ul nz-menu nzSelectable="false" role="menu" aria-label="User menu options">
+              <li (click)="openProfile($event)" nz-menu-item role="menuitem">
+                <span nz-icon nzType="user" nzTheme="outline" aria-hidden="true"></span>
                 Profile
               </li>
-              <li (click)="onLogout()" nz-menu-item class="h-11 text-lg" role="menuitem">
-                <span
-                  nz-icon
-                  nzType="logout"
-                  class="ps-1 pe-1"
-                  nzTheme="outline"
-                  style="color: orangered"
-                  aria-hidden="true"
-                ></span>
+              <li (click)="onLogout()" nz-menu-item role="menuitem">
+                <span nz-icon nzType="logout" nzTheme="outline" aria-hidden="true"></span>
                 Logout
               </li>
             </ul>
@@ -150,7 +130,6 @@
         <ul
           class="d-flex justify-content-center mobile-menu-items w-100 gap-2"
           nz-menu
-          nzTheme="dark"
           nzMode="horizontal"
           role="menubar"
           aria-label="Mobile navigation"

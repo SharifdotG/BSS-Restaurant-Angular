@@ -1,26 +1,62 @@
 .order-container {
-  min-height: calc(100vh - 85px);
-  max-height: calc(100vh - 85px);
+  min-height: calc(100vh - 64px - 32px);
+  max-height: calc(100vh - 64px - 32px);
+  background: var(--ds-canvas-soft);
+}
+
+.order-item-container {
+  padding: 16px 24px 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Filter row */
+.order-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 0 16px;
+  flex-wrap: wrap;
+}
+
+.order-toolbar-eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--ds-caption-size);
+  line-height: var(--ds-caption-line);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ds-mute);
+  margin: 0;
+}
+
+.order-toolbar-title {
+  font-family: var(--font-sans);
+  font-size: var(--ds-display-md-size);
+  line-height: var(--ds-display-md-line);
+  letter-spacing: var(--ds-display-md-tracking);
+  font-weight: 600;
+  color: var(--ds-ink);
+  margin: 0;
 }
 
 /* Card shell */
 .order-card {
-  width: 100%;
-  background: white;
-  border: 1px solid #e8eee8;
-  border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  background: var(--ds-canvas);
+  border: 1px solid var(--ds-hairline);
+  border-radius: var(--ds-radius-md);
+  box-shadow: var(--ds-shadow-2);
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  min-height: 420px;
-  transition: var(--transition-base);
+  min-height: 380px;
+  height: 100%;
+  transition: var(--transition-fast);
 }
 
 .order-card:hover {
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
-  border-color: var(--bg-primary-300);
-  transform: translateY(-2px);
+  border-color: var(--ds-hairline-strong);
+  box-shadow: var(--ds-shadow-3);
 }
 
 /* Card header */
@@ -29,7 +65,7 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: 8px;
-  padding: 14px 16px 10px;
+  padding: 14px 16px 8px;
 }
 
 .order-card-meta {
@@ -38,24 +74,25 @@
 }
 
 .order-number {
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: var(--text-dark-primary);
-  letter-spacing: 0.3px;
+  font-family: var(--font-mono);
+  font-size: var(--ds-body-sm-size);
+  font-weight: 500;
+  color: var(--ds-ink);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .order-time {
-  font-size: 0.8125rem;
-  color: var(--text-dark-secondary);
+  font-family: var(--font-sans);
+  font-size: var(--ds-caption-size);
+  color: var(--ds-mute);
   margin-top: 2px;
 }
 
 .order-card-actions {
   display: flex;
-  gap: 6px;
+  gap: 4px;
   flex: 0 0 auto;
 }
 
@@ -71,85 +108,76 @@
 .status-chip {
   display: inline-flex;
   align-items: center;
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  padding: 4px 10px;
-  border-radius: 999px;
-  background: #f1f3f5;
-  color: #475467;
+  font-family: var(--font-sans);
+  font-size: var(--ds-caption-size);
+  line-height: var(--ds-caption-line);
+  font-weight: 500;
+  padding: 2px 10px;
+  border-radius: var(--ds-radius-pill-sm);
+  background: var(--ds-canvas-soft);
+  color: var(--ds-body);
 }
 
 .status-chip[data-status='Pending'] {
-  background: #b45309;
-  color: #fff3e0;
+  background: var(--ds-warning-soft);
+  color: var(--ds-warning-deep);
 }
-
 .status-chip[data-status='Confirmed'] {
-  background: #92400e;
-  color: #fef3c7;
+  background: var(--ds-link-bg-soft);
+  color: var(--ds-link-deep);
 }
-
 .status-chip[data-status='Preparing'] {
-  background: #6d28d9;
-  color: #ede9fe;
+  background: var(--ds-violet-soft);
+  color: var(--ds-violet-deep);
 }
-
 .status-chip[data-status='PreparedToServe'] {
-  background: #0e7490;
-  color: #cffafe;
+  background: var(--ds-cyan-soft);
+  color: var(--ds-cyan-deep);
 }
-
 .status-chip[data-status='Served'] {
-  background: #15803d;
-  color: #dcfce7;
+  background: var(--ds-success-soft);
+  color: var(--ds-success-deep);
 }
-
 .status-chip[data-status='Paid'] {
-  background: var(--bg-primary-800);
-  color: var(--bg-primary-100);
+  background: var(--ds-ink);
+  color: var(--ds-on-primary);
 }
 
 .table-chip {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  font-size: 0.8125rem;
-  font-weight: 600;
-  color: var(--text-dark-primary);
-  padding: 4px 10px;
-  border-radius: 8px;
-  background: var(--bg-primary-50);
-  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: var(--ds-caption-size);
+  color: var(--ds-body);
+  padding: 2px 10px;
+  border-radius: var(--ds-radius-sm);
+  background: var(--ds-canvas-soft);
+  border: 1px solid var(--ds-hairline);
 }
 
 .table-chip .anticon {
-  font-size: 14px;
-  color: var(--bg-primary-700);
+  font-size: 12px;
+  color: var(--ds-mute);
 }
 
 /* Body: food items list */
 .order-card-body {
   flex: 1 1 auto;
-  min-height: 230px;
-  max-height: 230px;
+  min-height: 180px;
+  max-height: 220px;
   overflow-y: auto;
   overflow-x: hidden;
   padding: 4px 16px 12px;
-  border-top: 1px solid #f1f4f1;
-  -webkit-overflow-scrolling: touch;
-  overscroll-behavior: contain;
-  contain: layout paint;
-  will-change: scroll-position;
+  border-top: 1px solid var(--ds-hairline);
 }
 
 .order-food-item {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 10px 0;
-  border-bottom: 1px solid #f5f7f5;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--ds-hairline);
 }
 
 .order-food-item:last-child {
@@ -158,13 +186,14 @@
 
 .food-image-container {
   flex: 0 0 auto;
-  min-height: 64px;
-  max-height: 64px;
-  min-width: 64px;
-  max-width: 64px;
-  border-radius: 50%;
+  min-height: 44px;
+  max-height: 44px;
+  min-width: 44px;
+  max-width: 44px;
+  border-radius: var(--ds-radius-sm);
   overflow: hidden;
-  background: #f1f5f1;
+  border: 1px solid var(--ds-hairline);
+  background: var(--ds-canvas-soft);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -173,7 +202,7 @@
 .food-image {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
 }
 
 .food-item-meta {
@@ -182,10 +211,10 @@
 }
 
 .food-item-name {
-  font-size: 0.9375rem;
-  font-weight: 600;
-  color: var(--text-dark-primary);
-  line-height: 1.3;
+  font-family: var(--font-sans);
+  font-size: var(--ds-body-sm-size);
+  font-weight: 500;
+  color: var(--ds-ink);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -193,31 +222,31 @@
 
 .food-item-row {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 4px;
-  font-size: 0.8125rem;
-  color: var(--text-dark-secondary);
+  align-items: baseline;
+  gap: 8px;
+  margin-top: 2px;
 }
 
 .food-item-price {
-  font-weight: 600;
-  color: var(--bg-primary-700);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ds-ink);
 }
 
 .food-item-qty {
-  font-weight: 500;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ds-mute);
 }
 
-/* Footer: totals */
+/* Footer */
 .order-card-footer {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: space-between;
-  gap: 12px;
   padding: 12px 16px;
-  border-top: 1px solid #f1f4f1;
-  background: #fafcfa;
+  border-top: 1px solid var(--ds-hairline);
+  background: var(--ds-canvas-soft);
 }
 
 .footer-stat {
@@ -226,17 +255,18 @@
 }
 
 .footer-label {
-  font-size: 0.6875rem;
-  font-weight: 600;
-  color: var(--text-dark-secondary);
+  font-family: var(--font-mono);
+  font-size: 11px;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.06em;
+  color: var(--ds-mute);
 }
 
 .footer-value {
-  font-size: 1rem;
-  font-weight: 600;
-  color: var(--text-dark-primary);
+  font-family: var(--font-sans);
+  font-size: var(--ds-body-md-size);
+  font-weight: 500;
+  color: var(--ds-ink);
   margin-top: 2px;
 }
 
@@ -245,129 +275,103 @@
 }
 
 .footer-value-total {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--bg-primary-700);
+  font-family: var(--font-sans);
+  font-size: var(--ds-display-sm-size);
+  line-height: var(--ds-display-sm-line);
+  letter-spacing: var(--ds-display-sm-tracking);
+  font-weight: 600;
+  color: var(--ds-ink);
 }
 
+/* Filter dropdown trigger */
 .drop-down-filter {
-  width: 155px;
-  height: 52px;
-  border-radius: 8px;
-  border: 1px solid var(--bg-secondary-light-100);
-  background-color: white;
+  height: 36px;
+  padding: 0 12px;
+  border-radius: var(--ds-radius-sm);
+  border: 1px solid var(--ds-hairline);
+  background: var(--ds-canvas);
+  color: var(--ds-ink);
+  font-family: var(--font-sans);
+  font-size: var(--ds-body-sm-size);
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: var(--transition-fast);
 }
 
-/* Orders specific button overrides (inherit global animations from styles.scss) */
-.edit-button {
-  width: 40px;
-  height: 40px;
-  border: 1px solid var(--bg-secondary-light-100);
+.drop-down-filter:hover {
+  background: var(--ds-canvas-soft);
+  border-color: var(--ds-hairline-strong);
 }
 
-.edit-button:hover {
-  background-color: var(--bg-secondary-light-50);
+.drop-down-filter .anticon {
+  font-size: 12px;
+  color: var(--ds-mute);
 }
 
-.drop-down-button {
-  width: 40px;
-  height: 40px;
-  border: 1px solid var(--bg-secondary-light-100);
+/* Action buttons in orders cards */
+.order-card-actions .drop-down-button,
+.order-card-actions .edit-button {
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--ds-hairline);
+  background: var(--ds-canvas);
 }
 
-.drop-down-button:hover {
-  background-color: var(--bg-secondary-light-50);
+/* Change-status button → warning (amber) on hover */
+.order-card-actions .drop-down-button.status-button:hover,
+.order-card-actions .drop-down-button.status-button:focus {
+  background-color: var(--ds-warning) !important;
+  border-color: var(--ds-warning) !important;
 }
 
-.drop-down-button.status-button:hover,
-.drop-down-button.status-button:active,
-.drop-down-button.status-button:focus {
-  background-color: orange;
-  border-color: orange;
-  color: white;
+.order-card-actions .drop-down-button.status-button:hover span,
+.order-card-actions .drop-down-button.status-button:hover .anticon,
+.order-card-actions .drop-down-button.status-button:focus span,
+.order-card-actions .drop-down-button.status-button:focus .anticon {
+  color: var(--ds-on-primary) !important;
 }
 
-.drop-down-button.status-button:hover span,
-.drop-down-button.status-button:active span,
-.drop-down-button.status-button:focus span {
-  color: white;
+/* Edit-order button → link blue on hover (override global :has(edit) blue here too
+   to keep specificity high inside the orders card) */
+.order-card-actions .drop-down-button:has([nzType='edit']):hover {
+  background-color: var(--ds-link) !important;
+  border-color: var(--ds-link) !important;
+}
+
+.order-card-actions .drop-down-button:has([nzType='edit']):hover .anticon {
+  color: var(--ds-on-primary) !important;
+}
+
+/* Delete-order button → error red on hover */
+.order-card-actions .drop-down-button:has([nzType='delete']):hover {
+  background-color: var(--ds-error) !important;
+  border-color: var(--ds-error) !important;
+}
+
+.order-card-actions .drop-down-button:has([nzType='delete']):hover .anticon {
+  color: var(--ds-on-primary) !important;
+}
+
+/* Pagination wrapper */
+.order-pagination-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--ds-canvas);
+  border: 1px solid var(--ds-hairline);
+  border-radius: var(--ds-radius-md);
+  margin: 16px 0;
+  padding: 4px;
 }
 
 @media screen and (max-width: 768px) {
   .order-card {
-    width: 100%;
-    min-height: 400px;
+    min-height: 360px;
   }
-}
-
-/* Override pagination colors to green */
-/* Center the pagination */
-::ng-deep .ant-pagination {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-::ng-deep .ant-pagination-item {
-  border-radius: 8px !important;
-}
-
-::ng-deep .ant-pagination-prev .ant-pagination-item-link,
-::ng-deep .ant-pagination-next .ant-pagination-item-link {
-  border-radius: 8px !important;
-}
-
-::ng-deep .ant-pagination-item-active {
-  background-color: #66bb6a !important;
-  border-color: #66bb6a !important;
-  border-radius: 8px !important;
-}
-
-::ng-deep .ant-pagination-item-active a {
-  color: white !important;
-}
-
-::ng-deep .ant-pagination-item:hover {
-  border-color: #66bb6a !important;
-}
-
-::ng-deep .ant-pagination-item:hover a {
-  color: #66bb6a !important;
-}
-
-::ng-deep .ant-pagination-prev:hover .ant-pagination-item-link,
-::ng-deep .ant-pagination-next:hover .ant-pagination-item-link {
-  color: #66bb6a !important;
-  border-color: #66bb6a !important;
-}
-
-::ng-deep .ant-pagination-item-active:hover {
-  background-color: #4caf50 !important;
-  border-color: #4caf50 !important;
-}
-
-::ng-deep .ant-pagination-item-active:hover a {
-  color: black !important;
-}
-
-/* Page size selector (10 / page dropdown) */
-::ng-deep .ant-select-selector {
-  border-color: #66bb6a !important;
-  border-radius: 8px !important;
-}
-
-::ng-deep .ant-select-focused .ant-select-selector,
-::ng-deep .ant-select-selector:hover {
-  border-color: #66bb6a !important;
-  border-radius: 8px !important;
-}
-
-::ng-deep .ant-select-item-option-selected {
-  background-color: #e8f5e9 !important;
-  color: #2e7d32 !important;
-  font-weight: 600;
-}
-
-::ng-deep .ant-select-item-option-active {
-  background-color: #c8e6c9 !important;
+  .order-item-container {
+    padding: 12px 16px 16px;
+  }
 }

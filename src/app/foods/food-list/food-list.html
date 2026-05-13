@@ -1,9 +1,9 @@
 <div class="main-wrapper p-0 p-md-4 pb-md-0">
-  <div class="bg-white drop-shadow-lg md:rounded-lg rounded-none pt-0 pt-md-3">
+  <div class="feature-table-card">
     <nz-table
       nzShowSizeChanger
       nzPaginationType="default"
-      [nzScroll]="{ y: 'calc(100vh - 300px)', x: '768px' }"
+      [nzScroll]="{ y: 'calc(100% - 56px)', x: '768px' }"
       [nzWidthConfig]="['120px', 'auto', 'auto', 'auto', 'auto', 'auto', '180px']"
       nzTableLayout="auto"
       [nzData]="listOfFood()"
@@ -20,59 +20,13 @@
       <thead>
         <tr>
           <th nzColumnKey="image"></th>
-          <th
-            nzTooltipTitle="Name"
-            nzTooltipPlacement="topLeft"
-            nz-tooltip
-            class="custom-table-title truncate"
-            nzColumnKey="name"
-          >
-            Name
-          </th>
-          <th
-            nzTooltipTitle="Price"
-            nzTooltipPlacement="topLeft"
-            nz-tooltip
-            class="custom-table-title truncate"
-            nzColumnKey="price"
-          >
-            Price
-          </th>
-          <th
-            nzTooltipTitle="Discount Type"
-            nzTooltipPlacement="topLeft"
-            nz-tooltip
-            class="custom-table-title truncate"
-            nzColumnKey="designation"
-          >
-            Discount Type
-          </th>
-          <th
-            nzTooltipTitle="Discount"
-            nzTooltipPlacement="topLeft"
-            nz-tooltip
-            class="custom-table-title truncate"
-            nzColumnKey="joindate"
-          >
-            Discount
-          </th>
-          <th
-            nzTooltipTitle="Discounted Price"
-            nzTooltipPlacement="topLeft"
-            nz-tooltip
-            class="custom-table-title truncate"
-            nzColumnKey="phone"
-          >
-            Discounted Price
-          </th>
+          <th class="custom-table-title truncate" nzColumnKey="name">Name</th>
+          <th class="custom-table-title truncate" nzColumnKey="price">Price</th>
+          <th class="custom-table-title truncate" nzColumnKey="designation">Discount Type</th>
+          <th class="custom-table-title truncate" nzColumnKey="joindate">Discount</th>
+          <th class="custom-table-title truncate" nzColumnKey="phone">Discounted Price</th>
           <th class="custom-table-title-button" nzColumnKey="action">
-            <button
-              class="add-food-button"
-              nz-tooltip
-              nzTooltipTitle="Add New Food Item"
-              nzTooltipPlacement="top"
-              (click)="foodService.showAddModal.set(true)"
-            >
+            <button class="add-food-button" (click)="foodService.showAddModal.set(true)">
               <span nz-icon nzType="plus-circle" nzTheme="outline"></span>
               <span> Add Food Item </span>
             </button>
@@ -104,49 +58,19 @@
                   ></nz-avatar>
                 </div>
               </td>
-              <td
-                [nzTooltipOverlayStyle]="{ 'min-width': '40px' }"
-                nzTooltipTitle="{{ data.name }}"
-                nzTooltipPlacement="topLeft"
-                nz-tooltip
-                class="truncate"
-              >
+              <td class="truncate">
                 {{ data.name }}
               </td>
-              <td
-                [nzTooltipOverlayStyle]="{ 'min-width': '40px' }"
-                nzTooltipTitle="{{ data.price }}"
-                nzTooltipPlacement="topLeft"
-                nz-tooltip
-                class="truncate"
-              >
+              <td class="truncate">
                 {{ data.price }}
               </td>
-              <td
-                [nzTooltipOverlayStyle]="{ 'min-width': '40px' }"
-                nzTooltipTitle="{{ data.discountType }}"
-                nzTooltipPlacement="topLeft"
-                nz-tooltip
-                class="truncate"
-              >
+              <td class="truncate">
                 {{ data.discountType }}
               </td>
-              <td
-                [nzTooltipOverlayStyle]="{ 'min-width': '40px' }"
-                nzTooltipTitle="{{ getDiscountDisplay(data) }}"
-                nzTooltipPlacement="topLeft"
-                nz-tooltip
-                class="truncate"
-              >
+              <td class="truncate">
                 {{ getDiscountDisplay(data) }}
               </td>
-              <td
-                [nzTooltipOverlayStyle]="{ 'min-width': '40px' }"
-                nzTooltipTitle="{{ data.discountPrice }}"
-                nzTooltipPlacement="topLeft"
-                nz-tooltip
-                class="truncate"
-              >
+              <td class="truncate">
                 {{ data.discountPrice }}
               </td>
               <td>
@@ -154,10 +78,6 @@
                   <button
                     (click)="editFood(data.id)"
                     class="drop-down-button drop-shadow-md"
-                    nz-tooltip
-                    nzTooltipTitle="Edit Food"
-                    nzTooltipPlacement="top"
-                    title="Edit Food"
                     aria-label="Edit Food"
                   >
                     <span nz-icon nzType="edit" nzTheme="outline"></span>
@@ -165,10 +85,6 @@
                   <button
                     (click)="deleteFood(data.id)"
                     class="drop-down-button drop-shadow-md"
-                    nz-tooltip
-                    nzTooltipTitle="Delete Food"
-                    nzTooltipPlacement="top"
-                    title="Delete Food"
                     aria-label="Delete Food"
                   >
                     <span nz-icon nzType="delete" nzTheme="outline"></span>

@@ -11,8 +11,6 @@ import { AddEmployee } from '../add-employee/add-employee';
 import { API_BASE_URL } from '../../app.config';
 import { ChangeDetectionStrategy } from '@angular/core';
 
-export type ThemeType = 'fill' | 'outline' | 'twotone';
-
 @Component({
   selector: 'app-employee-list',
   providers: [NzModalService],
@@ -37,7 +35,6 @@ export class EmployeeList implements OnInit {
 
   pageSize = signal(10);
   pageIndex = signal(1);
-  starMarked = signal<ThemeType>('twotone');
 
   constructor() {
     effect(() => {
@@ -73,6 +70,7 @@ export class EmployeeList implements OnInit {
       nzOkType: 'primary',
       nzOkDanger: true,
       nzCancelText: 'Cancel',
+      nzCentered: true,
       nzOnOk: () => {
         this.employeeService.deleteEmployee(id);
         if (this.employeeService.listOfEmployees().length <= 1) {
@@ -84,9 +82,5 @@ export class EmployeeList implements OnInit {
 
   getImageUrl(imageUrl: string | undefined): string {
     return imageUrl ? `${this.imageBaseUrl}${imageUrl}` : '';
-  }
-
-  toggleStar(): void {
-    this.starMarked.update((v) => (v === 'fill' ? 'twotone' : 'fill'));
   }
 }

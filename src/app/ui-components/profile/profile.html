@@ -22,7 +22,11 @@
             nzIcon="user"
             [nzSrc]="userImageUrl()"
             class="drop-shadow-md"
-            style="background-color: #66bb6a"
+            style="
+              background-color: var(--ds-canvas-soft);
+              color: var(--ds-ink);
+              border: 1px solid var(--ds-hairline);
+            "
             aria-label="User profile picture"
           ></nz-avatar>
         </div>

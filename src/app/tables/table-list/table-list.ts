@@ -89,6 +89,7 @@ export class TableList implements OnInit {
       nzOkType: 'primary',
       nzOkDanger: true,
       nzCancelText: 'Cancel',
+      nzCentered: true,
       nzOnOk: () => {
         this.tablesService.deleteTable(id);
         if (this.tablesService.listOfTables().length <= 1) {

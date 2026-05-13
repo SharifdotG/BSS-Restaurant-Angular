@@ -1,7 +1,9 @@
 <ng-template #modalTitle>
-  <span nz-icon [nzType]="expensesService.isEditMode() ? 'edit' : 'plus'" nzTheme="outline"></span>
-  <span> {{ expensesService.isEditMode() ? 'Edit Expense' : 'Add New Expense' }}</span>
+  <span class="ds-modal-title">
+    {{ expensesService.isEditMode() ? 'Edit expense' : 'Add new expense' }}
+  </span>
 </ng-template>
+
 <nz-modal
   nzCentered
   [(nzVisible)]="expensesService.showAddModal"
@@ -10,107 +12,96 @@
   (nzOnOk)="handleOk()"
   [nzOkLoading]="expensesService.isSendingRequest()"
   [nzWidth]="modalWidth()"
+  nzWrapClassName="ds-form-modal"
 >
   <ng-container *nzModalContent>
-    <div class="form-wrapper">
-      <form nz-form [formGroup]="validateForm">
-        <div class="row g-3">
-          <div class="col-12 col-lg-6">
-            <nz-form-item>
-              <nz-form-label nzRequired nzNoColon nzLabelAlign="left" nzSpan="24"
-                >Title</nz-form-label
-              >
-              <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Title is required!">
-                <input
-                  nz-input
-                  formControlName="title"
-                  placeholder="e.g. Monthly Rent, Vegetable Purchase"
-                />
-              </nz-form-control>
-            </nz-form-item>
-          </div>
-          <div class="col-12 col-lg-6">
-            <nz-form-item>
-              <nz-form-label nzRequired nzNoColon nzLabelAlign="left" nzSpan="24"
-                >Amount (৳)</nz-form-label
-              >
-              <nz-form-control [nzSpan]="24" nzHasFeedback [nzErrorTip]="amountErrorTmpl">
-                <nz-input-number
-                  formControlName="amount"
-                  [nzMin]="0"
-                  [nzStep]="1"
-                  [nzPrecision]="2"
-                  nzPlaceHolder="0.00"
-                  style="width: 100%"
-                ></nz-input-number>
-                <ng-template #amountErrorTmpl let-control>
-                  @if (control.errors?.['required']) {
-                    Amount is required!
-                  } @else if (control.errors?.['min']) {
-                    Amount must be greater than 0!
-                  }
-                </ng-template>
-              </nz-form-control>
-            </nz-form-item>
-          </div>
-          <div class="col-12 col-lg-6">
-            <nz-form-item>
-              <nz-form-label nzRequired nzNoColon nzLabelAlign="left" nzSpan="24"
-                >Category</nz-form-label
-              >
-              <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Category is required!">
-                <nz-select formControlName="category" nzPlaceHolder="Select a category">
-                  @for (cat of categories; track cat) {
-                    <nz-option [nzValue]="cat" [nzLabel]="cat"></nz-option>
-                  }
-                </nz-select>
-              </nz-form-control>
-            </nz-form-item>
-          </div>
-          <div class="col-12 col-lg-6">
-            <nz-form-item>
-              <nz-form-label nzRequired nzNoColon nzLabelAlign="left" nzSpan="24"
-                >Expense Date</nz-form-label
-              >
-              <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Expense date is required!">
-                <nz-date-picker
-                  formControlName="expenseDate"
-                  nzPlaceHolder="Select date"
-                  style="width: 100%"
-                ></nz-date-picker>
-              </nz-form-control>
-            </nz-form-item>
-          </div>
-          <div class="col-12">
-            <nz-form-item>
-              <nz-form-label nzNoColon nzLabelAlign="left" nzSpan="24">Notes</nz-form-label>
-              <nz-form-control [nzSpan]="24">
-                <textarea
-                  rows="3"
-                  nz-input
-                  formControlName="notes"
-                  placeholder="Optional notes about this expense"
-                ></textarea>
-              </nz-form-control>
-            </nz-form-item>
-          </div>
+    <form nz-form nzLayout="vertical" [formGroup]="validateForm" class="ds-form">
+      <p class="ds-form-section-eyebrow">DETAILS</p>
+      <div class="row g-3">
+        <div class="col-12 col-md-6">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon>Title</nz-form-label>
+            <nz-form-control nzErrorTip="Title is required.">
+              <input
+                nz-input
+                formControlName="title"
+                placeholder="e.g. Monthly Rent, Vegetable Purchase"
+              />
+            </nz-form-control>
+          </nz-form-item>
         </div>
-      </form>
-    </div>
+        <div class="col-12 col-md-6">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon>Amount (৳)</nz-form-label>
+            <nz-form-control [nzErrorTip]="amountErrorTmpl">
+              <nz-input-number
+                formControlName="amount"
+                [nzMin]="0"
+                [nzStep]="1"
+                [nzPrecision]="2"
+                nzPlaceHolder="0.00"
+                style="width: 100%"
+              ></nz-input-number>
+              <ng-template #amountErrorTmpl let-control>
+                @if (control.errors?.['required']) {
+                  Required.
+                } @else if (control.errors?.['min']) {
+                  Must be greater than 0.
+                }
+              </ng-template>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div class="col-12 col-md-6">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon>Category</nz-form-label>
+            <nz-form-control nzErrorTip="Required.">
+              <nz-select formControlName="category" nzPlaceHolder="Select a category">
+                @for (cat of categories; track cat) {
+                  <nz-option [nzValue]="cat" [nzLabel]="cat"></nz-option>
+                }
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div class="col-12 col-md-6">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon>Expense date</nz-form-label>
+            <nz-form-control nzErrorTip="Required.">
+              <nz-date-picker
+                formControlName="expenseDate"
+                nzPlaceHolder="Select date"
+                style="width: 100%"
+              ></nz-date-picker>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div class="col-12">
+          <nz-form-item>
+            <nz-form-label nzNoColon>Notes</nz-form-label>
+            <nz-form-control>
+              <textarea
+                rows="3"
+                nz-input
+                formControlName="notes"
+                placeholder="Optional notes about this expense"
+              ></textarea>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+    </form>
   </ng-container>
 
   <div *nzModalFooter>
-    <button class="drop-shadow-md" nz-button nzDanger nzType="default" (click)="handleCancel()">
-      Cancel
-    </button>
+    <button nz-button nzType="default" (click)="handleCancel()">Cancel</button>
     <button
-      class="drop-shadow-md"
       nz-button
       nzType="primary"
       (click)="handleOk()"
       [nzLoading]="expensesService.isSendingRequest()"
     >
-      {{ expensesService.isEditMode() ? 'Update Expense' : 'Add Expense' }}
+      {{ expensesService.isEditMode() ? 'Save changes' : 'Add expense' }}
     </button>
   </div>
 </nz-modal>

@@ -1,12 +1,9 @@
 <ng-template #modalTitle>
-  <span
-    nz-icon
-    [nzType]="tablesService.isEditMode() ? 'edit' : 'plus'"
-    nzTheme="outline"
-    aria-hidden="true"
-  ></span>
-  <span> {{ tablesService.isEditMode() ? 'Edit Table' : 'Add New Table' }}</span>
+  <span class="ds-modal-title">
+    {{ tablesService.isEditMode() ? 'Edit table' : 'Add new table' }}
+  </span>
 </ng-template>
+
 <nz-modal
   [(nzVisible)]="tablesService.showAddModal"
   [nzTitle]="modalTitle"
@@ -15,127 +12,104 @@
   [nzOkLoading]="tablesService.isSendingRequest()"
   [nzWidth]="modalWidth()"
   nzCentered
+  nzWrapClassName="ds-form-modal"
 >
   <ng-container *nzModalContent>
-    <div class="form-wrapper">
-      <form nz-form [formGroup]="validateForm" (ngSubmit)="handleOk()">
-        <div class="row">
-          <div class="col-12 col-lg-6 p-0 pe-lg-2">
-            <!-- Table Name -->
-            <nz-form-item>
-              <nz-form-label nzRequired nzNoColon nzLabelAlign="left" nzSpan="24"
-                >Table Number</nz-form-label
-              >
-              <nz-form-control [nzSpan]="24" nzHasFeedback [nzErrorTip]="tableNameErrorTmpl">
-                <input
-                  nz-input
-                  formControlName="tableName"
-                  placeholder="Table Number"
-                  autocomplete="off"
-                />
-                <ng-template #tableNameErrorTmpl let-control>
-                  @if (control.errors?.['required']) {
-                    This field is required!
-                  } @else if (control.errors?.['notAlphaNum']) {
-                    Only Letters and Numbers Allowed!
-                  }
-                </ng-template>
-              </nz-form-control>
-            </nz-form-item>
-
-            <!-- Table Seat Count -->
-            <nz-form-item>
-              <nz-form-label nzRequired nzNoColon nzLabelAlign="left" nzSpan="24"
-                >Number of Seats</nz-form-label
-              >
-              <nz-form-control [nzSpan]="24" nzHasFeedback [nzErrorTip]="numberOfSeatsError">
-                <input
-                  nz-input
-                  formControlName="numberofseats"
-                  placeholder="Number of Seats in the table"
-                  autocomplete="off"
-                />
-                <ng-template #numberOfSeatsError let-control>
-                  @if (control.errors?.['required']) {
-                    This field is required!
-                  } @else if (control.errors?.['isNotNum']) {
-                    This is not a valid number of seats!
-                  }
-                </ng-template>
-              </nz-form-control>
-            </nz-form-item>
+    <form
+      nz-form
+      nzLayout="vertical"
+      [formGroup]="validateForm"
+      (ngSubmit)="handleOk()"
+      class="ds-form"
+    >
+      <!-- Image uploader -->
+      <div class="ds-form-avatar-row">
+        <nz-upload
+          class="ds-avatar-upload"
+          [nzShowUploadList]="false"
+          nzAction="null"
+          nzListType="picture-card"
+          [(nzFileList)]="fileList"
+          [nzShowButton]="true"
+          [nzPreview]="handlePreview"
+          [nzBeforeUpload]="beforeUpload"
+          [nzFileType]="'image/png,image/jpeg,image/gif,image/bmp'"
+          (nzChange)="onChange($event)"
+        >
+          <div class="ds-avatar-slot ds-avatar-slot--square">
+            @if (previewImage) {
+              <img [src]="previewImage" alt="Table preview" class="ds-avatar-image" />
+              <div class="ds-avatar-overlay">
+                <span nz-icon nzType="edit" nzTheme="outline"></span>
+              </div>
+            } @else {
+              <span nz-icon nzType="plus" nzTheme="outline"></span>
+            }
           </div>
-
-          <!-- Table Image Upload -->
-          <div class="col-12 col-lg-6 p-0 ps-lg-2">
-            <div
-              class="w-100 h-100 p-4 d-flex align-items-center justify-content-center file-upload"
-            >
-              <nz-upload
-                [nzShowUploadList]="{
-                  showPreviewIcon: true,
-                  showRemoveIcon: true,
-                  showDownloadIcon: false,
-                }"
-                nzAction="null"
-                nzListType="picture-card"
-                [(nzFileList)]="fileList"
-                [nzShowButton]="fileList.length < 1"
-                [nzPreview]="handlePreview"
-                [nzBeforeUpload]="beforeUpload"
-                [nzFileType]="'image/png,image/jpeg,image/gif,image/bmp'"
-                (nzChange)="onChange($event)"
-              >
-                <div class="card p-10 d-flex align-items-center justify-content-center">
-                  <span nz-icon nzType="plus" aria-hidden="true"></span>
-                  <div style="margin-top: 8px">Upload Table Image</div>
-                </div>
-              </nz-upload>
-              <nz-modal
-                [nzVisible]="previewVisible"
-                [nzContent]="modalContent"
-                [nzFooter]="null"
-                (nzOnCancel)="previewVisible = false"
-                nzWidth="760px"
-              >
-                <ng-template #modalContent>
-                  <img
-                    class="mt-2"
-                    [src]="previewImage"
-                    style="width: 100%"
-                    alt="Table image preview"
-                    title="Table image preview"
-                  />
-                </ng-template>
-              </nz-modal>
-            </div>
-          </div>
+        </nz-upload>
+        <div class="ds-form-avatar-text">
+          <p class="ds-form-avatar-title">Table photo</p>
+          <p class="ds-form-avatar-hint">Optional. PNG, JPG or GIF.</p>
         </div>
-      </form>
-    </div>
+      </div>
+
+      <p class="ds-form-section-eyebrow">DETAILS</p>
+      <div class="row g-3">
+        <div class="col-12 col-md-6">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon>Table number</nz-form-label>
+            <nz-form-control [nzErrorTip]="tableNameErrorTmpl">
+              <input
+                nz-input
+                formControlName="tableName"
+                placeholder="e.g. T-12"
+                autocomplete="off"
+              />
+              <ng-template #tableNameErrorTmpl let-control>
+                @if (control.errors?.['required']) {
+                  Required.
+                } @else if (control.errors?.['notAlphaNum']) {
+                  Letters and numbers only.
+                }
+              </ng-template>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div class="col-12 col-md-6">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon>Number of seats</nz-form-label>
+            <nz-form-control [nzErrorTip]="numberOfSeatsError">
+              <input
+                nz-input
+                formControlName="numberofseats"
+                placeholder="e.g. 4"
+                autocomplete="off"
+              />
+              <ng-template #numberOfSeatsError let-control>
+                @if (control.errors?.['required']) {
+                  Required.
+                } @else if (control.errors?.['isNotNum']) {
+                  Must be a number.
+                }
+              </ng-template>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+    </form>
   </ng-container>
 
   <!-- Modal Footer -->
   <div *nzModalFooter>
+    <button nz-button nzType="default" (click)="handleCancel()" type="button">Cancel</button>
     <button
-      class="drop-shadow-md"
-      nz-button
-      nzDanger
-      nzType="default"
-      (click)="handleCancel()"
-      type="button"
-    >
-      Cancel Operation
-    </button>
-    <button
-      class="drop-shadow-md"
       nz-button
       nzType="primary"
       (click)="handleOk()"
       [nzLoading]="tablesService.isSendingRequest()"
       type="button"
     >
-      {{ tablesService.isEditMode() ? 'Update Table' : 'Add New Table' }}
+      {{ tablesService.isEditMode() ? 'Save changes' : 'Add table' }}
     </button>
   </div>
 </nz-modal>

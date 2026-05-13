@@ -1,5 +1,7 @@
 import { Component, ChangeDetectionStrategy, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { BreakpointObserver } from '@angular/cdk/layout';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzImageModule } from 'ng-zorro-antd/image';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
@@ -7,7 +9,14 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 
 import { NewOrderService } from '../new-order.service';
-import { PostOrder, PostOrderItem } from '../../orders/orders.model';
+import { CartItem, PostOrder, PostOrderItem } from '../../orders/orders.model';
+
+interface CartGroup {
+  tableId: string;
+  tableNumber: string;
+  items: CartItem[];
+  subtotal: number;
+}
 
 @Component({
   selector: 'app-cart',
@@ -25,29 +34,91 @@ import { PostOrder, PostOrderItem } from '../../orders/orders.model';
 })
 export class Cart {
   readonly newOrderService = inject(NewOrderService);
+  private readonly breakpoint = inject(BreakpointObserver);
 
   readonly fallbackImage = this.newOrderService.fallbackImage;
+
+  readonly drawerWidth = signal(420);
 
   readonly subtotal = computed(() =>
     this.newOrderService.cartFood().reduce((total, item) => total + item.amount * item.quantity, 0),
   );
 
-  phoneNumber = signal('');
+  /** Group cart items by table for multi-table ordering. */
+  readonly cartGroups = computed<CartGroup[]>(() => {
+    const items = this.newOrderService.cartFood();
+    const tables = this.newOrderService.listOfTable();
+    const map = new Map<string, CartGroup>();
+    for (const item of items) {
+      let group = map.get(item.tableId);
+      if (!group) {
+        const tableNumber =
+          tables.find((t) => String(t.id) === item.tableId)?.tableNumber ?? `Table ${item.tableId}`;
+        group = { tableId: item.tableId, tableNumber, items: [], subtotal: 0 };
+        map.set(item.tableId, group);
+      }
+      group.items.push(item);
+      group.subtotal += item.amount * item.quantity;
+    }
+    return Array.from(map.values());
+  });
+
+  readonly totalUnits = computed(() =>
+    this.newOrderService.cartFood().reduce((sum, i) => sum + i.quantity, 0),
+  );
+
+  /**
+   * Per-table phone number map: each table in the cart keeps its own optional
+   * customer phone number. Keyed by tableId.
+   */
+  readonly phoneNumbers = signal<Record<string, string>>({});
+
+  constructor() {
+    this.breakpoint
+      .observe(['(max-width: 600px)'])
+      .pipe(takeUntilDestroyed())
+      .subscribe((state) => {
+        this.drawerWidth.set(state.matches ? window.innerWidth : 420);
+      });
+  }
 
   getFoodImage(image: string): string {
     return this.newOrderService.getFoodImage(image);
   }
 
-  removeFromCart(foodId: number): void {
+  removeFromCart(foodId: number, tableId: string): void {
     this.newOrderService.cartFood.update((items) =>
-      items.filter((item) => item.food.id !== foodId),
+      items.filter((item) => !(item.food.id === foodId && item.tableId === tableId)),
     );
   }
 
-  updateQuantity(foodId: number, newQuantity: number): void {
+  updateQuantity(foodId: number, tableId: string, newQuantity: number): void {
     this.newOrderService.cartFood.update((items) =>
-      items.map((item) => (item.food.id === foodId ? { ...item, quantity: newQuantity } : item)),
+      items.map((item) =>
+        item.food.id === foodId && item.tableId === tableId
+          ? { ...item, quantity: newQuantity }
+          : item,
+      ),
     );
+  }
+
+  removeTableGroup(tableId: string): void {
+    this.newOrderService.cartFood.update((items) =>
+      items.filter((item) => item.tableId !== tableId),
+    );
+    this.phoneNumbers.update((m) => {
+      const next = { ...m };
+      delete next[tableId];
+      return next;
+    });
+  }
+
+  setPhoneNumber(tableId: string, value: string): void {
+    this.phoneNumbers.update((m) => ({ ...m, [tableId]: value }));
+  }
+
+  getPhoneNumber(tableId: string): string {
+    return this.phoneNumbers()[tableId] ?? '';
   }
 
   closeCart(): void {
@@ -55,18 +126,8 @@ export class Cart {
   }
 
   confirmOrder(): void {
-    const items: PostOrderItem[] = this.newOrderService.cartFood().map((item) => ({
-      foodId: item.food.id,
-      foodPackageId: null,
-      quantity: item.quantity,
-      unitPrice: item.amount,
-      totalPrice: item.quantity * item.amount,
-    }));
-
-    const selectedTable = this.newOrderService
-      .listOfTable()
-      .find((table) => table.id.toString() === this.newOrderService.selectedTableId());
-    const tableNumber = selectedTable?.tableNumber ?? 'TABLE';
+    const groups = this.cartGroups();
+    if (!groups.length) return;
 
     const now = new Date();
     const dateStr = [
@@ -75,18 +136,30 @@ export class Cart {
       now.getDate().toString().padStart(2, '0'),
     ].join('');
 
-    const randomDigits = Math.floor(1000 + Math.random() * 9000);
-    const orderNumber = `${dateStr}-${tableNumber}-${randomDigits}`;
+    // Place one order per table — each cart group becomes its own POST.
+    for (const group of groups) {
+      const items: PostOrderItem[] = group.items.map((item) => ({
+        foodId: item.food.id,
+        foodPackageId: null,
+        quantity: item.quantity,
+        unitPrice: item.amount,
+        totalPrice: item.quantity * item.amount,
+      }));
+      const randomDigits = Math.floor(1000 + Math.random() * 9000);
+      const orderNumber = `${dateStr}-${group.tableNumber}-${randomDigits}`;
+      const postData: PostOrder = {
+        tableId: Number(group.tableId),
+        orderNumber,
+        amount: group.subtotal,
+        phoneNumber: this.getPhoneNumber(group.tableId) || null,
+        items,
+      };
+      this.newOrderService.createOrder(postData);
+    }
 
-    const postData: PostOrder = {
-      tableId: Number(this.newOrderService.selectedTableId()),
-      orderNumber,
-      amount: this.subtotal(),
-      phoneNumber: this.phoneNumber() || null,
-      items,
-    };
-
-    this.newOrderService.createOrder(postData);
+    this.newOrderService.cartFood.set([]);
+    this.newOrderService.selectedTableId.set('');
+    this.phoneNumbers.set({});
     this.closeCart();
   }
 }

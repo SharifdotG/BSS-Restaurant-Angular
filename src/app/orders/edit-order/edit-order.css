@@ -1,20 +1,248 @@
-.add-food-btn {
-  height: 32px !important;
-  line-height: 32px !important;
-  padding: 0 15px !important;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+.ds-modal-title-sub {
+  font-family: var(--font-mono);
+  font-size: var(--ds-caption-size);
+  color: var(--ds-mute);
+  margin-left: 8px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
-/* Ensure the parent container aligns items properly */
-.d-flex.gap-2 {
+.ds-edit-order-add {
+  display: flex;
+  gap: 8px;
   align-items: stretch;
+  margin-bottom: 8px;
+}
+
+/* Force the select inside the add-items row to match the 40px button height */
+.ds-edit-order-add ::ng-deep .ant-select .ant-select-selector,
+.ds-edit-order-add ::ng-deep .ant-select-single .ant-select-selector {
+  height: 40px !important;
+  border-radius: var(--ds-radius-sm) !important;
+  background: var(--ds-canvas) !important;
+  border: 1px solid var(--ds-hairline) !important;
+  font-family: var(--font-sans) !important;
+  font-size: var(--ds-body-sm-size) !important;
+  color: var(--ds-ink) !important;
+  display: flex;
+  align-items: center;
+}
+
+.ds-edit-order-add ::ng-deep .ant-select-selection-search-input {
+  height: 38px !important;
+}
+
+.ds-edit-order-add ::ng-deep .ant-select-selection-item,
+.ds-edit-order-add ::ng-deep .ant-select-selection-placeholder {
+  line-height: 38px !important;
+}
+
+.ds-add-item-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 40px;
+  padding: 0 14px;
+  background: var(--ds-ink);
+  color: var(--ds-on-primary);
+  border: 1px solid var(--ds-ink);
+  border-radius: var(--ds-radius-sm);
+  font-family: var(--font-sans);
+  font-size: var(--ds-body-sm-size);
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.ds-add-item-button:hover:not(:disabled) {
+  background: var(--ds-body);
+  border-color: var(--ds-body);
+}
+
+.ds-add-item-button:disabled {
+  background: var(--ds-canvas-soft);
+  color: var(--ds-mute);
+  border-color: var(--ds-hairline);
+  cursor: not-allowed;
 }
 
 .food-option-image {
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
   object-fit: cover;
-  border-radius: 4px;
+  border-radius: var(--ds-radius-sm);
+  border: 1px solid var(--ds-hairline);
+}
+
+.food-option-name {
+  font-family: var(--font-sans);
+  font-size: var(--ds-body-sm-size);
+  font-weight: 500;
+  color: var(--ds-ink);
+}
+
+.food-option-price {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ds-mute);
+}
+
+/* Order items list */
+.ds-edit-order-items {
+  border: 1px solid var(--ds-hairline);
+  border-radius: var(--ds-radius-md);
+  background: var(--ds-canvas-soft);
+  max-height: 360px;
+  overflow-y: auto;
+  margin-bottom: 12px;
+}
+
+.ds-edit-order-empty {
+  text-align: center;
+  padding: 32px 16px;
+  font-family: var(--font-sans);
+  font-size: var(--ds-body-sm-size);
+  color: var(--ds-mute);
+}
+
+.ds-edit-order-row {
+  display: grid;
+  grid-template-columns: 48px 1fr auto auto auto;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--ds-hairline);
+  background: var(--ds-canvas);
+}
+
+.ds-edit-order-row:last-child {
+  border-bottom: none;
+}
+
+.ds-edit-order-image {
+  width: 44px;
+  height: 44px;
+  object-fit: cover;
+  border-radius: var(--ds-radius-sm);
+  border: 1px solid var(--ds-hairline);
+}
+
+.ds-edit-order-meta {
+  min-width: 0;
+}
+
+.ds-edit-order-name {
+  font-family: var(--font-sans);
+  font-size: var(--ds-body-sm-size);
+  font-weight: 500;
+  color: var(--ds-ink);
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ds-edit-order-unit {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ds-mute);
+  margin: 2px 0 0 0;
+}
+
+.ds-edit-order-qty {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ds-edit-order-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ds-mute);
+}
+
+.ds-edit-order-qty ::ng-deep .ant-input-number {
+  width: 80px !important;
+  height: 32px !important;
+}
+
+.ds-edit-order-qty ::ng-deep .ant-input-number-input {
+  height: 30px !important;
+  text-align: center;
+  font-family: var(--font-mono);
+}
+
+.ds-edit-order-total {
+  font-family: var(--font-mono);
+  font-size: var(--ds-body-sm-size);
+  font-weight: 500;
+  color: var(--ds-ink);
+  margin: 0;
+  min-width: 72px;
+  text-align: right;
+}
+
+.ds-edit-order-remove {
+  width: 32px;
+  height: 32px;
+  border: 1px solid transparent;
+  background: transparent;
+  border-radius: var(--ds-radius-sm);
+  color: var(--ds-mute);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition-fast);
+}
+
+.ds-edit-order-remove:hover {
+  color: var(--ds-error);
+  border-color: var(--ds-error-soft);
+  background: var(--ds-error-soft);
+}
+
+.ds-edit-order-total-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 14px 18px;
+  background: var(--ds-canvas-soft-2);
+  border: 1px solid var(--ds-hairline);
+  border-radius: var(--ds-radius-md);
+}
+
+.ds-edit-order-total-label {
+  font-family: var(--font-sans);
+  font-size: var(--ds-body-md-size);
+  font-weight: 500;
+  color: var(--ds-body);
+}
+
+.ds-edit-order-total-value {
+  font-family: var(--font-sans);
+  font-size: var(--ds-display-md-size);
+  line-height: var(--ds-display-md-line);
+  letter-spacing: var(--ds-display-md-tracking);
+  font-weight: 600;
+  color: var(--ds-ink);
+}
+
+@media (max-width: 600px) {
+  .ds-edit-order-row {
+    grid-template-columns: 44px 1fr auto;
+    grid-template-rows: auto auto;
+    gap: 8px;
+  }
+  .ds-edit-order-qty {
+    grid-column: 1 / -1;
+    justify-content: space-between;
+  }
+  .ds-edit-order-total {
+    grid-column: 1 / -1;
+    text-align: right;
+  }
 }

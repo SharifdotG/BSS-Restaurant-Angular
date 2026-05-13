@@ -142,6 +142,7 @@ export class OrderList implements OnInit {
       nzOkType: 'primary',
       nzOkDanger: true,
       nzCancelText: 'Cancel',
+      nzCentered: true,
       nzOnOk: () => {
         this.ordersService.deleteOrder(orderData.id);
       },

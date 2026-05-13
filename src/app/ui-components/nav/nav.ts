@@ -23,6 +23,7 @@ import { Profile } from '../profile/profile';
 import { Cart } from '../../new-order/cart/cart';
 import { NewOrderService } from '../../new-order/new-order.service';
 import { API_BASE_URL } from '../../app.config';
+import { ThemeService } from '../../core/theme.service';
 
 interface SideBarItem {
   label: string;
@@ -66,14 +67,29 @@ export class Nav implements OnInit {
   private readonly responsive = inject(BreakpointObserver);
   readonly authService = inject(AuthService);
   readonly newOrderService = inject(NewOrderService);
+  readonly themeService = inject(ThemeService);
   readonly sideBarItems = SIDE_BAR_ITEMS;
 
-  readonly cartItemCount = computed(() =>
-    this.newOrderService.cartFood().reduce((sum, item) => sum + item.quantity, 0),
+  readonly cartActive = computed(() => this.newOrderService.hasCartItems());
+  readonly cartFlash = computed(() => this.newOrderService.cartFlash());
+  readonly themeIcon = computed(() => (this.themeService.mode() === 'dark' ? 'sun' : 'moon'));
+  readonly themeLabel = computed(() =>
+    this.themeService.mode() === 'dark' ? 'Switch to light mode' : 'Switch to dark mode',
   );
+
+  cycleTheme(): void {
+    this.themeService.cycle();
+  }
 
   openCart(): void {
     this.newOrderService.showCart.set(true);
+  }
+
+  openProfile(event: MouseEvent): void {
+    this.authService.showProfile.set(true);
+    // Drop focus from the trigger so it doesn't render as hovered/active after the modal closes.
+    (event.currentTarget as HTMLElement | null)?.blur?.();
+    (document.activeElement as HTMLElement | null)?.blur?.();
   }
 
   isCollapsed = signal(true);

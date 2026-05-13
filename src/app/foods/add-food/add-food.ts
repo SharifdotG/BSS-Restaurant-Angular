@@ -65,7 +65,7 @@ export class AddFood {
     discountAmount: this.fb.control<string>(
       { value: '0', disabled: true },
       [Validators.nullValidator],
-      [this.isNumberValidator],
+      [this.discountAmountValidator.bind(this)],
     ),
     discountedPrice: this.fb.control<string>(
       { value: '0', disabled: true },
@@ -122,10 +122,10 @@ export class AddFood {
 
   private setupResponsiveListener(): void {
     this.responsive
-      .observe([Breakpoints.Large, Breakpoints.XLarge])
+      .observe(['(max-width: 600px)'])
       .pipe(takeUntilDestroyed())
       .subscribe((result) => {
-        this.modalWidth.set(result.matches ? '80vw' : '100vw');
+        this.modalWidth.set(result.matches ? '100vw' : '720px');
       });
   }
 
@@ -141,6 +141,7 @@ export class AddFood {
 
     if (food.image) {
       this.image.set(food.image);
+      this.previewImage.set(this.imageBaseUrl + food.image);
       this.fileList.set([
         {
           uid: '-1',
@@ -149,6 +150,8 @@ export class AddFood {
           url: this.imageBaseUrl + food.image,
         },
       ]);
+    } else {
+      this.previewImage.set('');
     }
   }
 
@@ -221,6 +224,27 @@ export class AddFood {
     ).pipe(delay(500));
   }
 
+  /**
+   * Discount-amount validator that varies by discount type:
+   * - Flat:        any non-negative number
+   * - Percentage:  integer in [1, 100]
+   * - None:        not validated (control is disabled)
+   */
+  private discountAmountValidator(control: AbstractControl): Observable<ValidationErrors | null> {
+    const value = control.value;
+    const discountType = this.validateForm?.controls.discountType.value ?? 'None';
+
+    if (discountType === 'Percentage') {
+      const isIntegerInRange =
+        /^\d+$/.test(String(value)) && Number(value) >= 1 && Number(value) <= 100;
+      return of(isIntegerInRange ? null : { error: true, percentRange: true }).pipe(delay(300));
+    }
+
+    return of(
+      /^[+-]?\d+(\.\d+)?$/.test(String(value)) ? null : { error: true, isNotNum: true },
+    ).pipe(delay(300));
+  }
+
   private nameValidator(control: AbstractControl): Observable<ValidationErrors | null> {
     return of(/^[a-zA-Z ]+$/.test(control.value) ? null : { error: true, notAplhaNum: true }).pipe(
       delay(500),
@@ -253,14 +277,17 @@ export class AddFood {
     if (event.type === 'removed') {
       this.image.set('');
       this.imageB64.set('');
+      this.previewImage.set('');
       return;
     }
 
     if (event.file.originFileObj) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        this.imageB64.set(reader.result as string);
+        const result = reader.result as string;
+        this.imageB64.set(result);
         this.image.set(event.file.uid + event.file.name);
+        this.previewImage.set(result);
       };
       reader.readAsDataURL(event.file.originFileObj);
     }

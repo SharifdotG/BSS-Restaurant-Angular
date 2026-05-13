@@ -4,6 +4,7 @@ import {
   inject,
   signal,
   computed,
+  effect,
   ChangeDetectionStrategy,
 } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
@@ -16,6 +17,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NgxChartsModule, LegendPosition, Color, ScaleType } from '@swimlane/ngx-charts';
 
 import { DashboardService } from '../../dashboard/dashboard.service';
+import { ThemeService } from '../../core/theme.service';
 
 interface MonthOption {
   value: number;
@@ -39,22 +41,32 @@ interface MonthOption {
 export class ReportAndAnalytics implements OnInit {
   protected readonly dashboardService = inject(DashboardService);
   private readonly breakpoint = inject(BreakpointObserver);
+  protected readonly themeService = inject(ThemeService);
 
   readonly legendPosition = LegendPosition.Below;
   readonly barLegendPosition = signal(LegendPosition.Right);
   readonly pieChartView = signal<[number, number]>([320, 320]);
-  readonly barColorScheme: Color = {
-    name: 'bar',
-    selectable: true,
-    group: ScaleType.Ordinal,
-    domain: ['#66bb6a', '#e91e63', '#26a69a'],
-  };
-  readonly pieColorScheme: Color = {
-    name: 'pie',
-    selectable: true,
-    group: ScaleType.Ordinal,
-    domain: ['#66bb6a', '#e91e63'],
-  };
+
+  readonly barColorScheme = computed<Color>(() => {
+    const isDark = this.themeService.resolvedTheme() === 'dark';
+    return {
+      name: 'bar',
+      selectable: true,
+      group: ScaleType.Ordinal,
+      domain: isDark ? ['#3291ff', '#ff4d96', '#a371f7'] : ['#0070f3', '#ff0080', '#7928ca'],
+    };
+  });
+
+  /** Donut chart — ink + mute for a stark infographic look */
+  readonly pieColorScheme = computed<Color>(() => {
+    const isDark = this.themeService.resolvedTheme() === 'dark';
+    return {
+      name: 'pie',
+      selectable: true,
+      group: ScaleType.Ordinal,
+      domain: isDark ? ['#fafafa', '#525252'] : ['#171717', '#a1a1a1'],
+    };
+  });
 
   readonly barChartData = computed(() => {
     const sr = this.dashboardService.dashboardStats()?.salesRevenue;
@@ -125,6 +137,13 @@ export class ReportAndAnalytics implements OnInit {
         this.barLegendPosition.set(isMobile ? LegendPosition.Below : LegendPosition.Right);
         this.pieChartView.set(isMobile ? [240, 240] : [320, 320]);
       });
+
+    // React to theme changes: ngx-charts caches color scales, so re-trigger via signal access
+    effect(() => {
+      // Read schemes so the effect tracks them — Angular re-renders the chart inputs.
+      this.barColorScheme();
+      this.pieColorScheme();
+    });
   }
 
   ngOnInit(): void {

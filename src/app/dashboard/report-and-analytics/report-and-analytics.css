@@ -2,15 +2,51 @@
   padding: 0;
 }
 
-/* Section Header with period selectors */
-.section-header {
+.report-section {
+  background: var(--ds-canvas);
+  border-radius: var(--ds-radius-md);
+  padding: 24px;
+  box-shadow: var(--ds-shadow-2);
+  margin-bottom: 16px;
+}
+
+@media (max-width: 768px) {
+  .report-section {
+    padding: 16px;
+  }
+}
+
+/* ----- Section head ----- */
+.section-head {
+  margin-bottom: 16px;
+}
+
+.section-head.with-controls {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 8px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #f0f0f0;
+  gap: 12px;
+}
+
+.section-eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--ds-caption-size);
+  line-height: var(--ds-caption-line);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ds-mute);
+  margin: 0 0 4px 0;
+}
+
+.section-title {
+  font-family: var(--font-sans);
+  font-size: var(--ds-display-sm-size);
+  line-height: var(--ds-display-sm-line);
+  letter-spacing: var(--ds-display-sm-tracking);
+  font-weight: 600;
+  color: var(--ds-ink);
+  margin: 0;
 }
 
 .period-selectors {
@@ -19,64 +55,71 @@
   gap: 8px;
 }
 
-/* Report Section */
-.report-section {
-  background: white;
-  border-radius: 12px;
-  padding: 14px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+/* nz-select inside report */
+.period-selectors ::ng-deep .ant-select-selector {
+  border-radius: var(--ds-radius-sm) !important;
+  border-color: var(--ds-hairline) !important;
+  background: var(--ds-canvas) !important;
+  height: 32px !important;
+  font-family: var(--font-sans) !important;
+  font-size: var(--ds-body-sm-size) !important;
+  color: var(--ds-ink) !important;
 }
 
-.section-title {
-  font-size: 14px;
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 12px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #f0f0f0;
+.period-selectors ::ng-deep .ant-select-selection-item {
+  color: var(--ds-ink) !important;
+  line-height: 30px !important;
 }
 
-/* Stat Cards */
+.period-selectors ::ng-deep .ant-select:hover .ant-select-selector {
+  border-color: var(--ds-hairline-strong) !important;
+}
+
+/* ----- Stat cards (Vercel card-marketing chrome) ----- */
 .stat-card {
-  background: white;
-  border-radius: 12px;
-  padding: 14px;
+  background: var(--ds-canvas);
+  border: 1px solid var(--ds-hairline);
+  border-radius: var(--ds-radius-md);
+  padding: 20px;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
   height: 100%;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-  transition: var(--transition-base);
+  transition: var(--transition-fast);
 }
 
 .stat-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-}
-
-.sales-card,
-.expense-card,
-.revenue-card {
-  background: #fafafa;
-  box-shadow: none;
-  border: 1px solid #f0f0f0;
-}
-
-.sales-card:hover,
-.expense-card:hover,
-.revenue-card:hover {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border-color: var(--ds-hairline-strong);
 }
 
 .stat-icon {
-  width: 44px;
-  height: 44px;
-  border-radius: 10px;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--ds-radius-sm);
+  background: var(--ds-canvas-soft);
+  border: 1px solid var(--ds-hairline);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 20px;
   flex-shrink: 0;
+  color: var(--ds-ink);
+}
+
+.stat-icon .anticon {
+  font-size: 18px;
+  color: var(--ds-ink) !important;
+}
+
+.stat-icon.icon-error .anticon {
+  color: var(--ds-error) !important;
+}
+
+.stat-icon.icon-success .anticon {
+  color: var(--ds-link) !important;
+}
+
+.stat-icon.icon-violet .anticon {
+  color: var(--ds-violet) !important;
 }
 
 .stat-info {
@@ -84,57 +127,86 @@
 }
 
 .stat-label {
-  margin: 0;
-  font-size: 11px;
-  color: #9e9e9e;
-  font-weight: 500;
+  font-family: var(--font-mono);
+  font-size: var(--ds-caption-size);
+  line-height: var(--ds-caption-line);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ds-mute);
+  margin: 0 0 4px 0;
 }
 
 .stat-value {
   margin: 0;
-  font-size: 18px;
-  font-weight: 700;
-  color: #333;
-  line-height: 1.2;
+  font-family: var(--font-sans);
+  font-size: var(--ds-display-md-size);
+  line-height: var(--ds-display-md-line);
+  letter-spacing: var(--ds-display-md-tracking);
+  font-weight: 600;
+  color: var(--ds-ink);
 }
 
 .stat-sub {
-  margin: 0;
+  margin: 4px 0 0 0;
+  font-family: var(--font-mono);
   font-size: 12px;
-  font-weight: 500;
-  color: #66bb6a;
-}
-
-.expense-value {
-  color: #e91e63 !important;
+  line-height: 16px;
+  color: var(--ds-mute);
 }
 
 .negative-value {
-  color: #f44336 !important;
+  color: var(--ds-error) !important;
 }
 
-/* Chart wrapper */
-.chart-wrapper {
-  background: #fafafa;
-  border: 1px solid #f0f0f0;
-  border-radius: 12px;
-  padding: 16px;
-  min-height: 440px;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-/* On mobile the bar chart legend moves to "Below", so give the wrapper
-   a bit more height to fit it cleanly. */
-@media screen and (max-width: 768px) {
-  .chart-wrapper {
-    min-height: 480px;
-    padding: 12px;
+@media (max-width: 768px) {
+  .stat-card {
+    padding: 14px;
+    gap: 12px;
+  }
+  .stat-icon {
+    width: 36px;
+    height: 36px;
+  }
+  .stat-value {
+    font-size: 20px;
+    line-height: 24px;
+    letter-spacing: -0.6px;
   }
 }
 
-/* Bar chart fills the available width */
+/* ----- Chart wrappers ----- */
+.chart-wrapper {
+  background: var(--ds-canvas-soft);
+  border: 1px solid var(--ds-hairline);
+  border-radius: var(--ds-radius-md);
+  padding: 20px 20px 32px;
+  min-height: 460px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: 480px;
+}
+
+@media (max-width: 768px) {
+  .chart-wrapper {
+    /* Tall enough for the chart + the legend that drops to "Below" on mobile */
+    min-height: 560px;
+    height: auto;
+    padding: 14px 14px 28px;
+  }
+}
+
+.chart-title {
+  font-family: var(--font-sans);
+  font-size: var(--ds-body-md-size);
+  line-height: var(--ds-body-md-line);
+  font-weight: 500;
+  color: var(--ds-ink);
+  margin: 0 0 16px 0;
+  letter-spacing: var(--ds-display-sm-tracking);
+}
+
+/* Bar chart fills available width */
 ngx-charts-bar-vertical-2d {
   flex: 1 1 auto;
   min-height: 320px;
@@ -142,7 +214,7 @@ ngx-charts-bar-vertical-2d {
   display: block;
 }
 
-/* Pie chart sits centered in its wrapper, fixed view size */
+/* Pie chart centered */
 ngx-charts-pie-chart {
   display: flex;
   align-items: center;
@@ -151,6 +223,7 @@ ngx-charts-pie-chart {
   min-height: 320px;
 }
 
+/* ngx-charts chrome overrides — keep axis/legend on theme */
 ::ng-deep .chart-wrapper .legend-labels {
   background: transparent !important;
 }
@@ -160,58 +233,38 @@ ngx-charts-pie-chart {
 }
 
 ::ng-deep .chart-wrapper .legend-label-text {
-  color: var(--text-dark-primary) !important;
+  color: var(--ds-body) !important;
+  font-family: var(--font-sans);
 }
 
-.chart-title {
-  font-size: 13px;
-  font-weight: 600;
-  color: #555;
-  margin: 0 0 12px 0;
+::ng-deep .chart-wrapper .ngx-charts text {
+  fill: var(--ds-body) !important;
+  font-family: var(--font-sans) !important;
 }
 
-/* Desktop (md+) */
-@media screen and (min-width: 768px) {
-  .chart-wrapper {
-    padding: 20px;
-    height: 480px;
-  }
+::ng-deep .chart-wrapper .ngx-charts .gridline-path-vertical,
+::ng-deep .chart-wrapper .ngx-charts .gridline-path-horizontal {
+  stroke: var(--ds-hairline) !important;
+}
 
-  .chart-title {
-    font-size: 14px;
-  }
+::ng-deep .chart-wrapper .ngx-charts .grid-panel rect {
+  fill: transparent !important;
+}
 
-  .report-section {
-    padding: 20px;
-  }
+::ng-deep .chart-wrapper .ngx-charts .axis .domain {
+  stroke: var(--ds-hairline) !important;
+}
 
-  .section-title {
-    font-size: 16px;
-    margin-bottom: 16px;
-    padding-bottom: 12px;
-  }
+::ng-deep .chart-wrapper .ngx-charts .tick text {
+  fill: var(--ds-mute) !important;
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
 
-  .stat-card {
-    padding: 20px;
-    gap: 16px;
-  }
-
-  .stat-icon {
-    width: 56px;
-    height: 56px;
-    font-size: 26px;
-    border-radius: 12px;
-  }
-
-  .stat-label {
-    font-size: 13px;
-  }
-
-  .stat-value {
-    font-size: 24px;
-  }
-
-  .stat-sub {
-    font-size: 13px;
-  }
+::ng-deep .chart-wrapper .legend-title-text {
+  color: var(--ds-mute) !important;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }

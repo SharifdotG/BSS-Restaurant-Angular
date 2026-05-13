@@ -67,6 +67,7 @@ export class ExpenseList {
       nzOkType: 'primary',
       nzOkDanger: true,
       nzCancelText: 'Cancel',
+      nzCentered: true,
       nzOnOk: () => {
         if (this.listOfExpenses().length <= 1 && this.pageIndex > 1) {
           this.pageIndex--;

@@ -51,13 +51,36 @@ export class OrdersService {
 
   updateOrderStatus(id: string, status: string): void {
     this.isSendingRequest.set(true);
+    const statusCode = Number(status);
+    const params = new HttpParams().set('status', String(statusCode));
 
     this.http
-      .put(`${this.baseUrl}/api/Order/update-status/${id}`, { status })
+      .put(`${this.baseUrl}/api/Order/update-status/${id}`, null, { params })
       .pipe(finalize(() => this.isSendingRequest.set(false)))
       .subscribe({
         next: () => {
-          this.message.success('Order status updated successfully.');
+          this.message.success('Order status updated.');
+          this.triggerRefresh.set(true);
+        },
+        error: (err: { status?: number }) => {
+          // Fallback: if the query-param variant 404s or 400s, try the JSON body shape.
+          if (err.status === 400 || err.status === 404) {
+            this.tryUpdateStatusBodyFallback(id, statusCode);
+            return;
+          }
+          this.message.error('Order status was not updated. Try again later.');
+        },
+      });
+  }
+
+  private tryUpdateStatusBodyFallback(id: string, statusCode: number): void {
+    this.isSendingRequest.set(true);
+    this.http
+      .put(`${this.baseUrl}/api/Order/update-status/${id}`, { orderStatus: statusCode })
+      .pipe(finalize(() => this.isSendingRequest.set(false)))
+      .subscribe({
+        next: () => {
+          this.message.success('Order status updated.');
           this.triggerRefresh.set(true);
         },
         error: () => {

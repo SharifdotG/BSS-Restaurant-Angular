@@ -104,10 +104,10 @@ export class AddTable {
     });
 
     this.responsive
-      .observe([Breakpoints.Large, Breakpoints.XLarge])
+      .observe(['(max-width: 600px)'])
       .pipe(takeUntilDestroyed())
       .subscribe((result) => {
-        this.modalWidth.set(result.matches ? '50vw' : '100vw');
+        this.modalWidth.set(result.matches ? '100vw' : '560px');
       });
   }
 
@@ -199,18 +199,22 @@ export class AddTable {
   }
 
   onChange(event: NzUploadChangeParam): void {
-    if (event.file.originFileObj) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        this.imageB64 = reader.result as string;
-        this.image = event.file.uid + event.file.name;
-      };
-      reader.readAsDataURL(event.file.originFileObj);
-    }
-
     if (event.type === 'removed') {
       this.image = '';
       this.imageB64 = '';
+      this.previewImage = '';
+      return;
+    }
+
+    if (event.file.originFileObj) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const result = reader.result as string;
+        this.imageB64 = result;
+        this.image = event.file.uid + event.file.name;
+        this.previewImage = result;
+      };
+      reader.readAsDataURL(event.file.originFileObj);
     }
 
     if (event.type === 'error') {

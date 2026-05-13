@@ -63,6 +63,9 @@ import {
   FundOutline,
   FallOutline,
   RiseOutline,
+  SunOutline,
+  MoonOutline,
+  DesktopOutline,
 } from '@ant-design/icons-angular/icons';
 
 import { routes } from './app.routes';
@@ -120,6 +123,9 @@ const icons: IconDefinition[] = [
   FundOutline,
   FallOutline,
   RiseOutline,
+  SunOutline,
+  MoonOutline,
+  DesktopOutline,
 ];
 
 export const appConfig: ApplicationConfig = {

@@ -78,6 +78,7 @@ export class FoodList implements OnInit {
       nzOkType: 'primary',
       nzOkDanger: true,
       nzCancelText: 'Cancel',
+      nzCentered: true,
       nzOnOk: () => {
         this.foodService.deleteFood(id);
         if (this.foodService.listOfFood().length <= 1 && this.pageIndex > 1) {

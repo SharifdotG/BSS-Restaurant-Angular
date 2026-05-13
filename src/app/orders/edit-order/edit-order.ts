@@ -16,6 +16,7 @@ import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 import { NzImageModule } from 'ng-zorro-antd/image';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { NzFormModule } from 'ng-zorro-antd/form';
 
 import { OrdersService } from '../orders.service';
 import { TablesService } from '../../tables/tables.service';
@@ -34,6 +35,7 @@ import { User } from '../../auth/auth.model';
     NzInputNumberModule,
     NzImageModule,
     NzSelectModule,
+    NzFormModule,
   ],
   templateUrl: './edit-order.html',
   styleUrl: './edit-order.css',
@@ -95,7 +97,7 @@ export class EditOrder implements OnInit {
       return;
     }
 
-    const tableId = order.table?.id;
+    const tableId = this.resolveTableId(order);
     if (!tableId) {
       this.message.error('Cannot update order: missing table information');
       return;
@@ -116,6 +118,25 @@ export class EditOrder implements OnInit {
     };
 
     this.ordersService.updateOrder(order.id, updateData);
+  }
+
+  private resolveTableId(order: OrderData): number | null {
+    const direct = order.table?.id;
+    if (typeof direct === 'number' && direct > 0) return direct;
+    if (typeof direct === 'string' && Number(direct) > 0) return Number(direct);
+
+    const flat = (order as unknown as { tableId?: number | string }).tableId;
+    if (typeof flat === 'number' && flat > 0) return flat;
+    if (typeof flat === 'string' && Number(flat) > 0) return Number(flat);
+
+    // Look the table up by its number in the already-loaded tables list.
+    const tableNumber = order.table?.tableNumber;
+    if (tableNumber) {
+      const match = this.tablesService.listOfTables().find((t) => t.tableNumber === tableNumber);
+      if (match?.id) return Number(match.id);
+    }
+
+    return null;
   }
 
   handleCancel(): void {

@@ -158,10 +158,10 @@ export class AddEmployee {
     });
 
     this.responsive
-      .observe([Breakpoints.Large, Breakpoints.XLarge])
+      .observe(['(max-width: 600px)'])
       .pipe(takeUntilDestroyed())
       .subscribe((result) => {
-        this.modalWidth.set(result.matches ? '80vw' : '100vw');
+        this.modalWidth.set(result.matches ? '100vw' : '760px');
       });
   }
 
@@ -288,18 +288,23 @@ export class AddEmployee {
   }
 
   onChange(event: NzUploadChangeParam): void {
-    const reader = new FileReader();
-    if (event.file.originFileObj) {
-      reader.onloadend = () => {
-        this.imageB64.set(reader.result as string);
-        this.image.set(event.file.uid + event.file.name);
-      };
-      reader.readAsDataURL(event.file.originFileObj);
-    }
-
     if (event.type === 'removed') {
       this.image.set('');
       this.imageB64.set('');
+      this.previewImage.set('');
+      return;
+    }
+
+    if (event.file.originFileObj) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const result = reader.result as string;
+        this.imageB64.set(result);
+        this.image.set(event.file.uid + event.file.name);
+        // Drive the in-place avatar preview from the data URL we just read.
+        this.previewImage.set(result);
+      };
+      reader.readAsDataURL(event.file.originFileObj);
     }
 
     if (event.type === 'error') {

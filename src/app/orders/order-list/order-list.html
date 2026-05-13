@@ -1,9 +1,13 @@
 <div class="main-wrapper pb-0 relative">
   <div class="order-container h-100 position-relative overflow-scroll">
-    <div class="container-fluid order-item-container p-4 pt-0">
-      <div class="d-flex justify-content-end align-items-center w-100 h-20">
+    <div class="container-fluid order-item-container">
+      <div class="order-toolbar">
+        <div>
+          <p class="order-toolbar-eyebrow">ALL ORDERS</p>
+          <p class="order-toolbar-title">{{ ordersService.totalOrder() }} orders</p>
+        </div>
         <button class="drop-down-filter" nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu">
-          Filter Orders
+          Filter
           <span nz-icon nzType="down"></span>
         </button>
       </div>
@@ -75,10 +79,6 @@
                         nzTrigger="click"
                         nz-dropdown
                         [nzDropdownMenu]="clickMenu"
-                        nz-tooltip
-                        nzTooltipTitle="Change Status"
-                        nzTooltipPlacement="top"
-                        title="Change Status"
                         aria-label="Change Order Status"
                       >
                         <span nz-icon nzType="swap" nzTheme="outline"></span>
@@ -86,10 +86,6 @@
                       <button
                         (click)="editOrder(orderData)"
                         class="drop-down-button drop-shadow-md"
-                        nz-tooltip
-                        nzTooltipTitle="Edit Order"
-                        nzTooltipPlacement="top"
-                        title="Edit Order"
                         aria-label="Edit Order"
                       >
                         <span nz-icon nzType="edit" nzTheme="outline"></span>
@@ -97,10 +93,6 @@
                       <button
                         (click)="deleteOrder(orderData)"
                         class="drop-down-button drop-shadow-md"
-                        nz-tooltip
-                        nzTooltipTitle="Delete Order"
-                        nzTooltipPlacement="top"
-                        title="Delete Order"
                         aria-label="Delete Order"
                       >
                         <span nz-icon nzType="delete" nzTheme="outline"></span>
@@ -167,10 +159,8 @@
             }
           </div>
           <!-- Pagination for all screen sizes -->
-          <div
-            class="d-flex justify-content-center align-items-center bg-white rounded-lg shadow-lg w-100 mt-3 mb-3"
-          >
-            <div class="p-3">
+          <div class="order-pagination-wrapper">
+            <div class="p-2">
               <nz-pagination
                 [nzShowSizeChanger]="true"
                 (nzPageIndexChange)="onPageIndexChange($event)"
@@ -179,6 +169,7 @@
                 [nzPageIndex]="pageIndex"
                 [nzTotal]="ordersService.totalOrder()"
                 [nzPageSize]="pageSize"
+                [nzPageSizeOptions]="[12, 24, 36, 48]"
                 [nzShowTotal]="rangeTemplate"
               ></nz-pagination>
               <ng-template #rangeTemplate let-range="range" let-total>

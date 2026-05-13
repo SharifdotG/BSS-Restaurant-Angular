@@ -1,9 +1,9 @@
 <div class="main-wrapper p-0 p-md-4 pb-md-0">
-  <div class="bg-white drop-shadow-lg md:rounded-lg rounded-none pt-0 pt-md-3">
+  <div class="feature-table-card">
     <nz-table
       nzShowSizeChanger
       nzPaginationType="default"
-      [nzScroll]="{ y: 'calc(100vh - 300px)', x: '768px' }"
+      [nzScroll]="{ y: 'calc(100% - 56px)', x: '768px' }"
       [nzWidthConfig]="tableWidthConfig"
       nzTableLayout="auto"
       [nzData]="listOfTables()"
@@ -20,49 +20,14 @@
       <thead>
         <tr>
           <th class="custom-table-title" nzColumnKey="image"></th>
-          <th
-            nzTooltipTitle="Table Number"
-            nzTooltipPlacement="topLeft"
-            nz-tooltip
-            class="custom-table-title truncate"
-            nzColumnKey="name"
-          >
-            Table Number
-          </th>
-          <th
-            nzTooltipTitle="Total Seats"
-            nzTooltipPlacement="topLeft"
-            nz-tooltip
-            class="custom-table-title truncate"
-            nzColumnKey="seats"
-          >
-            Total Seats
-          </th>
-          <th
-            nzTooltipTitle="Booking Status"
-            nzTooltipPlacement="topLeft"
-            nz-tooltip
-            class="custom-table-title truncate"
-            nzColumnKey="bookingstatus"
-          >
-            Booking Status
-          </th>
-          <th
-            nzTooltipTitle="Assigned Employees"
-            nzTooltipPlacement="topLeft"
-            nz-tooltip
-            class="custom-table-title truncate"
-            nzColumnKey="employees"
-          >
-            Assigned Employees
-          </th>
+          <th class="custom-table-title truncate" nzColumnKey="name">Table Number</th>
+          <th class="custom-table-title truncate" nzColumnKey="seats">Total Seats</th>
+          <th class="custom-table-title truncate" nzColumnKey="bookingstatus">Booking Status</th>
+          <th class="custom-table-title truncate" nzColumnKey="employees">Assigned Employees</th>
           <th class="custom-table-title-button" nzColumnKey="action">
             <button
               (click)="tablesService.showAddModal.set(true)"
               class="add-table-button"
-              nz-tooltip
-              nzTooltipTitle="Add New Table"
-              nzTooltipPlacement="top"
               type="button"
               aria-label="Add New Table"
             >
@@ -97,30 +62,20 @@
                   ></nz-avatar>
                 </div>
               </td>
-              <td
-                nzTooltipTitle="{{ data.tableNumber }}"
-                nzTooltipPlacement="topLeft"
-                nz-tooltip
-                class="truncate"
-              >
+              <td class="truncate">
                 {{ data.tableNumber }}
               </td>
-              <td
-                nzTooltipTitle="Total Seats: {{ data.numberOfSeats }}"
-                nzTooltipPlacement="top"
-                nz-tooltip
-              >
+              <td>
                 {{ data.numberOfSeats }}
               </td>
-              <td
-                nzTooltipTitle="Booking Status: {{
-                  !data.isOccupied ? 'Available' : 'Not Available'
-                }}"
-                nzTooltipPlacement="top"
-                nz-tooltip
-                class="truncate"
-              >
-                {{ !data.isOccupied ? 'Available' : 'Not Available' }}
+              <td class="truncate">
+                <span
+                  class="ds-badge"
+                  [class.ds-badge--success]="!data.isOccupied"
+                  [class.ds-badge--warning]="data.isOccupied"
+                >
+                  {{ !data.isOccupied ? 'Available' : 'Not Available' }}
+                </span>
               </td>
               <td>
                 <div class="d-flex gap-1 flex-wrap">
@@ -144,14 +99,13 @@
                       )
                     "
                     class="add-employee-to-table-button"
-                    nz-tooltip
-                    nzTooltipTitle="Add Employee to this Table"
-                    nzTooltipPlacement="top"
                     type="button"
-                    aria-label="Add Employee to Table {{ data.tableNumber }}"
+                    nz-tooltip
+                    [nzTooltipTitle]="'Assign employees to ' + data.tableNumber"
+                    nzTooltipPlacement="top"
+                    [attr.aria-label]="'Assign employees to table ' + data.tableNumber"
                   >
                     <span
-                      style="color: #2e7d32"
                       class="add-employee-to-table-button-icon"
                       nz-icon
                       nzType="plus"
@@ -166,9 +120,6 @@
                   <button
                     (click)="editTable(data.id)"
                     class="drop-down-button drop-shadow-md"
-                    nz-tooltip
-                    nzTooltipTitle="Edit Table"
-                    nzTooltipPlacement="top"
                     type="button"
                     aria-label="Edit Table {{ data.tableNumber }}"
                   >
@@ -177,9 +128,6 @@
                   <button
                     (click)="deleteTable(data.id)"
                     class="drop-down-button drop-shadow-md"
-                    nz-tooltip
-                    nzTooltipTitle="Delete Table"
-                    nzTooltipPlacement="top"
                     type="button"
                     aria-label="Delete Table {{ data.tableNumber }}"
                   >

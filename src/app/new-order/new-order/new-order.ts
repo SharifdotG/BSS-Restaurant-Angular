@@ -93,14 +93,22 @@ export class NewOrder {
     };
 
     this.newOrderService.cartFood.update((items) => {
-      const existingItem = items.find((item) => item.food.id === food.id);
+      // Multi-table cart: an item is only "the same" if it shares BOTH food.id AND tableId.
+      // This allows the same food to be added independently to two different tables.
+      const existingItem = items.find(
+        (item) => item.food.id === food.id && item.tableId === tableId,
+      );
       if (existingItem) {
         return items.map((item) =>
-          item.food.id === food.id ? { ...item, quantity: item.quantity + 1 } : item,
+          item.food.id === food.id && item.tableId === tableId
+            ? { ...item, quantity: item.quantity + 1 }
+            : item,
         );
       }
       return [...items, newItem];
     });
+
+    this.newOrderService.flashCart();
   }
 
   onSearchFoodInputChange(value: string): void {

@@ -1,110 +1,397 @@
-/* Use Poppins (display font) for every text inside the nav scope.
-   Routed views inside <nz-content> live in their own component scope,
-   so this :host * doesn't reach them via Angular view encapsulation. */
+:host {
+  display: block;
+  color: var(--ds-ink);
+  font-family: var(--font-sans);
+}
+
 :host * {
-  font-family: var(--font-secondary);
+  font-family: var(--font-sans);
 }
 
-.header-title p {
-  font-size: 24px;
+/* SIDER */
+::ng-deep .ant-layout-sider {
+  background: var(--ds-canvas) !important;
+  border-right: 1px solid var(--ds-hairline);
+  transition:
+    background-color var(--transition-base),
+    border-color var(--transition-base);
+}
+
+::ng-deep .ant-layout-sider-children {
+  background: var(--ds-canvas);
+}
+
+.sider-inner {
+  background: var(--ds-canvas);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 64px;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--ds-hairline);
+  background: var(--ds-canvas);
+  overflow: hidden;
+}
+
+.logo-mark {
+  height: 28px;
+  width: 28px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.logo-word {
+  font-family: var(--font-sans);
+  font-size: var(--ds-display-sm-size);
+  line-height: var(--ds-display-sm-line);
+  letter-spacing: var(--ds-display-sm-tracking);
   font-weight: 600;
-  color: var(--text-dark-primary);
+  color: var(--ds-ink);
+  white-space: nowrap;
+  transition: opacity var(--transition-base);
 }
 
-.header-cart-button {
-  background: white;
-  border: 1px solid #e5e7eb;
-  border-radius: 50%;
-  height: 44px;
-  width: 44px;
+.nav-eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--ds-caption-size);
+  line-height: var(--ds-caption-line);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ds-mute);
+  padding: 16px 16px 8px 16px;
+  margin: 0;
+}
+
+/* SIDE MENU (the design's ex-app-shell-row) */
+::ng-deep .ds-side-menu.ant-menu {
+  background: var(--ds-canvas) !important;
+  border-right: none !important;
+  padding: 4px 8px !important;
+}
+
+::ng-deep .ds-side-menu .ant-menu-item {
+  font-family: var(--font-sans) !important;
+  height: 36px !important;
+  line-height: 36px !important;
+  border-radius: var(--ds-radius-sm) !important;
+  margin: 2px 0 !important;
+  padding: 0 12px !important;
+  display: flex !important;
+  align-items: center !important;
+  color: var(--ds-body) !important;
+  font-size: var(--ds-body-sm-size) !important;
+  font-weight: 500 !important;
+  letter-spacing: var(--ds-body-sm-tracking) !important;
+  background: transparent !important;
+  position: relative;
+  transition:
+    background-color var(--transition-fast),
+    color var(--transition-fast);
+}
+
+::ng-deep .ds-side-menu .ant-menu-item .anticon {
+  color: var(--ds-mute) !important;
+  font-size: 16px !important;
+  margin-right: 10px !important;
+  transition: color var(--transition-fast);
+}
+
+::ng-deep .ds-side-menu .ant-menu-item .menu-text,
+::ng-deep .ds-side-menu .ant-menu-item span:not(.anticon) {
+  color: inherit !important;
+  font-family: var(--font-sans) !important;
+}
+
+::ng-deep .ds-side-menu .ant-menu-item:hover {
+  background: var(--ds-canvas-soft) !important;
+  color: var(--ds-ink) !important;
+}
+
+::ng-deep .ds-side-menu .ant-menu-item:hover .anticon {
+  color: var(--ds-ink) !important;
+}
+
+/* Selected: 2px left-edge ink indicator + soft fill */
+::ng-deep .ds-side-menu .ant-menu-item.ant-menu-item-selected,
+::ng-deep .ds-side-menu .ant-menu-item-selected {
+  background: var(--ds-canvas-soft) !important;
+  color: var(--ds-ink) !important;
+  font-weight: 600 !important;
+}
+
+::ng-deep .ds-side-menu .ant-menu-item.ant-menu-item-selected::before {
+  content: '';
+  position: absolute;
+  left: -8px;
+  top: 6px;
+  bottom: 6px;
+  width: 2px;
+  border-radius: 2px;
+  background: var(--ds-ink);
+}
+
+::ng-deep .ds-side-menu .ant-menu-item.ant-menu-item-selected .anticon {
+  color: var(--ds-ink) !important;
+}
+
+/* Collapsed sider: center icons, hide labels */
+::ng-deep .ant-layout-sider-collapsed .ds-side-menu .ant-menu-item {
+  padding: 0 !important;
+  justify-content: center !important;
+}
+
+::ng-deep .ant-layout-sider-collapsed .ds-side-menu .ant-menu-item .anticon {
+  margin: 0 auto !important;
+}
+
+::ng-deep .ant-layout-sider-collapsed .logo-word,
+::ng-deep .ant-layout-sider-collapsed .nav-eyebrow {
+  display: none !important;
+}
+
+::ng-deep .ant-layout-sider-collapsed .logo {
+  justify-content: center;
+  padding: 0;
+}
+
+/* Logout button (sider) */
+.logout-button {
+  background: var(--ds-canvas);
+  color: var(--ds-ink);
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: var(--ds-body-sm-size);
+  border: 1px solid var(--ds-hairline);
+  border-radius: var(--ds-radius-sm);
+  height: 36px;
+  padding: 0 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: var(--transition-base);
+  cursor: pointer;
+}
+
+.logout-button:hover {
+  background: var(--ds-canvas-soft);
+  border-color: var(--ds-hairline-strong);
+}
+
+.logout-button:active {
+  transform: translateY(1px);
+}
+
+.logout-text {
+  transition: var(--transition-fast);
+}
+
+/* HEADER */
+::ng-deep nz-header,
+::ng-deep .ant-layout-header {
+  background: var(--ds-canvas) !important;
+  padding: 0 !important;
+  height: 64px !important;
+  border-bottom: 1px solid var(--ds-hairline);
+  box-shadow: none !important;
+  z-index: 10;
+  transition:
+    background-color var(--transition-base),
+    border-color var(--transition-base);
+}
+
+.header-inner {
+  height: 64px;
+  padding: 0 var(--ds-space-lg);
+  gap: var(--ds-space-md);
+}
+
+.trigger {
+  width: 36px;
+  height: 36px;
+  margin-right: var(--ds-space-sm);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--ds-radius-sm);
+  color: var(--ds-body);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: var(--transition-base);
-}
-
-.header-cart-button:hover {
-  background: var(--bg-primary-50);
-  border-color: var(--bg-primary-500);
-  transform: scale(1.05);
-}
-
-.header-cart-button .anticon {
-  font-size: 22px;
-  color: var(--bg-primary-700);
-}
-
-.trigger {
-  font-size: 18px;
-  line-height: 64px;
-  padding: 0 24px;
-  cursor: pointer;
-  transition: color var(--transition-fast);
+  font-size: 16px;
 }
 
 .trigger:hover {
-  color: #1890ff;
+  background: var(--ds-canvas-soft);
+  border-color: var(--ds-hairline);
+  color: var(--ds-ink);
 }
 
-.logo {
+.header-title-block {
   display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+}
+
+.header-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  line-height: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ds-mute);
+  margin: 0;
+}
+
+.header-title {
+  font-family: var(--font-sans);
+  font-size: var(--ds-display-sm-size);
+  line-height: var(--ds-display-sm-line);
+  letter-spacing: var(--ds-display-sm-tracking);
+  font-weight: 600;
+  color: var(--ds-ink);
+  margin: 0;
+  white-space: nowrap;
   overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.header-cluster {
+  gap: var(--ds-space-sm);
+}
+
+.header-icon-btn {
+  background: var(--ds-canvas);
+  color: var(--ds-ink);
+  border: 1px solid var(--ds-hairline);
+  border-radius: var(--ds-radius-full);
+  height: 36px;
+  width: 36px;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  height: 80px;
-  background: rgba(255, 255, 255, 0.2);
-  margin: 0px 0px 12px 0px;
-}
-
-.logo img,
-.logo .logo-img {
-  height: 48px;
-  width: auto;
-  object-fit: contain;
-}
-
-.logo p {
-  overflow: hidden;
-  font-size: 16px;
-  font-weight: 700;
-  color: #fff;
-  letter-spacing: 2px;
-  margin-left: 10px;
-  text-shadow:
-    #2e7d32 2px 0px 0px,
-    #2e7d32 1.75517px 0.958851px 0px,
-    #2e7d32 1.0806px 1.68294px 0px,
-    #2e7d32 0.141474px 1.99499px 0px,
-    #2e7d32 -0.832294px 1.81859px 0px,
-    #2e7d32 -1.60229px 1.19694px 0px,
-    #2e7d32 -1.97998px 0.28224px 0px,
-    #2e7d32 -1.87291px -0.701566px 0px,
-    #2e7d32 -1.30729px -1.5136px 0px,
-    #2e7d32 -0.421592px -1.95506px 0px,
-    #2e7d32 0.567324px -1.91785px 0px,
-    #2e7d32 1.41734px -1.41108px 0px,
-    #2e7d32 1.92034px -0.558831px 0px;
-}
-
-::ng-deep nz-header {
-  display: flex;
-  align-items: center;
-  background: #fff !important;
+  cursor: pointer;
+  transition: var(--transition-base);
   padding: 0;
-  height: 80px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  z-index: 10;
 }
 
-::ng-deep .ant-layout-header {
-  background: #fff !important;
-  padding: 0 !important;
-  height: 80px !important;
+.header-icon-btn:hover {
+  background: var(--ds-canvas-soft);
+  border-color: var(--ds-hairline-strong);
+  color: var(--ds-ink);
 }
 
+.header-icon-btn:active {
+  transform: translateY(1px);
+}
+
+.header-icon-btn .anticon {
+  font-size: 16px;
+  color: var(--ds-ink);
+}
+
+/* Cart button: highlight + flash animation instead of incrementing badge */
+.cart-button {
+  position: relative;
+}
+
+.cart-button.is-active {
+  background: var(--ds-ink);
+  border-color: var(--ds-ink);
+  color: var(--ds-on-primary);
+}
+
+.cart-button.is-active .anticon {
+  color: var(--ds-on-primary);
+}
+
+.cart-button .cart-dot {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 6px;
+  height: 6px;
+  border-radius: var(--ds-radius-full);
+  background: var(--ds-link);
+  box-shadow: 0 0 0 2px var(--ds-canvas);
+}
+
+.cart-button.is-active .cart-dot {
+  box-shadow: 0 0 0 2px var(--ds-ink);
+}
+
+@keyframes cart-flash {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(0, 112, 243, 0.5);
+  }
+  40% {
+    transform: scale(1.08);
+    box-shadow: 0 0 0 8px rgba(0, 112, 243, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(0, 112, 243, 0);
+  }
+}
+
+.cart-button.is-flashing {
+  animation: cart-flash 600ms ease-out;
+}
+
+.user-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  margin-left: var(--ds-space-xs);
+  line-height: 1.2;
+}
+
+.user-name {
+  font-family: var(--font-sans);
+  font-size: var(--ds-body-sm-size);
+  font-weight: 500;
+  color: var(--ds-ink);
+  letter-spacing: var(--ds-body-sm-tracking);
+}
+
+.user-email {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ds-mute);
+  line-height: 14px;
+}
+
+::ng-deep .user-avatar.ant-avatar {
+  background: var(--ds-canvas-soft) !important;
+  color: var(--ds-ink) !important;
+  border: 1px solid var(--ds-hairline);
+  cursor: pointer;
+  font-family: var(--font-sans);
+  transition: var(--transition-base);
+  outline: none !important;
+}
+
+::ng-deep .user-avatar.ant-avatar:hover {
+  border-color: var(--ds-hairline-strong);
+  background: var(--ds-canvas-soft-2) !important;
+}
+
+/* Drop sticky focus ring after the dropdown / modal closes */
+::ng-deep .user-avatar.ant-avatar:focus:not(:focus-visible) {
+  border-color: var(--ds-hairline) !important;
+  background: var(--ds-canvas-soft) !important;
+}
+
+/* CONTENT */
 ::ng-deep .ant-layout {
-  background: #f0f2f5;
+  background: var(--ds-canvas-soft);
   overflow: hidden;
 }
 
@@ -113,188 +400,18 @@
   background: transparent;
   overflow-y: auto;
   flex: 1;
+  color: var(--ds-ink);
 }
 
 ::ng-deep nz-footer {
   text-align: center;
 }
 
-::ng-deep .ant-menu-item {
-  font-family: var(--font-secondary) !important;
-  display: flex;
-  align-items: center;
-  height: 52px;
-  border-top-left-radius: 25px;
-  border-bottom-left-radius: 25px;
-  color: white !important;
-  font-weight: 600;
-}
-
-::ng-deep .ant-menu-item:hover {
-  background: rgba(255, 255, 255, 0.2) !important;
-  color: white !important;
-}
-
-::ng-deep .ant-menu-item .anticon {
-  color: white !important;
-  font-size: 18px;
-}
-
-::ng-deep .ant-menu-item span:not(.anticon) {
-  color: white !important;
-}
-
-::ng-deep .ant-menu.ant-menu-dark .ant-menu-item-selected,
-::ng-deep .ant-menu-submenu-popup.ant-menu-dark .ant-menu-item-selected,
-::ng-deep .ant-menu-dark .ant-menu-item-selected {
-  background: var(--bg-ternary-light) !important;
-}
-
-::ng-deep .ant-menu.ant-menu-dark .ant-menu-item-selected span:not(.anticon),
-::ng-deep .ant-menu-submenu-popup.ant-menu-dark .ant-menu-item-selected span:not(.anticon),
-::ng-deep .ant-menu-dark .ant-menu-item-selected span:not(.anticon) {
-  color: var(--text-dark-primary) !important;
-}
-
-::ng-deep .ant-menu.ant-menu-dark .ant-menu-item-selected .anticon,
-::ng-deep .ant-menu-submenu-popup.ant-menu-dark .ant-menu-item-selected .anticon,
-::ng-deep .ant-menu-dark .ant-menu-item-selected .anticon {
-  color: var(--text-dark-primary) !important;
-}
-
-/* When sidebar is collapsed - show only icons */
-::ng-deep .ant-layout-sider-collapsed .ant-menu .ant-menu-item {
-  padding: 0 !important;
-  justify-content: center !important;
-  text-align: center !important;
-  display: flex !important;
-  align-items: center !important;
-}
-
-/* Style the icon when collapsed - NO background */
-::ng-deep .ant-layout-sider-collapsed .ant-menu .ant-menu-item span[nz-icon],
-::ng-deep .ant-layout-sider-collapsed .ant-menu .ant-menu-item .anticon {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  font-size: 20px !important;
-  color: white !important;
-  margin: 0 auto !important;
-}
-
-::ng-deep .ant-layout-sider-collapsed .ant-menu .ant-menu-item:hover {
-  background: rgba(255, 255, 255, 0.2) !important;
-}
-
-::ng-deep .ant-layout-sider-collapsed .ant-menu .ant-menu-item:hover span[nz-icon],
-::ng-deep .ant-layout-sider-collapsed .ant-menu .ant-menu-item:hover .anticon {
-  color: white !important;
-}
-
-::ng-deep .ant-layout-sider-collapsed .ant-menu .ant-menu-item.ant-menu-item-selected {
-  background: var(--bg-ternary-light) !important;
-}
-
-::ng-deep .ant-layout-sider-collapsed .ant-menu .ant-menu-item.ant-menu-item-selected span[nz-icon],
-::ng-deep .ant-layout-sider-collapsed .ant-menu .ant-menu-item.ant-menu-item-selected .anticon {
-  color: var(--text-dark-primary) !important;
-}
-
-/* Hide logo text when collapsed */
-::ng-deep .ant-layout-sider-collapsed .logo p {
-  display: none !important;
-  opacity: 0 !important;
-}
-
-::ng-deep .ant-layout-sider {
-  background-color: var(--bg-primary-700) !important;
-  padding-left: 0;
-  width: 500px;
-}
-
-/* When expanded (not collapsed) */
-::ng-deep .ant-layout-sider:not(.ant-layout-sider-collapsed) .ant-menu-item-selected {
-  background: var(--bg-ternary-light) !important;
-}
-
-::ng-deep .ant-layout-sider:not(.ant-layout-sider-collapsed) .ant-menu-item-selected .anticon {
-  color: var(--text-dark-primary) !important;
-}
-
-::ng-deep .ant-layout-sider:not(.ant-layout-sider-collapsed) .ant-menu-item-selected span {
-  color: var(--text-dark-primary) !important;
-}
-
-::ng-deep .ant-menu {
-  background-color: var(--bg-primary-700) !important;
-  padding-left: 0px;
-}
-
-::ng-deep .ant-menu-dark {
-  background: var(--bg-primary-700) !important;
-}
-
-::ng-deep .ant-menu-inline {
-  padding-left: 12px;
-}
-
-::ng-deep .anticon-menu-fold {
-  font-size: 20px;
-}
-
-::ng-deep .anticon-menu-fold:hover {
-  color: var(--bg-primary-700);
-}
-
-::ng-deep .anticon-menu-unfold {
-  font-size: 20px;
-}
-
-::ng-deep .anticon-menu-unfold:hover {
-  color: var(--bg-primary-700);
-}
-
-::ng-deep .ant-layout-content {
-  margin: 0;
-}
-
-::ng-deep .ant-menu-title-content {
-  display: flex;
-  align-items: center;
-}
-
-.logout-button {
-  height: 52px;
-  background: var(--bg-ternary-light);
-  color: var(--text-dark-primary);
-  font-weight: 600;
-  border-radius: 8px;
-  border: none;
-  transition: var(--transition-base);
-}
-
-.logout-button:hover {
-  background: var(--bg-warning-50);
-}
-
-.logout-button:active {
-  background: var(--bg-warning-200);
-}
-
-.logout-text {
-  transition: var(--transition-slow);
-}
-
-.inner-content {
-  padding: 24px;
-  background: #fff;
-  min-height: 360px;
-}
-
-/* Mobile menu styles */
+/* MOBILE FOOTER MENU */
 .mobile-menu {
-  background-color: var(--bg-primary-700);
-  height: 80px;
+  background: var(--ds-canvas);
+  border-top: 1px solid var(--ds-hairline);
+  height: 64px;
   width: 100%;
   display: flex;
   align-items: center;
@@ -304,14 +421,14 @@
 .mobile-menu-items {
   list-style: none;
   margin: 0;
-  padding: 0;
+  padding: 0 8px;
   height: 100%;
   display: flex;
   align-items: center;
 }
 
 .mobile-menu-icons {
-  font-size: 24px;
+  font-size: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -319,116 +436,101 @@
 
 @media screen and (max-width: 768px) {
   ::ng-deep nz-content {
-    padding-bottom: 80px;
+    padding-bottom: 64px;
   }
 
-  ::ng-deep nz-footer {
-    height: 80px;
-    padding: 0 !important;
-  }
-
+  ::ng-deep nz-footer,
   ::ng-deep nz-footer .ant-layout-footer {
-    height: 80px;
+    height: 64px;
     padding: 0 !important;
+    background: transparent;
+  }
+
+  ::ng-deep .mobile-menu .ant-menu {
+    background: transparent !important;
+    border: none !important;
+    width: 100%;
+    line-height: 48px;
   }
 
   ::ng-deep .mobile-menu .ant-menu-item {
-    font-family: var(--font-secondary) !important;
+    font-family: var(--font-sans) !important;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 56px;
-    width: 56px;
-    border-radius: 8px;
-    color: white !important;
-    font-weight: 600;
+    height: 44px;
+    width: 44px;
+    border-radius: var(--ds-radius-sm);
+    color: var(--ds-mute) !important;
     background: transparent !important;
     padding: 0 !important;
-    margin: 0 4px;
+    margin: 0 2px;
+    position: relative;
+    border-top: 2px solid transparent;
+    transition: var(--transition-fast);
   }
 
-  ::ng-deep .mobile-menu .ant-menu-item:hover {
-    background: rgba(255, 255, 255, 0.1) !important;
-    color: white !important;
+  ::ng-deep .mobile-menu .ant-menu-item:hover,
+  ::ng-deep .mobile-menu .ant-menu-item:active {
+    background: var(--ds-canvas-soft) !important;
+    color: var(--ds-ink) !important;
   }
 
   ::ng-deep .mobile-menu .ant-menu-item.ant-menu-item-selected {
-    background: rgba(255, 255, 255, 0.2) !important;
-  }
-
-  ::ng-deep .mobile-menu .ant-menu-item.ant-menu-item-selected .anticon {
-    color: white !important;
+    background: var(--ds-canvas-soft) !important;
+    color: var(--ds-ink) !important;
+    border-top: 2px solid var(--ds-ink);
   }
 
   ::ng-deep .mobile-menu .ant-menu-item .anticon {
-    font-size: 24px !important;
+    font-size: 20px !important;
     margin: 0 !important;
+    color: inherit !important;
   }
 
   ::ng-deep .mobile-menu .ant-menu-horizontal {
     border-bottom: none !important;
-    line-height: 56px !important;
+    line-height: 44px !important;
   }
 
-  ::ng-deep nz-header {
-    height: 64px !important;
-  }
-
+  ::ng-deep nz-header,
   ::ng-deep nz-header .ant-layout-header {
-    height: 64px !important;
+    height: 56px !important;
   }
 
-  .header-title p {
-    font-size: 18px;
+  .header-inner {
+    height: 56px;
+    padding: 0 var(--ds-space-md);
+    gap: var(--ds-space-xs);
+  }
+
+  .header-title {
+    font-size: 16px;
+    line-height: 20px;
+    letter-spacing: -0.4px;
+  }
+
+  .header-eyebrow {
+    display: none;
+  }
+
+  .header-cluster {
+    gap: var(--ds-space-xs);
+  }
+
+  .user-meta {
+    display: none !important;
   }
 }
 
-/* Animation for logo transition */
-.transition-all {
-  transition: var(--transition-base);
+/* Trigger icon size */
+::ng-deep .anticon-menu-fold,
+::ng-deep .anticon-menu-unfold {
+  font-size: 16px;
 }
 
-.transition-opacity {
-  transition: opacity var(--transition-base);
-}
-
-.delay-500 {
-  transition-delay: 500ms;
-}
-
-.duration-300 {
-  transition-duration: 300ms;
-}
-
-.duration-75 {
-  transition-duration: 75ms;
-}
-
-.ease-out {
-  transition-timing-function: ease-out;
-}
-
-/* Drop-down button styles from demo */
-.drop-down-button {
-  cursor: pointer;
-  border: 1px solid #d9d9d9;
-  border-radius: 8px;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  white-space: nowrap;
-  text-align: center;
-  background-image: none;
-  box-shadow: 0 2px #0000000b;
-  transition: var(--transition-base);
-  -webkit-user-select: none;
-  user-select: none;
-  touch-action: manipulation;
-  height: 42px;
-  min-width: 70px;
-  padding: 4px 15px;
-  font-size: 18px;
-  background: rgba(0, 0, 0, 0.02);
-  border-color: #d9d9d9;
-  color: rgba(0, 0, 0, 0.88);
+/* Dropdown menu items */
+::ng-deep .ant-dropdown-menu-item .anticon {
+  margin-right: 8px;
+  color: var(--ds-mute);
 }

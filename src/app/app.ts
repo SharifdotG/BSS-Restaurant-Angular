@@ -1,5 +1,7 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+
+import { ThemeService } from './core/theme.service';
 
 @Component({
   selector: 'app-root',
@@ -9,4 +11,5 @@ import { RouterOutlet } from '@angular/router';
 })
 export class App {
   protected readonly title = signal('BSS-Restaurant-Angular');
+  private readonly theme = inject(ThemeService);
 }

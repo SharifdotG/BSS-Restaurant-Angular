@@ -1,8 +1,8 @@
 <ng-template #modalTitle>
-  <div class="d-flex gap-2 align-items-center">
-    <span nz-icon nzType="edit" nzTheme="outline"></span>
-    <span>Edit Order - {{ ordersService.selectedOrder()?.orderNumber }}</span>
-  </div>
+  <span class="ds-modal-title">
+    Edit order
+    <span class="ds-modal-title-sub">{{ ordersService.selectedOrder()?.orderNumber }}</span>
+  </span>
 </ng-template>
 
 <nz-modal
@@ -11,68 +11,76 @@
   (nzOnCancel)="handleCancel()"
   (nzOnOk)="handleOk()"
   [nzOkLoading]="ordersService.isSendingRequest()"
-  [nzWidth]="800"
+  [nzWidth]="760"
   nzCentered
+  nzWrapClassName="ds-form-modal"
 >
   <ng-container *nzModalContent>
-    <div class="row mb-4">
-      <div class="col-12 col-md-6">
-        <label class="d-block mb-2 font-semibold" for="edit-order-number">Order Number</label>
-        <input
-          nz-input
-          id="edit-order-number"
-          [value]="ordersService.selectedOrder()?.orderNumber"
-          disabled
-          class="bg-gray-100"
-        />
+    <form nz-form nzLayout="vertical" class="ds-form">
+      <p class="ds-form-section-eyebrow">METADATA</p>
+      <div class="row g-3">
+        <div class="col-12 col-md-4">
+          <nz-form-item>
+            <nz-form-label nzNoColon>Order number</nz-form-label>
+            <nz-form-control>
+              <input
+                nz-input
+                id="edit-order-number"
+                [value]="ordersService.selectedOrder()?.orderNumber"
+                disabled
+              />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div class="col-12 col-md-4">
+          <nz-form-item>
+            <nz-form-label nzNoColon>Table number</nz-form-label>
+            <nz-form-control>
+              <input
+                nz-input
+                id="edit-table-number"
+                [value]="ordersService.selectedOrder()?.table?.tableNumber"
+                disabled
+              />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div class="col-12 col-md-4">
+          <nz-form-item>
+            <nz-form-label nzNoColon>Phone number</nz-form-label>
+            <nz-form-control>
+              <input
+                nz-input
+                id="edit-phone-number"
+                [ngModel]="phoneNumber()"
+                (ngModelChange)="phoneNumber.set($event)"
+                placeholder="Customer phone number"
+                [ngModelOptions]="{ standalone: true }"
+              />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
       </div>
-      <div class="col-12 col-md-6">
-        <label class="d-block mb-2 font-semibold" for="edit-table-number">Table Number</label>
-        <input
-          nz-input
-          id="edit-table-number"
-          [value]="ordersService.selectedOrder()?.table?.tableNumber"
-          disabled
-          class="bg-gray-100"
-        />
-      </div>
-    </div>
 
-    <div class="mb-4">
-      <label class="d-block mb-2 font-semibold" for="edit-phone-number">Phone Number</label>
-      <input
-        nz-input
-        id="edit-phone-number"
-        [ngModel]="phoneNumber()"
-        (ngModelChange)="phoneNumber.set($event)"
-        placeholder="Enter phone number"
-      />
-    </div>
-
-    <div class="mb-3">
-      <label class="d-block mb-2 font-semibold" for="edit-food-select">Add Food Item</label>
-      <div class="d-flex gap-2 mb-3">
+      <p class="ds-form-section-eyebrow">ADD ITEMS</p>
+      <div class="ds-edit-order-add">
         <nz-select
           id="edit-food-select"
           class="flex-grow-1"
           nzShowSearch
-          nzPlaceHolder="Select a food item to add"
+          nzPlaceHolder="Pick a food item"
           [ngModel]="selectedFoodId()"
           (ngModelChange)="selectedFoodId.set($event)"
+          [ngModelOptions]="{ standalone: true }"
         >
           @for (food of foodsService.listOfFood(); track food.id) {
             <nz-option [nzValue]="food.id" [nzLabel]="food.name" [nzCustomContent]="true">
               <div class="d-flex align-items-center gap-2">
-                <img
-                  [src]="getFoodImage(food.image)"
-                  [alt]="food.name"
-                  [title]="food.name"
-                  class="food-option-image"
-                />
+                <img [src]="getFoodImage(food.image)" [alt]="food.name" class="food-option-image" />
                 <div class="flex-grow-1">
-                  <div class="font-semibold">{{ food.name }}</div>
-                  <div class="text-sm text-gray-600">
-                    {{ food.discountPrice > 0 ? food.discountPrice : food.price }} ৳
+                  <div class="food-option-name">{{ food.name }}</div>
+                  <div class="food-option-price">
+                    ৳{{ food.discountPrice > 0 ? food.discountPrice : food.price }}
                   </div>
                 </div>
               </div>
@@ -80,89 +88,74 @@
           }
         </nz-select>
         <button
-          nz-button
-          nzType="primary"
+          type="button"
+          class="ds-add-item-button"
           (click)="addFoodToOrder()"
           [disabled]="!selectedFoodId()"
-          class="add-food-btn"
         >
           <span nz-icon nzType="plus" nzTheme="outline"></span>
           Add
         </button>
       </div>
-    </div>
 
-    <div class="mb-3">
-      <label class="d-block mb-2 font-semibold">Order Items</label>
-      <div class="border rounded p-3" style="max-height: 400px; overflow-y: auto">
+      <p class="ds-form-section-eyebrow">ORDER ITEMS</p>
+      <div class="ds-edit-order-items">
         @if (editItems().length === 0) {
-          <div class="text-center py-4 text-gray-500">No items in this order</div>
+          <div class="ds-edit-order-empty">No items in this order yet.</div>
         }
         @for (item of editItems(); track item.uniqueId; let i = $index) {
-          <div class="d-flex gap-3 mb-3 pb-3 border-bottom">
-            <div class="food-image-container" style="width: 60px; height: 60px">
-              <img
-                nz-image
-                nzDisablePreview
-                class="w-100 h-100 rounded"
-                style="object-fit: cover"
-                [nzSrc]="getFoodImage(item.foodImage)"
-                [nzFallback]="fallbackImage"
-                [alt]="item.foodName"
-                [title]="item.foodName"
-              />
+          <div class="ds-edit-order-row">
+            <img
+              nz-image
+              nzDisablePreview
+              class="ds-edit-order-image"
+              [nzSrc]="getFoodImage(item.foodImage)"
+              [nzFallback]="fallbackImage"
+              [alt]="item.foodName"
+            />
+            <div class="ds-edit-order-meta">
+              <p class="ds-edit-order-name">{{ item.foodName }}</p>
+              <p class="ds-edit-order-unit">৳{{ item.unitPrice }} each</p>
             </div>
-            <div class="flex-grow-1">
-              <div class="font-semibold">{{ item.foodName }}</div>
-              <div class="text-gray-600">Unit Price: {{ item.unitPrice }} ৳</div>
-              <div class="d-flex gap-2 align-items-center mt-2">
-                <span>Quantity:</span>
-                <nz-input-number
-                  [ngModel]="item.quantity"
-                  [nzMin]="1"
-                  [nzMax]="100"
-                  (ngModelChange)="onQuantityChange(i, $event)"
-                  style="width: 100px"
-                ></nz-input-number>
-                <span class="ms-2">Total: {{ item.totalPrice }} ৳</span>
-              </div>
+            <div class="ds-edit-order-qty">
+              <span class="ds-edit-order-label">Qty</span>
+              <nz-input-number
+                [ngModel]="item.quantity"
+                [nzMin]="1"
+                [nzMax]="100"
+                (ngModelChange)="onQuantityChange(i, $event)"
+                [ngModelOptions]="{ standalone: true }"
+              ></nz-input-number>
             </div>
-            <div>
-              <button
-                nz-button
-                nzType="text"
-                nzDanger
-                (click)="removeItem(i)"
-                title="Remove item"
-                aria-label="Remove {{ item.foodName }} from order"
-              >
-                <span nz-icon nzType="delete" nzTheme="outline"></span>
-              </button>
-            </div>
+            <p class="ds-edit-order-total">৳{{ item.totalPrice }}</p>
+            <button
+              type="button"
+              class="ds-edit-order-remove"
+              (click)="removeItem(i)"
+              [attr.aria-label]="'Remove ' + item.foodName + ' from order'"
+            >
+              <span nz-icon nzType="delete" nzTheme="outline"></span>
+            </button>
           </div>
         }
       </div>
-    </div>
 
-    <div class="d-flex justify-content-end align-items-center p-3 bg-gray-100 rounded">
-      <div class="text-xl font-bold">
-        Total Amount: <span class="text-green-600">{{ totalAmount() }} ৳</span>
+      <div class="ds-edit-order-total-row">
+        <span class="ds-edit-order-total-label">Total</span>
+        <span class="ds-edit-order-total-value">৳{{ totalAmount() }}</span>
       </div>
-    </div>
+    </form>
   </ng-container>
 
   <div *nzModalFooter>
-    <button class="drop-shadow-md" nz-button nzDanger nzType="default" (click)="handleCancel()">
-      Cancel
-    </button>
+    <button nz-button nzType="default" (click)="handleCancel()">Cancel</button>
     <button
-      class="drop-shadow-md"
       nz-button
       nzType="primary"
       (click)="handleOk()"
       [nzLoading]="ordersService.isSendingRequest()"
     >
-      Update Order
+      Save changes
     </button>
   </div>
 </nz-modal>

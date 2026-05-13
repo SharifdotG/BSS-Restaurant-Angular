@@ -1,14 +1,24 @@
-<div class="main-wrapper p-2 p-md-4 pb-md-0">
+<div class="dashboard-root">
   <nz-tabs class="dashboard-tabs">
     <nz-tab nzTitle="Overview">
       @if (dashboardService.isSendingRequest()) {
-        <div class="row g-3 mb-3" role="status" aria-label="Loading dashboard data">
+        <!-- Greeting band skeleton -->
+        <div class="greeting-band greeting-band-skeleton ds-mesh" aria-hidden="true">
+          <nz-skeleton
+            [nzActive]="true"
+            [nzTitle]="{ width: '30%' }"
+            [nzParagraph]="{ rows: 2, width: ['50%', '40%'] }"
+          ></nz-skeleton>
+        </div>
+
+        <!-- Stat-card row skeleton -->
+        <div class="row g-3 mb-4" role="status" aria-label="Loading dashboard data">
           @for (_ of [1, 2, 3, 4]; track $index) {
             <div class="col-6 col-xl-3">
-              <div class="stat-card today-card">
+              <div class="stat-card">
                 <nz-skeleton
                   [nzActive]="true"
-                  [nzAvatar]="{ size: 'large', shape: 'circle' }"
+                  [nzAvatar]="{ size: 'large', shape: 'square' }"
                   [nzTitle]="{ width: '50%' }"
                   [nzParagraph]="{ rows: 1, width: ['80%'] }"
                 ></nz-skeleton>
@@ -16,6 +26,8 @@
             </div>
           }
         </div>
+
+        <!-- Recent orders + top sellers skeletons -->
         <div class="row g-3">
           <div class="col-12 col-xl-7">
             <div class="dashboard-section">
@@ -29,19 +41,25 @@
           </div>
         </div>
       } @else if (dashboardService.dashboardStats(); as stats) {
-        <!-- Today's Activity -->
-        <div class="row g-3 mb-3">
+        <!-- Greeting band — the only mesh-gradient surface in the app -->
+        <div class="greeting-band ds-mesh">
+          <p class="greeting-eyebrow">OVERVIEW · TODAY</p>
+          <h2 class="greeting-headline">{{ greeting() }}</h2>
+          <p class="greeting-body">
+            {{ stats.todaysOrders }} orders today across {{ stats.occupiedTables }}/{{
+              stats.totalTables
+            }}
+            tables.
+          </p>
+        </div>
+
+        <!-- Stat grid -->
+        <div class="row g-3 mb-4">
           <!-- Today's Orders -->
           <div class="col-6 col-xl-3">
-            <div class="stat-card today-card">
-              <div class="stat-icon" style="background: #e8f5e9">
-                <span
-                  nz-icon
-                  nzType="calendar"
-                  nzTheme="outline"
-                  style="color: #66bb6a"
-                  aria-hidden="true"
-                ></span>
+            <div class="stat-card">
+              <div class="stat-icon">
+                <span nz-icon nzType="calendar" nzTheme="outline" aria-hidden="true"></span>
               </div>
               <div class="stat-info">
                 <p class="stat-label">Today's Orders</p>
@@ -52,15 +70,9 @@
 
           <!-- Tables Occupied -->
           <div class="col-6 col-xl-3">
-            <div class="stat-card today-card">
-              <div class="stat-icon" style="background: #e8eaf6">
-                <span
-                  nz-icon
-                  nzType="check-circle"
-                  nzTheme="outline"
-                  style="color: #5c6bc0"
-                  aria-hidden="true"
-                ></span>
+            <div class="stat-card">
+              <div class="stat-icon">
+                <span nz-icon nzType="check-circle" nzTheme="outline" aria-hidden="true"></span>
               </div>
               <div class="stat-info">
                 <p class="stat-label">Tables Occupied</p>
@@ -73,15 +85,9 @@
 
           <!-- Tables Available -->
           <div class="col-6 col-xl-3">
-            <div class="stat-card today-card">
-              <div class="stat-icon" style="background: #e0f2f1">
-                <span
-                  nz-icon
-                  nzType="inbox"
-                  nzTheme="outline"
-                  style="color: #26a69a"
-                  aria-hidden="true"
-                ></span>
+            <div class="stat-card">
+              <div class="stat-icon">
+                <span nz-icon nzType="inbox" nzTheme="outline" aria-hidden="true"></span>
               </div>
               <div class="stat-info">
                 <p class="stat-label">Tables Available</p>
@@ -92,15 +98,9 @@
 
           <!-- Total Employees -->
           <div class="col-6 col-xl-3">
-            <div class="stat-card today-card">
-              <div class="stat-icon" style="background: #e3f2fd">
-                <span
-                  nz-icon
-                  nzType="team"
-                  nzTheme="outline"
-                  style="color: #2196f3"
-                  aria-hidden="true"
-                ></span>
+            <div class="stat-card">
+              <div class="stat-icon">
+                <span nz-icon nzType="team" nzTheme="outline" aria-hidden="true"></span>
               </div>
               <div class="stat-info">
                 <p class="stat-label">Total Employees</p>
@@ -110,11 +110,14 @@
           </div>
         </div>
 
-        <!-- Recent Orders -->
+        <!-- Recent Orders + Top Selling -->
         <div class="row g-3">
           <div class="col-12 col-xl-7">
             <div class="dashboard-section">
-              <h3 class="section-title">Recent Orders</h3>
+              <div class="section-head">
+                <p class="section-eyebrow">RECENT</p>
+                <h3 class="section-title">Recent orders</h3>
+              </div>
               @if (stats.recentOrders.length) {
                 <div class="table-scroll-wrapper">
                   <nz-table
@@ -135,21 +138,22 @@
                     <tbody>
                       @for (order of recentOrdersTable.data; track order.id) {
                         <tr>
-                          <td class="font-medium">{{ order.orderNumber }}</td>
+                          <td class="cell-strong">{{ order.orderNumber }}</td>
                           <td>{{ order.tableNumber }}</td>
                           <td>৳{{ order.amount | number: '1.0-0' }}</td>
                           <td>
                             <span
-                              class="status-badge"
-                              [style.background]="
-                                statusConfig[order.orderStatus]?.bg ?? defaultStatusConfig.bg
+                              class="ds-badge"
+                              [class]="
+                                'ds-badge ds-badge--' +
+                                (statusConfig[order.orderStatus]?.variant ??
+                                  defaultStatusConfig.variant)
                               "
-                              [style.color]="'#fff'"
                             >
                               {{ statusConfig[order.orderStatus]?.label ?? order.orderStatus }}
                             </span>
                           </td>
-                          <td class="text-gray-500">
+                          <td class="cell-mute">
                             {{ order.orderTime | date: 'MMM d, h:mm a' }}
                           </td>
                         </tr>
@@ -166,13 +170,18 @@
           <!-- Top Selling Foods -->
           <div class="col-12 col-xl-5">
             <div class="dashboard-section">
-              <h3 class="section-title">Top Selling Items</h3>
+              <div class="section-head">
+                <p class="section-eyebrow">TOP SELLERS</p>
+                <h3 class="section-title">Best performing items</h3>
+              </div>
               @if (stats.topSellingFoods.length) {
                 <div class="top-food-list">
                   @for (food of stats.topSellingFoods; track food.id; let i = $index) {
                     <div class="top-food-item">
                       <div class="d-flex align-items-center gap-3">
-                        <span class="food-rank" aria-hidden="true">#{{ i + 1 }}</span>
+                        <span class="food-rank" aria-hidden="true">{{
+                          (i + 1).toString().padStart(2, '0')
+                        }}</span>
                         @if (!failedImages().has(food.id)) {
                           <img
                             [src]="dashboardService.getFoodImage(food.image)"
