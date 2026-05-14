@@ -191,6 +191,7 @@
           <div class="chart-wrapper">
             <h4 class="chart-title">Sales, expenses & revenue comparison</h4>
             <ngx-charts-bar-vertical-2d
+              [view]="barChartView()"
               [results]="barChartData()"
               [xAxis]="true"
               [yAxis]="true"

@@ -3,7 +3,7 @@
     <nz-table
       nzShowSizeChanger
       nzPaginationType="default"
-      [nzScroll]="{ y: 'calc(100% - 56px)', x: '768px' }"
+      [nzScroll]="{ y: 'calc(100% - 56px)', x: '900px' }"
       [nzWidthConfig]="tableWidthConfig"
       nzTableLayout="auto"
       [nzData]="listOfTables()"
@@ -31,7 +31,7 @@
               type="button"
               aria-label="Add New Table"
             >
-              <span nz-icon nzType="plus-circle" nzTheme="outline" aria-hidden="true"></span>
+              <span nz-icon nzType="plus" nzTheme="outline" aria-hidden="true"></span>
               <span> Add New Table </span>
             </button>
           </th>
@@ -121,6 +121,9 @@
                     (click)="editTable(data.id)"
                     class="drop-down-button drop-shadow-md"
                     type="button"
+                    nz-tooltip
+                    [nzTooltipTitle]="'Edit table ' + data.tableNumber"
+                    nzTooltipPlacement="top"
                     aria-label="Edit Table {{ data.tableNumber }}"
                   >
                     <span nz-icon nzType="edit" nzTheme="outline" aria-hidden="true"></span>
@@ -129,6 +132,9 @@
                     (click)="deleteTable(data.id)"
                     class="drop-down-button drop-shadow-md"
                     type="button"
+                    nz-tooltip
+                    [nzTooltipTitle]="'Delete table ' + data.tableNumber"
+                    nzTooltipPlacement="top"
                     aria-label="Delete Table {{ data.tableNumber }}"
                   >
                     <span nz-icon nzType="delete" nzTheme="outline" aria-hidden="true"></span>

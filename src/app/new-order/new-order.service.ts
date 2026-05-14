@@ -1,11 +1,13 @@
 import { Injectable, signal, inject, computed } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { Observable, tap } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
 import { FoodItem, ResponseFoodList } from '../foods/foods.interface';
 import { Table, TableListResponse } from '../tables/tables.interface';
 import { CartItem, PostOrder } from '../orders/orders.model';
+import { OrdersService } from '../orders/orders.service';
 import { API_BASE_URL } from '../app.config';
 
 @Injectable({
@@ -15,6 +17,7 @@ export class NewOrderService {
   private readonly baseUrl = inject(API_BASE_URL);
   private readonly http = inject(HttpClient);
   private readonly message = inject(NzMessageService);
+  private readonly ordersService = inject(OrdersService);
 
   readonly isSendingRequest = signal(false);
   readonly listOfFood = signal<FoodItem[]>([]);
@@ -76,22 +79,24 @@ export class NewOrderService {
       });
   }
 
-  createOrder(postData: PostOrder): void {
+  createOrder(postData: PostOrder): Observable<unknown> {
     this.isSendingRequest.set(true);
-    this.message.info('Order Placed.');
 
-    this.http
+    return this.http
       .post(`${this.baseUrl}/api/Order/create`, postData)
-      .pipe(finalize(() => this.isSendingRequest.set(false)))
-      .subscribe({
-        next: () => {
-          this.cartFood.set([]);
-          this.message.success('Order Created Successfully!');
-        },
-        error: () => {
-          this.message.error('Error Creating Order');
-        },
-      });
+      .pipe(
+        tap({
+          next: () => {
+            this.message.success('Order Created Successfully!');
+            // Refresh the orders page so the new order appears there immediately.
+            this.ordersService.triggerRefresh.set(true);
+          },
+          error: () => {
+            this.message.error('Error Creating Order');
+          },
+        }),
+        finalize(() => this.isSendingRequest.set(false)),
+      );
   }
 
   getFoodImage(image: string): string {

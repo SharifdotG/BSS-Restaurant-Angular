@@ -41,7 +41,15 @@ export class FoodList implements OnInit {
   constructor() {
     effect(() => {
       if (this.foodService.triggerRefresh()) {
-        this.ngOnInit();
+        if (this.foodService.gotoLastPage()) {
+          const lastPage = Math.max(
+            1,
+            Math.ceil((this.foodService.totalFood() + 1) / this.pageSize),
+          );
+          this.pageIndex = lastPage;
+          this.foodService.gotoLastPage.set(false);
+        }
+        this.loadDataFromServer(this.pageIndex, this.pageSize);
         this.foodService.triggerRefresh.set(false);
       }
     });
@@ -67,7 +75,11 @@ export class FoodList implements OnInit {
   }
 
   editFood(id: number): void {
-    this.foodService.getFoodById(id);
+    const food = this.foodService.listOfFood().find((f) => f.id === id);
+    if (!food) return;
+    this.foodService.selectedFood.set(food);
+    this.foodService.isEditMode.set(true);
+    this.foodService.showAddModal.set(true);
   }
 
   deleteFood(id: number): void {

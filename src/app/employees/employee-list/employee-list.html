@@ -4,7 +4,7 @@
     <nz-table
       nzShowSizeChanger
       nzPaginationType="default"
-      [nzScroll]="{ y: 'calc(100% - 56px)', x: '768px' }"
+      [nzScroll]="{ y: 'calc(100% - 56px)', x: '1000px' }"
       [nzWidthConfig]="['120px', 'auto', 'auto', 'auto', 'auto', 'auto', '180px']"
       nzTableLayout="auto"
       [nzData]="listOfEmployees()"
@@ -32,7 +32,7 @@
               aria-label="Add New Employee"
               (click)="employeeService.showAddModal.set(true)"
             >
-              <span nz-icon nzType="user-add" nzTheme="outline" aria-hidden="true"></span>
+              <span nz-icon nzType="plus" nzTheme="outline" aria-hidden="true"></span>
               <span> Add Employee </span>
             </button>
           </th>
@@ -81,43 +81,62 @@
                   </p>
                 </div>
               </td>
-              <td
-                [nzTooltipTitle]="data.user.email"
-                nzTooltipPlacement="top"
-                nz-tooltip
-                class="truncate"
-              >
-                {{ data.user.email }}
+              <td>
+                <div class="d-flex justify-content-between pe-3">
+                  <p
+                    [nzTooltipTitle]="data.user.email"
+                    nzTooltipPlacement="top"
+                    nz-tooltip
+                    class="truncate"
+                  >
+                    {{ data.user.email }}
+                  </p>
+                </div>
               </td>
-              <td
-                [nzTooltipTitle]="data.designation"
-                nzTooltipPlacement="top"
-                nz-tooltip
-                class="truncate"
-              >
-                {{ data.designation }}
+              <td>
+                <div class="d-flex justify-content-between pe-3">
+                  <p
+                    [nzTooltipTitle]="data.designation"
+                    nzTooltipPlacement="top"
+                    nz-tooltip
+                    class="truncate"
+                  >
+                    {{ data.designation }}
+                  </p>
+                </div>
               </td>
-              <td
-                [nzTooltipTitle]="data.joinDate | date: 'MMM dd, yyyy'"
-                nzTooltipPlacement="top"
-                nz-tooltip
-                class="truncate"
-              >
-                {{ data.joinDate | date: 'MMM dd, yyyy' }}
+              <td>
+                <div class="d-flex justify-content-between pe-3">
+                  <p
+                    [nzTooltipTitle]="data.joinDate | date: 'MMM dd, yyyy'"
+                    nzTooltipPlacement="top"
+                    nz-tooltip
+                    class="truncate"
+                  >
+                    {{ data.joinDate | date: 'MMM dd, yyyy' }}
+                  </p>
+                </div>
               </td>
-              <td
-                [nzTooltipTitle]="data.user.phoneNumber"
-                nzTooltipPlacement="top"
-                nz-tooltip
-                class="truncate"
-              >
-                {{ data.user.phoneNumber }}
+              <td>
+                <div class="d-flex justify-content-between pe-3">
+                  <p
+                    [nzTooltipTitle]="data.user.phoneNumber"
+                    nzTooltipPlacement="top"
+                    nz-tooltip
+                    class="truncate"
+                  >
+                    {{ data.user.phoneNumber }}
+                  </p>
+                </div>
               </td>
               <td>
                 <div class="d-flex justify-content-center gap-2">
                   <button
                     (click)="editEmployee(data.id)"
                     class="drop-down-button drop-shadow-md"
+                    nz-tooltip
+                    nzTooltipTitle="Edit employee"
+                    nzTooltipPlacement="top"
                     aria-label="Edit Employee"
                   >
                     <span nz-icon nzType="edit" nzTheme="outline" aria-hidden="true"></span>
@@ -125,6 +144,9 @@
                   <button
                     (click)="deleteUser(data.id)"
                     class="drop-down-button drop-shadow-md"
+                    nz-tooltip
+                    nzTooltipTitle="Delete employee"
+                    nzTooltipPlacement="top"
                     aria-label="Delete Employee"
                   >
                     <span nz-icon nzType="delete" nzTheme="outline" aria-hidden="true"></span>

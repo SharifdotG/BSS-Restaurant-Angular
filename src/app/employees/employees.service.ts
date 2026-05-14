@@ -24,6 +24,9 @@ export class EmployeesService {
   showAddModal = signal(false);
   selectedEmployee = signal<Employee | null>(null);
   isEditMode = signal(false);
+  /** Set to true by addNewEmployee so the list can navigate to the page that
+   *  will contain the newly-added row. */
+  gotoLastPage = signal(false);
 
   getListOfEmployees(sortBy: string, page: string, perPage: string, search: string): void {
     this.isSendingRequest.set(true);
@@ -76,6 +79,7 @@ export class EmployeesService {
     this.httpClient.post(`${this.baseUrl}/api/Employee/create`, postData).subscribe({
       next: () => {
         this.messageService.success('Employee Added Successfully');
+        this.gotoLastPage.set(true);
         this.triggerRefresh.update((v) => v + 1);
       },
       error: () => {

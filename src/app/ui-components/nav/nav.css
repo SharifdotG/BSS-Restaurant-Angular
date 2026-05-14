@@ -114,27 +114,30 @@
   color: var(--ds-ink) !important;
 }
 
-/* Selected: 2px left-edge ink indicator + soft fill */
+/* Selected: inverted — solid brand-orange pill with white text + icon.
+   Strip ng-zorro's default 3px #1890ff right border on selected items. */
 ::ng-deep .ds-side-menu .ant-menu-item.ant-menu-item-selected,
 ::ng-deep .ds-side-menu .ant-menu-item-selected {
-  background: var(--ds-canvas-soft) !important;
-  color: var(--ds-ink) !important;
+  background: var(--ds-primary) !important;
+  color: var(--ds-on-primary) !important;
   font-weight: 600 !important;
+  box-shadow: 0 1px 2px rgba(255, 108, 31, 0.25);
+  border-right: 0 !important;
 }
 
-::ng-deep .ds-side-menu .ant-menu-item.ant-menu-item-selected::before {
-  content: '';
-  position: absolute;
-  left: -8px;
-  top: 6px;
-  bottom: 6px;
-  width: 2px;
-  border-radius: 2px;
-  background: var(--ds-ink);
+::ng-deep .ds-side-menu.ant-menu-inline .ant-menu-item-selected::after,
+::ng-deep .ds-side-menu .ant-menu-item-selected::after {
+  border-right: 0 !important;
+  display: none !important;
+}
+
+::ng-deep .ds-side-menu .ant-menu-item.ant-menu-item-selected:hover {
+  background: var(--ds-primary-hover) !important;
+  color: var(--ds-on-primary) !important;
 }
 
 ::ng-deep .ds-side-menu .ant-menu-item.ant-menu-item-selected .anticon {
-  color: var(--ds-ink) !important;
+  color: var(--ds-on-primary) !important;
 }
 
 /* Collapsed sider: center icons, hide labels */
@@ -157,14 +160,14 @@
   padding: 0;
 }
 
-/* Logout button (sider) */
+/* Logout button (sider) — inverted brand pill so it reads as a deliberate exit action */
 .logout-button {
-  background: var(--ds-canvas);
-  color: var(--ds-ink);
+  background: var(--ds-primary);
+  color: var(--ds-on-primary);
   font-family: var(--font-sans);
-  font-weight: 500;
+  font-weight: 600;
   font-size: var(--ds-body-sm-size);
-  border: 1px solid var(--ds-hairline);
+  border: 1px solid var(--ds-primary);
   border-radius: var(--ds-radius-sm);
   height: 36px;
   padding: 0 12px;
@@ -174,14 +177,18 @@
   gap: 8px;
   transition: var(--transition-base);
   cursor: pointer;
+  box-shadow: 0 1px 2px rgba(255, 108, 31, 0.25);
 }
 
 .logout-button:hover {
-  background: var(--ds-canvas-soft);
-  border-color: var(--ds-hairline-strong);
+  background: var(--ds-primary-hover);
+  border-color: var(--ds-primary-hover);
+  color: var(--ds-on-primary);
 }
 
 .logout-button:active {
+  background: var(--ds-primary-active);
+  border-color: var(--ds-primary-active);
   transform: translateY(1px);
 }
 
@@ -301,8 +308,8 @@
 }
 
 .cart-button.is-active {
-  background: var(--ds-ink);
-  border-color: var(--ds-ink);
+  background: var(--ds-primary);
+  border-color: var(--ds-primary);
   color: var(--ds-on-primary);
 }
 
@@ -317,26 +324,27 @@
   width: 6px;
   height: 6px;
   border-radius: var(--ds-radius-full);
-  background: var(--ds-link);
+  background: var(--ds-primary);
   box-shadow: 0 0 0 2px var(--ds-canvas);
 }
 
 .cart-button.is-active .cart-dot {
-  box-shadow: 0 0 0 2px var(--ds-ink);
+  background: var(--ds-on-primary);
+  box-shadow: 0 0 0 2px var(--ds-primary);
 }
 
 @keyframes cart-flash {
   0% {
     transform: scale(1);
-    box-shadow: 0 0 0 0 rgba(0, 112, 243, 0.5);
+    box-shadow: 0 0 0 0 rgba(255, 108, 31, 0.5);
   }
   40% {
     transform: scale(1.08);
-    box-shadow: 0 0 0 8px rgba(0, 112, 243, 0);
+    box-shadow: 0 0 0 8px rgba(255, 108, 31, 0);
   }
   100% {
     transform: scale(1);
-    box-shadow: 0 0 0 0 rgba(0, 112, 243, 0);
+    box-shadow: 0 0 0 0 rgba(255, 108, 31, 0);
   }
 }
 
@@ -399,115 +407,139 @@
   margin: 0;
   background: transparent;
   overflow-y: auto;
+  overflow-x: hidden;
   flex: 1;
   color: var(--ds-ink);
+}
+
+/* On mobile, when nz-content contains a feature-table-card, prevent the outer
+   page from scrolling so only the table body scrolls internally. */
+@media screen and (max-width: 768px) {
+  ::ng-deep nz-content:has(.feature-table-card) {
+    overflow: hidden;
+  }
 }
 
 ::ng-deep nz-footer {
   text-align: center;
 }
 
-/* MOBILE FOOTER MENU */
-.mobile-menu {
-  background: var(--ds-canvas);
-  border-top: 1px solid var(--ds-hairline);
-  height: 64px;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* Hamburger button (visible only on mobile, sits to the right of the avatar) */
+.hamburger-btn {
+  margin-left: 4px;
 }
 
-.mobile-menu-items {
-  list-style: none;
-  margin: 0;
-  padding: 0 8px;
-  height: 100%;
-  display: flex;
-  align-items: center;
+/* Mobile nav dropdown menu (replaces the old bottom-footer nav) */
+::ng-deep .mobile-nav-dropdown {
+  min-width: 240px;
+  padding: 6px !important;
 }
 
-.mobile-menu-icons {
-  font-size: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+::ng-deep .mobile-nav-dropdown.ant-dropdown-menu .ant-dropdown-menu-item {
+  display: flex !important;
+  align-items: center !important;
+  height: 44px;
+  border-radius: var(--ds-radius-sm) !important;
+  font-family: var(--font-sans) !important;
+  font-size: var(--ds-body-sm-size) !important;
+  font-weight: 500 !important;
+  color: var(--ds-body) !important;
+  padding: 0 14px !important;
+  margin: 2px 0 !important;
+  transition: var(--transition-fast);
+}
+
+/* Push the label away from the icon — works regardless of which inner element
+   ng-zorro wraps the content in. */
+::ng-deep .mobile-nav-dropdown.ant-dropdown-menu .ant-dropdown-menu-item .anticon {
+  font-size: 18px;
+  color: var(--ds-mute);
+  margin-right: 14px !important;
+}
+
+::ng-deep .mobile-nav-dropdown.ant-dropdown-menu .ant-dropdown-menu-item .anticon + span {
+  margin-left: 0;
+}
+
+::ng-deep .mobile-nav-dropdown.ant-dropdown-menu .ant-dropdown-menu-item:hover {
+  background: var(--ds-canvas-soft) !important;
+  color: var(--ds-ink) !important;
+}
+
+::ng-deep .mobile-nav-dropdown.ant-dropdown-menu .ant-dropdown-menu-item:hover .anticon {
+  color: var(--ds-ink) !important;
+}
+
+::ng-deep .mobile-nav-dropdown.ant-dropdown-menu .ant-dropdown-menu-item-selected {
+  background: var(--ds-primary) !important;
+  color: var(--ds-on-primary) !important;
+  font-weight: 600 !important;
+}
+
+::ng-deep .mobile-nav-dropdown.ant-dropdown-menu .ant-dropdown-menu-item-selected .anticon {
+  color: var(--ds-on-primary) !important;
 }
 
 @media screen and (max-width: 768px) {
-  ::ng-deep nz-content {
-    padding-bottom: 64px;
-  }
-
-  ::ng-deep nz-footer,
-  ::ng-deep nz-footer .ant-layout-footer {
-    height: 64px;
-    padding: 0 !important;
-    background: transparent;
-  }
-
-  ::ng-deep .mobile-menu .ant-menu {
-    background: transparent !important;
-    border: none !important;
-    width: 100%;
-    line-height: 48px;
-  }
-
-  ::ng-deep .mobile-menu .ant-menu-item {
-    font-family: var(--font-sans) !important;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 44px;
-    width: 44px;
-    border-radius: var(--ds-radius-sm);
-    color: var(--ds-mute) !important;
-    background: transparent !important;
-    padding: 0 !important;
-    margin: 0 2px;
-    position: relative;
-    border-top: 2px solid transparent;
-    transition: var(--transition-fast);
-  }
-
-  ::ng-deep .mobile-menu .ant-menu-item:hover,
-  ::ng-deep .mobile-menu .ant-menu-item:active {
-    background: var(--ds-canvas-soft) !important;
-    color: var(--ds-ink) !important;
-  }
-
-  ::ng-deep .mobile-menu .ant-menu-item.ant-menu-item-selected {
-    background: var(--ds-canvas-soft) !important;
-    color: var(--ds-ink) !important;
-    border-top: 2px solid var(--ds-ink);
-  }
-
-  ::ng-deep .mobile-menu .ant-menu-item .anticon {
-    font-size: 20px !important;
-    margin: 0 !important;
-    color: inherit !important;
-  }
-
-  ::ng-deep .mobile-menu .ant-menu-horizontal {
-    border-bottom: none !important;
-    line-height: 44px !important;
-  }
-
   ::ng-deep nz-header,
   ::ng-deep nz-header .ant-layout-header {
     height: 56px !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
   }
 
   .header-inner {
     height: 56px;
     padding: 0 var(--ds-space-md);
     gap: var(--ds-space-xs);
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+  }
+
+  .header-inner > div {
+    display: flex !important;
+    align-items: center !important;
+    min-height: 36px;
+  }
+
+  /* Ensure every header item (title, icon buttons, avatar, hamburger) lines up
+     on the same vertical centerline by giving each a uniform 36px box. */
+  .header-inner .header-title-block,
+  .header-inner .trigger,
+  .header-inner .header-icon-btn,
+  .header-inner ::ng-deep .user-avatar.ant-avatar {
+    align-self: center !important;
+    line-height: 1;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+  }
+
+  .header-inner .header-icon-btn,
+  .header-inner ::ng-deep .user-avatar.ant-avatar {
+    height: 36px !important;
+    width: 36px !important;
+    flex-shrink: 0;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    vertical-align: middle;
   }
 
   .header-title {
     font-size: 16px;
     line-height: 20px;
     letter-spacing: -0.4px;
+    display: flex;
+    align-items: center;
+  }
+
+  .header-title-block {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    height: 36px;
   }
 
   .header-eyebrow {
@@ -516,6 +548,8 @@
 
   .header-cluster {
     gap: var(--ds-space-xs);
+    display: flex !important;
+    align-items: center !important;
   }
 
   .user-meta {

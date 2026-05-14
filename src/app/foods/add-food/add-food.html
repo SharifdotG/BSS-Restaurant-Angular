@@ -22,7 +22,7 @@
       (ngSubmit)="handleOk()"
       class="ds-form"
     >
-      <!-- Image uploader row -->
+      <!-- Avatar header band: square thumbnail + food name + price -->
       <div class="ds-form-avatar-row">
         <nz-upload
           class="ds-avatar-upload"
@@ -36,6 +36,7 @@
           [nzBeforeUpload]="beforeUpload"
           [nzFileType]="'image/png,image/jpeg,image/gif,image/bmp'"
           (nzChange)="onChange($event)"
+          aria-label="Upload food image"
         >
           <div class="ds-avatar-slot ds-avatar-slot--square">
             @if (previewImage()) {
@@ -48,16 +49,7 @@
             }
           </div>
         </nz-upload>
-        <div class="ds-form-avatar-text">
-          <p class="ds-form-avatar-title">Food image</p>
-          <p class="ds-form-avatar-hint">PNG, JPG or GIF. Click the square to upload.</p>
-        </div>
-      </div>
-
-      <!-- Basics -->
-      <p class="ds-form-section-eyebrow">BASICS</p>
-      <div class="row g-3">
-        <div class="col-12">
+        <div class="ds-form-avatar-fields ds-form-avatar-fields--2">
           <nz-form-item>
             <nz-form-label nzRequired nzNoColon>Food name</nz-form-label>
             <nz-form-control [nzErrorTip]="foodNameErrorTmpl">
@@ -72,7 +64,18 @@
               </ng-template>
             </nz-form-control>
           </nz-form-item>
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon>Price (৳)</nz-form-label>
+            <nz-form-control [nzErrorTip]="priceErrorTmpl">
+              <input nz-input formControlName="price" placeholder="0.00" />
+            </nz-form-control>
+          </nz-form-item>
         </div>
+      </div>
+
+      <!-- Basics -->
+      <p class="ds-form-section-eyebrow">BASICS</p>
+      <div class="row g-3">
         <div class="col-12">
           <nz-form-item>
             <nz-form-label nzRequired nzNoColon>Description</nz-form-label>
@@ -91,15 +94,7 @@
       <!-- Pricing -->
       <p class="ds-form-section-eyebrow">PRICING</p>
       <div class="row g-3">
-        <div class="col-12 col-md-6">
-          <nz-form-item>
-            <nz-form-label nzRequired nzNoColon>Price (৳)</nz-form-label>
-            <nz-form-control [nzErrorTip]="priceErrorTmpl">
-              <input nz-input formControlName="price" placeholder="0.00" />
-            </nz-form-control>
-          </nz-form-item>
-        </div>
-        <div class="col-12 col-md-6">
+        <div class="col-12 col-md-4">
           <nz-form-item>
             <nz-form-label nzNoColon>Discount type</nz-form-label>
             <nz-form-control>
@@ -111,7 +106,7 @@
             </nz-form-control>
           </nz-form-item>
         </div>
-        <div class="col-12 col-md-6">
+        <div class="col-12 col-md-4">
           <nz-form-item>
             <nz-form-label nzNoColon>
               Discount amount<span class="ds-form-label-unit">{{ discType() }}</span>
@@ -129,7 +124,7 @@
             </nz-form-control>
           </nz-form-item>
         </div>
-        <div class="col-12 col-md-6">
+        <div class="col-12 col-md-4">
           <nz-form-item>
             <nz-form-label nzNoColon>Final price (৳)</nz-form-label>
             <nz-form-control>

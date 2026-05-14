@@ -56,43 +56,61 @@
         } @else {
           @for (data of listOfExpenses(); track data.id) {
             <tr class="custom-table-row">
-              <td
-                [nzTooltipOverlayStyle]="{ 'min-width': '40px' }"
-                [nzTooltipTitle]="data.title"
-                nzTooltipPlacement="top"
-                nz-tooltip
-                class="truncate"
-              >
-                {{ data.title }}
+              <td>
+                <div class="d-flex justify-content-between pe-3">
+                  <p
+                    [nzTooltipTitle]="data.title"
+                    nzTooltipPlacement="top"
+                    [nzTooltipOverlayStyle]="{ 'min-width': '40px' }"
+                    [nzTooltipTitle]="data.title"
+                    nzTooltipPlacement="top"
+                    nz-tooltip
+                    class="truncate"
+                  >
+                    {{ data.title }}
+                  </p>
+                </div>
               </td>
-              <td
-                [nzTooltipOverlayStyle]="{ 'min-width': '40px' }"
-                [nzTooltipTitle]="data.category"
-                nzTooltipPlacement="top"
-                nz-tooltip
-                class="truncate"
-              >
-                <span class="category-badge" [attr.data-category]="data.category">{{
-                  data.category
-                }}</span>
+              <td>
+                <div class="d-flex justify-content-between pe-3">
+                  <p
+                    [nzTooltipOverlayStyle]="{ 'min-width': '40px' }"
+                    [nzTooltipTitle]="data.category"
+                    nzTooltipPlacement="top"
+                    nz-tooltip
+                    class="truncate"
+                  >
+                    <span class="category-badge" [attr.data-category]="data.category">{{
+                      data.category
+                    }}</span>
+                  </p>
+                </div>
               </td>
-              <td
-                [nzTooltipOverlayStyle]="{ 'min-width': '40px' }"
-                [nzTooltipTitle]="data.amount.toString()"
-                nzTooltipPlacement="top"
-                nz-tooltip
-                class="truncate amount-cell"
-              >
-                ৳ {{ data.amount }}
+              <td>
+                <div class="d-flex justify-content-between pe-3">
+                  <p
+                    [nzTooltipOverlayStyle]="{ 'min-width': '40px' }"
+                    [nzTooltipTitle]="data.amount.toString()"
+                    nzTooltipPlacement="top"
+                    nz-tooltip
+                    class="truncate amount-cell"
+                  >
+                    ৳ {{ data.amount }}
+                  </p>
+                </div>
               </td>
-              <td
-                [nzTooltipOverlayStyle]="{ 'min-width': '40px' }"
-                [nzTooltipTitle]="formatDate(data.expenseDate)"
-                nzTooltipPlacement="top"
-                nz-tooltip
-                class="truncate"
-              >
-                {{ formatDate(data.expenseDate) }}
+              <td>
+                <div class="d-flex justify-content-between pe-3">
+                  <p
+                    [nzTooltipOverlayStyle]="{ 'min-width': '40px' }"
+                    [nzTooltipTitle]="formatDate(data.expenseDate)"
+                    nzTooltipPlacement="top"
+                    nz-tooltip
+                    class="truncate"
+                  >
+                    {{ formatDate(data.expenseDate) }}
+                  </p>
+                </div>
               </td>
               <td
                 [nzTooltipOverlayStyle]="{ 'min-width': '40px' }"

@@ -14,6 +14,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { NzUploadChangeParam, NzUploadModule, NzUploadFile } from 'ng-zorro-antd/upload';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
@@ -44,6 +45,7 @@ export class AddFood {
   readonly foodsService = inject(FoodsService);
   private readonly responsive = inject(BreakpointObserver);
   private readonly fb = inject(NonNullableFormBuilder);
+  private readonly message = inject(NzMessageService);
   readonly imageBaseUrl = inject(API_BASE_URL) + '/images/food/';
 
   // Local component state using signals
@@ -269,9 +271,15 @@ export class AddFood {
     });
   }
 
-  beforeUpload(): boolean {
+  beforeUpload = (file: NzUploadFile): boolean => {
+    const mime = (file.type ?? '') as string;
+    const allowed = ['image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/bmp', 'image/webp'];
+    if (!allowed.includes(mime)) {
+      this.message.error('Only PNG, JPG, GIF, BMP, or WebP images are allowed.');
+      return false;
+    }
     return true;
-  }
+  };
 
   onChange(event: NzUploadChangeParam): void {
     if (event.type === 'removed') {

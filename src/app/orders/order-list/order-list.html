@@ -1,12 +1,20 @@
 <div class="main-wrapper pb-0 relative">
-  <div class="order-container h-100 position-relative overflow-scroll">
+  <div class="order-container h-100 position-relative">
     <div class="container-fluid order-item-container">
       <div class="order-toolbar">
         <div>
           <p class="order-toolbar-eyebrow">ALL ORDERS</p>
           <p class="order-toolbar-title">{{ ordersService.totalOrder() }} orders</p>
         </div>
-        <button class="drop-down-filter" nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu">
+        <button
+          class="drop-down-filter"
+          nz-dropdown
+          nzTrigger="click"
+          [nzDropdownMenu]="menu"
+          nz-tooltip
+          nzTooltipTitle="Filter orders by status"
+          nzTooltipPlacement="left"
+        >
           Filter
           <span nz-icon nzType="down"></span>
         </button>
@@ -26,7 +34,7 @@
         <div class="row g-3 g-md-3 g-xl-4 gy-0" role="status" aria-label="Loading orders">
           @for (_ of [1, 2, 3, 4, 5, 6]; track $index) {
             <div class="col-12 col-xl-6 col-xxl-4">
-              <div class="order-card bg-white shadow rounded-md p-4">
+              <div class="order-card order-card--skeleton">
                 <nz-skeleton
                   [nzActive]="true"
                   [nzTitle]="{ width: '40%' }"
@@ -50,42 +58,12 @@
                       <div class="order-time">{{ formatOrderTime(orderData.orderTime) }}</div>
                     </div>
                     <div class="order-card-actions">
-                      <nz-dropdown-menu #clickMenu="nzDropdownMenu">
-                        <ul nz-menu nzSelectable>
-                          <li nz-menu-item (click)="changeOrderStatus(orderData, 'Pending')">
-                            Pending
-                          </li>
-                          <li nz-menu-item (click)="changeOrderStatus(orderData, 'Confirmed')">
-                            Confirmed
-                          </li>
-                          <li nz-menu-item (click)="changeOrderStatus(orderData, 'Preparing')">
-                            Preparing
-                          </li>
-                          <li
-                            nz-menu-item
-                            (click)="changeOrderStatus(orderData, 'Prepared To Serve')"
-                          >
-                            Prepared To Serve
-                          </li>
-                          <li nz-menu-item (click)="changeOrderStatus(orderData, 'Served')">
-                            Served
-                          </li>
-                          <li nz-menu-item (click)="changeOrderStatus(orderData, 'Paid')">Paid</li>
-                        </ul>
-                      </nz-dropdown-menu>
-
-                      <button
-                        class="drop-down-button status-button drop-shadow-md"
-                        nzTrigger="click"
-                        nz-dropdown
-                        [nzDropdownMenu]="clickMenu"
-                        aria-label="Change Order Status"
-                      >
-                        <span nz-icon nzType="swap" nzTheme="outline"></span>
-                      </button>
                       <button
                         (click)="editOrder(orderData)"
                         class="drop-down-button drop-shadow-md"
+                        nz-tooltip
+                        nzTooltipTitle="Edit order & change status"
+                        nzTooltipPlacement="top"
                         aria-label="Edit Order"
                       >
                         <span nz-icon nzType="edit" nzTheme="outline"></span>
@@ -93,6 +71,9 @@
                       <button
                         (click)="deleteOrder(orderData)"
                         class="drop-down-button drop-shadow-md"
+                        nz-tooltip
+                        nzTooltipTitle="Delete order"
+                        nzTooltipPlacement="top"
                         aria-label="Delete Order"
                       >
                         <span nz-icon nzType="delete" nzTheme="outline"></span>
@@ -165,7 +146,7 @@
                 [nzShowSizeChanger]="true"
                 (nzPageIndexChange)="onPageIndexChange($event)"
                 (nzPageSizeChange)="onPageSizeChange($event)"
-                [nzResponsive]="'true'"
+                [nzResponsive]="false"
                 [nzPageIndex]="pageIndex"
                 [nzTotal]="ordersService.totalOrder()"
                 [nzPageSize]="pageSize"
@@ -179,8 +160,6 @@
           </div>
           <!--Main Content End-->
         </div>
-      } @else {
-        <nz-empty></nz-empty>
       }
     </div>
   </div>

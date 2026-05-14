@@ -25,6 +25,8 @@ export class ExpensesService {
   showAddModal = signal(false);
   selectedExpense = signal<ExpenseItem | null>(null);
   isEditMode = signal(false);
+  /** Tells the list to navigate to the page that will contain the new row. */
+  gotoLastPage = signal(false);
 
   getListOfExpenses(sortBy: string, page: string, perPage: string, search = ''): void {
     let params = new HttpParams()
@@ -63,6 +65,7 @@ export class ExpensesService {
         this.showAddModal.set(false);
         this.selectedExpense.set(null);
         this.isEditMode.set(false);
+        this.gotoLastPage.set(true);
         this.triggerRefresh.set(true);
       },
       error: () => {
@@ -116,6 +119,7 @@ export class ExpensesService {
       next: () => {
         this.message.create('success', 'Expense Updated Successfully!');
         this.triggerRefresh.set(true);
+        this.showAddModal.set(false);
         this.selectedExpense.set(null);
         this.isEditMode.set(false);
       },

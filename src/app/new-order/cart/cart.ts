@@ -7,9 +7,10 @@ import { NzImageModule } from 'ng-zorro-antd/image';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzDrawerModule } from 'ng-zorro-antd/drawer';
+import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
 
 import { NewOrderService } from '../new-order.service';
-import { CartItem, PostOrder, PostOrderItem } from '../../orders/orders.model';
+import { CartItem, CreateOrderItemRequest, PostOrder, PostOrderItem } from '../../orders/orders.model';
 
 interface CartGroup {
   tableId: string;
@@ -27,6 +28,7 @@ interface CartGroup {
     NzInputNumberModule,
     NzInputModule,
     NzDrawerModule,
+    NzTooltipModule,
   ],
   templateUrl: './cart.html',
   styleUrl: './cart.css',
@@ -136,30 +138,66 @@ export class Cart {
       now.getDate().toString().padStart(2, '0'),
     ].join('');
 
+    let pending = groups.length;
+    let anyFailed = false;
+
     // Place one order per table — each cart group becomes its own POST.
+    // Only the groups whose POST succeeds get removed from the cart, so the
+    // user can retry any that failed without losing their items.
     for (const group of groups) {
       const items: PostOrderItem[] = group.items.map((item) => ({
         foodId: item.food.id,
-        foodPackageId: null,
+        // Backend rejects null here — match the working update payload shape.
+        foodPackageId: 0,
         quantity: item.quantity,
         unitPrice: item.amount,
         totalPrice: item.quantity * item.amount,
       }));
+      const orderItems: CreateOrderItemRequest[] = items.map((item) => ({
+        foodId: item.foodId,
+        packageId: item.foodPackageId ?? 0,
+        quantity: item.quantity,
+        unitPrice: item.unitPrice,
+      }));
       const randomDigits = Math.floor(1000 + Math.random() * 9000);
-      const orderNumber = `${dateStr}-${group.tableNumber}-${randomDigits}`;
+      const tableToken = String(group.tableNumber || group.tableId).replace(/[^a-zA-Z0-9]/g, '');
+      const orderNumber = `${dateStr}-${tableToken || group.tableId}-${randomDigits}`;
       const postData: PostOrder = {
         tableId: Number(group.tableId),
         orderNumber,
         amount: group.subtotal,
-        phoneNumber: this.getPhoneNumber(group.tableId) || null,
+        // Backend rejects null here — send '' for "no phone" instead.
+        phoneNumber: this.getPhoneNumber(group.tableId) || '',
         items,
+        orderItems,
       };
-      this.newOrderService.createOrder(postData);
-    }
 
-    this.newOrderService.cartFood.set([]);
-    this.newOrderService.selectedTableId.set('');
-    this.phoneNumbers.set({});
-    this.closeCart();
+      const finishGroup = (succeeded: boolean) => {
+        if (succeeded) {
+          this.newOrderService.cartFood.update((all) =>
+            all.filter((i) => i.tableId !== group.tableId),
+          );
+          this.phoneNumbers.update((m) => {
+            const next = { ...m };
+            delete next[group.tableId];
+            return next;
+          });
+        } else {
+          anyFailed = true;
+        }
+        pending -= 1;
+        if (pending === 0) {
+          if (!anyFailed) {
+            this.newOrderService.selectedTableId.set('');
+            this.closeCart();
+          }
+        }
+      };
+
+      this.newOrderService.createOrder(postData).subscribe({
+        next: () => finishGroup(true),
+        error: () => finishGroup(false),
+      });
+    }
   }
 }

@@ -30,6 +30,7 @@ import { NzColDirective, NzRowDirective } from 'ng-zorro-antd/grid';
 import { NzInputDirective } from 'ng-zorro-antd/input';
 import { debounceTime, map, of, catchError, Observable } from 'rxjs';
 import { NzUploadChangeParam, NzUploadComponent, NzUploadFile } from 'ng-zorro-antd/upload';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzIconDirective } from 'ng-zorro-antd/icon';
 import { NzDatePickerComponent } from 'ng-zorro-antd/date-picker';
 import { NzOptionComponent, NzSelectComponent } from 'ng-zorro-antd/select';
@@ -70,6 +71,7 @@ export class AddEmployee {
   private responsive = inject(BreakpointObserver);
   private baseUrl = inject(API_BASE_URL);
   private fb = inject(NonNullableFormBuilder);
+  private message = inject(NzMessageService);
 
   employeeService = inject(EmployeesService);
 
@@ -208,6 +210,7 @@ export class AddEmployee {
     this.fileList.set([]);
     this.image.set('');
     this.imageB64.set('');
+    this.previewImage.set('');
     this.validateForm.reset();
     this.employeeService.showAddModal.set(false);
     this.employeeService.selectedEmployee.set(null);
@@ -283,9 +286,15 @@ export class AddEmployee {
     }
   }
 
-  beforeUpload(_file: NzUploadFile, _fileList: NzUploadFile[]): boolean {
+  beforeUpload = (file: NzUploadFile): boolean => {
+    const mime = (file.type ?? '') as string;
+    const allowed = ['image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/bmp', 'image/webp'];
+    if (!allowed.includes(mime)) {
+      this.message.error('Only PNG, JPG, GIF, BMP, or WebP images are allowed.');
+      return false;
+    }
     return true;
-  }
+  };
 
   onChange(event: NzUploadChangeParam): void {
     if (event.type === 'removed') {

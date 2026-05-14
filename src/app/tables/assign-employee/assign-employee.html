@@ -14,7 +14,7 @@
 >
   <ng-container *nzModalContent>
     <div class="ds-form">
-      <!-- Table summary header -->
+      <!-- Table image + employee select side-by-side -->
       <div class="ds-form-avatar-row">
         <div class="ds-avatar-static ds-avatar-static--square">
           @if (tablesService.assignTableImage()) {
@@ -27,46 +27,43 @@
             <span nz-icon nzType="group" nzTheme="outline"></span>
           }
         </div>
-        <div class="ds-form-avatar-text">
-          <p class="ds-form-section-eyebrow ds-form-section-eyebrow--inline">TABLE</p>
-          <p class="ds-form-avatar-title">{{ tablesService.assignTableName() }}</p>
-          <p class="ds-form-avatar-hint">
-            {{ tablesService.assignTableSeats() }} seats · pick the employees responsible for this
-            table.
-          </p>
+        <div class="ds-form-avatar-fields ds-form-avatar-fields--1">
+          <div class="ds-field">
+            <label class="ds-field-label" for="employee-select">
+              {{ tablesService.assignTableName() }}
+              <span class="ds-form-label-unit">
+                · {{ tablesService.assignTableSeats() }} seats
+              </span>
+            </label>
+            <nz-select
+              id="employee-select"
+              [nzMaxTagCount]="3"
+              [nzMaxTagPlaceholder]="tagPlaceHolder"
+              nzMode="multiple"
+              nzPlaceHolder="Search and pick employees"
+              [ngModel]="listOfSelectedEmployees"
+              (ngModelChange)="listOfSelectedEmployees = $event"
+              class="w-100 employee-select"
+              nzAllowClear
+            >
+              @for (emp of tablesService.listOfAvailableEmployees(); track emp.id) {
+                <nz-option nzCustomContent [nzLabel]="getEmployeeFullName(emp)" [nzValue]="emp">
+                  <div class="d-flex align-items-center gap-2">
+                    <nz-avatar
+                      [nzSize]="32"
+                      nzIcon="user"
+                      [nzSrc]="getEmployeeImageUrl(emp.user.image)"
+                    ></nz-avatar>
+                    <span>{{ getEmployeeFullName(emp) }}</span>
+                  </div>
+                </nz-option>
+              }
+            </nz-select>
+            <ng-template #tagPlaceHolder let-selectedList>
+              and {{ selectedList.length }} more selected
+            </ng-template>
+          </div>
         </div>
-      </div>
-
-      <p class="ds-form-section-eyebrow">EMPLOYEES</p>
-      <div class="ds-field">
-        <label class="ds-field-label" for="employee-select">Select employees</label>
-        <nz-select
-          id="employee-select"
-          [nzMaxTagCount]="3"
-          [nzMaxTagPlaceholder]="tagPlaceHolder"
-          nzMode="multiple"
-          nzPlaceHolder="Search and pick employees"
-          [ngModel]="listOfSelectedEmployees"
-          (ngModelChange)="listOfSelectedEmployees = $event"
-          class="w-100 employee-select"
-          nzAllowClear
-        >
-          @for (emp of tablesService.listOfAvailableEmployees(); track emp.id) {
-            <nz-option nzCustomContent [nzLabel]="getEmployeeFullName(emp)" [nzValue]="emp">
-              <div class="d-flex align-items-center gap-2">
-                <nz-avatar
-                  [nzSize]="32"
-                  nzIcon="user"
-                  [nzSrc]="getEmployeeImageUrl(emp.user.image)"
-                ></nz-avatar>
-                <span>{{ getEmployeeFullName(emp) }}</span>
-              </div>
-            </nz-option>
-          }
-        </nz-select>
-        <ng-template #tagPlaceHolder let-selectedList>
-          and {{ selectedList.length }} more selected
-        </ng-template>
       </div>
     </div>
   </ng-container>

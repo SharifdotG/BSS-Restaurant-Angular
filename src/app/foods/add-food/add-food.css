@@ -22,7 +22,7 @@
 }
 
 .file-upload:hover {
-  border-color: var(--ds-ink);
+  border-color: var(--ds-primary);
 }
 
 .file-upload ::ng-deep .ant-upload-picture-card-wrapper {
@@ -57,7 +57,7 @@
 }
 
 :host ::ng-deep .ant-upload.ant-upload-select-picture-card:hover {
-  border-color: var(--ds-ink);
+  border-color: var(--ds-primary);
   border-style: solid;
 }
 

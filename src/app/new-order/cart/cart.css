@@ -347,7 +347,7 @@
 }
 
 .cart-input:focus {
-  border-color: var(--ds-ink);
+  border-color: var(--ds-primary);
   box-shadow: 0 0 0 3px var(--ant-primary-color-outline);
 }
 
@@ -355,9 +355,9 @@
 .cart-cta {
   width: 100%;
   height: 44px;
-  background: var(--ds-ink);
+  background: var(--ds-primary);
   color: var(--ds-on-primary);
-  border: 1px solid var(--ds-ink);
+  border: 1px solid var(--ds-primary);
   border-radius: var(--ds-radius-pill);
   font-family: var(--font-sans);
   font-size: var(--ds-body-md-size);
@@ -367,8 +367,8 @@
 }
 
 .cart-cta:hover:not(:disabled) {
-  background: var(--ds-body);
-  border-color: var(--ds-body);
+  background: var(--ds-primary-hover);
+  border-color: var(--ds-primary-hover);
 }
 
 .cart-cta:active:not(:disabled) {

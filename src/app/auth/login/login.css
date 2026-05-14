@@ -125,7 +125,7 @@
 
 ::ng-deep .login-carousel .slick-dots li.slick-active button {
   opacity: 1;
-  background: var(--ds-ink) !important;
+  background: var(--ds-primary) !important;
   width: 20px;
   border-radius: 9999px;
 }
@@ -205,7 +205,7 @@
 
 .login-text-input-field:focus {
   background: var(--ds-canvas);
-  border-color: var(--ds-ink);
+  border-color: var(--ds-primary);
   box-shadow: 0 0 0 3px var(--ant-primary-color-outline);
 }
 
@@ -256,9 +256,9 @@
   border-color: var(--ds-error);
 }
 
-/* Login submit button (the ink pill CTA) */
+/* Login submit button — brand orange pill CTA */
 .login-button {
-  background-color: var(--ds-ink) !important;
+  background-color: var(--ds-primary) !important;
   color: var(--ds-on-primary) !important;
   font-family: var(--font-sans);
   font-weight: 500;
@@ -266,7 +266,7 @@
   letter-spacing: 0;
   height: 44px !important;
   border-radius: var(--ds-radius-pill) !important;
-  border: 1px solid var(--ds-ink);
+  border: 1px solid var(--ds-primary);
   transition: var(--transition-base);
   margin-top: 8px;
 }
@@ -274,8 +274,8 @@
 .login-button:hover,
 .login-button:active,
 .login-button:focus {
-  background-color: var(--ds-body) !important;
-  border-color: var(--ds-body) !important;
+  background-color: var(--ds-primary-hover) !important;
+  border-color: var(--ds-primary-hover) !important;
   color: var(--ds-on-primary) !important;
 }
 
@@ -302,12 +302,12 @@
 }
 
 .remember-me-row input[type='checkbox']:hover {
-  border-color: var(--ds-ink);
+  border-color: var(--ds-primary);
 }
 
 .remember-me-row input[type='checkbox']:checked {
-  background: var(--ds-ink);
-  border-color: var(--ds-ink);
+  background: var(--ds-primary);
+  border-color: var(--ds-primary);
 }
 
 .remember-me-row input[type='checkbox']:checked::after {

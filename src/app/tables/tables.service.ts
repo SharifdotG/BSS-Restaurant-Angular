@@ -43,6 +43,8 @@ export class TablesService {
   readonly showAssignModal = signal(false);
   readonly selectedTable = signal<Table | null>(null);
   readonly isEditMode = signal(false);
+  /** Tells the list to navigate to the page that will contain the new row. */
+  readonly gotoLastPage = signal(false);
 
   readonly assignTableId = signal('');
   readonly assignTableName = signal('');
@@ -86,6 +88,7 @@ export class TablesService {
       .subscribe({
         next: () => {
           this.messageService.success('Table Added Successfully!');
+          this.gotoLastPage.set(true);
           this.triggerRefresh.set(true);
           this.closeAddModal();
         },

@@ -49,45 +49,72 @@ export class OrdersService {
       });
   }
 
-  updateOrderStatus(id: string, status: string): void {
+  /**
+   * Update an order's status. The backend (ASP.NET) exposes the status as a
+   * string-name enum, so we send `{ orderStatus: "Pending" }` and fall back to
+   * the numeric body shape and the legacy query-param shape if needed.
+   */
+  updateOrderStatus(id: string, statusText: string): void {
     this.isSendingRequest.set(true);
-    const statusCode = Number(status);
-    const params = new HttpParams().set('status', String(statusCode));
 
-    this.http
-      .put(`${this.baseUrl}/api/Order/update-status/${id}`, null, { params })
-      .pipe(finalize(() => this.isSendingRequest.set(false)))
-      .subscribe({
+    const statusCode = OrdersService.STATUS_TEXT_TO_CODE.get(statusText);
+    const endpoint = `${this.baseUrl}/api/Order/update-status/${id}`;
+
+    const tryQueryParam = () => {
+      if (statusCode === undefined) {
+        this.isSendingRequest.set(false);
+        this.message.error('Order status was not updated. Try again later.');
+        return;
+      }
+      const params = new HttpParams().set('status', String(statusCode));
+      this.http
+        .put(endpoint, null, { params })
+        .pipe(finalize(() => this.isSendingRequest.set(false)))
+        .subscribe({
+          next: () => {
+            this.message.success('Order status updated.');
+            this.triggerRefresh.set(true);
+          },
+          error: () => {
+            this.message.error('Order status was not updated. Try again later.');
+          },
+        });
+    };
+
+    const tryNumericBody = () => {
+      if (statusCode === undefined) {
+        tryQueryParam();
+        return;
+      }
+      this.http.put(endpoint, { orderStatus: statusCode }).subscribe({
         next: () => {
+          this.isSendingRequest.set(false);
           this.message.success('Order status updated.');
           this.triggerRefresh.set(true);
         },
-        error: (err: { status?: number }) => {
-          // Fallback: if the query-param variant 404s or 400s, try the JSON body shape.
-          if (err.status === 400 || err.status === 404) {
-            this.tryUpdateStatusBodyFallback(id, statusCode);
-            return;
-          }
-          this.message.error('Order status was not updated. Try again later.');
-        },
+        error: () => tryQueryParam(),
       });
+    };
+
+    // First attempt: text body (string-name enum, the most common ASP.NET shape).
+    this.http.put(endpoint, { orderStatus: statusText }).subscribe({
+      next: () => {
+        this.isSendingRequest.set(false);
+        this.message.success('Order status updated.');
+        this.triggerRefresh.set(true);
+      },
+      error: () => tryNumericBody(),
+    });
   }
 
-  private tryUpdateStatusBodyFallback(id: string, statusCode: number): void {
-    this.isSendingRequest.set(true);
-    this.http
-      .put(`${this.baseUrl}/api/Order/update-status/${id}`, { orderStatus: statusCode })
-      .pipe(finalize(() => this.isSendingRequest.set(false)))
-      .subscribe({
-        next: () => {
-          this.message.success('Order status updated.');
-          this.triggerRefresh.set(true);
-        },
-        error: () => {
-          this.message.error('Order status was not updated. Try again later.');
-        },
-      });
-  }
+  private static readonly STATUS_TEXT_TO_CODE = new Map<string, number>([
+    ['Pending', 0],
+    ['Confirmed', 1],
+    ['Preparing', 2],
+    ['PreparedToServe', 3],
+    ['Served', 4],
+    ['Paid', 5],
+  ]);
 
   deleteOrder(id: string): void {
     this.isSendingRequest.set(true);

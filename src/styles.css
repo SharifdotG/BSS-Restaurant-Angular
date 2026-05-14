@@ -9,15 +9,23 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Vercel Design System Tokens */
+/* Restaurant Dashboard Design System Tokens (Geist-inspired, candy-colorful) */
 :root {
-  /* Surface ladder */
-  --ds-canvas: #ffffff;
-  --ds-canvas-soft: #fafafa;
-  --ds-canvas-soft-2: #f5f5f5;
+  /* Surface ladder — soft blue-tinted canvas (gentle, easy on the eyes) */
+  --ds-canvas: #fbfcfe;
+  --ds-canvas-soft: #eef3fa;
+  --ds-canvas-soft-2: #e3ecf7;
+  --ds-canvas-warm: #fff8ee;
 
-  /* Ink (primary) — black ink IS the conversion target */
-  --ds-ink: #171717;
+  /* Brand primary — orange, the new conversion target */
+  --ds-primary: #ff6c1f;
+  --ds-primary-hover: #e85a0f;
+  --ds-primary-active: #cc4d08;
+  --ds-primary-soft: #ffe0c7;
+  --ds-primary-deep: #b3460f;
+
+  /* Ink — still used for body text on light surfaces and for dark polarity bands */
+  --ds-ink: #1a1a1a;
   --ds-on-primary: #ffffff;
 
   /* Text scale */
@@ -28,23 +36,23 @@
   --ds-hairline: #ebebeb;
   --ds-hairline-strong: #a1a1a1;
 
-  /* Link / informational */
+  /* Link / informational — blue stays the right link color */
   --ds-link: #0070f3;
   --ds-link-deep: #0761d1;
   --ds-link-bg-soft: #d3e5ff;
 
-  /* Semantic */
-  --ds-success: #0070f3;
-  --ds-success-soft: #d3e5ff;
-  --ds-success-deep: #0761d1;
-  --ds-error: #ee0000;
-  --ds-error-soft: #f7d4d6;
-  --ds-error-deep: #c50000;
+  /* Semantic — restaurant palette */
+  --ds-success: #1fbf75;
+  --ds-success-soft: #d9f5e7;
+  --ds-success-deep: #178a55;
+  --ds-error: #e5484d;
+  --ds-error-soft: #fbd5d6;
+  --ds-error-deep: #b8363a;
   --ds-warning: #f5a623;
-  --ds-warning-soft: #ffefcf;
+  --ds-warning-soft: #fff1d4;
   --ds-warning-deep: #ab570a;
 
-  /* Accents */
+  /* Accents (kept for badges + decoration) */
   --ds-violet: #7928ca;
   --ds-violet-soft: #d8ccf1;
   --ds-violet-deep: #4c2889;
@@ -54,7 +62,16 @@
   --ds-highlight-pink: #ff0080;
   --ds-highlight-magenta: #eb367f;
 
-  /* Brand gradient (mesh) */
+  /* Card tints — candy-pastel surface variants */
+  --ds-card-peach: #ffe0c7;
+  --ds-card-mint: #c8f0db;
+  --ds-card-lemon: #fff0c2;
+  --ds-card-rose: #ffd6dc;
+  --ds-card-sky: #cfe5ff;
+  --ds-card-lavender: #e6dcff;
+  --ds-card-bubblegum: #ffd5ec;
+
+  /* Brand gradient (mesh) — preserved for the existing dashboard greeting band */
   --ds-gradient-develop-start: #007cf0;
   --ds-gradient-develop-end: #00dfd8;
   --ds-gradient-preview-start: #7928ca;
@@ -62,9 +79,9 @@
   --ds-gradient-ship-start: #ff4d4d;
   --ds-gradient-ship-end: #f9cb28;
 
-  /* Selection */
-  --ds-selection-bg: #171717;
-  --ds-selection-fg: #f2f2f2;
+  /* Selection — brand orange */
+  --ds-selection-bg: #ff6c1f;
+  --ds-selection-fg: #ffffff;
 
   /* Radius */
   --ds-radius-none: 0;
@@ -139,33 +156,47 @@
   --transition-slow: 320ms ease-out;
 }
 
-/* Dark Mode */
+/* Dark Mode — lifted to gray for visibility */
 [data-theme='dark'] {
-  --ds-canvas: #0a0a0a;
-  --ds-canvas-soft: #111111;
-  --ds-canvas-soft-2: #171717;
+  --ds-canvas: #1f1f1f;
+  --ds-canvas-soft: #2a2a2a;
+  --ds-canvas-soft-2: #333333;
+  --ds-canvas-warm: #262626;
 
   --ds-ink: #fafafa;
-  --ds-on-primary: #0a0a0a;
+  --ds-on-primary: #ffffff;
 
-  --ds-body: #a1a1a1;
-  --ds-mute: #737373;
+  --ds-body: #b8b8b8;
+  --ds-mute: #8a8a8a;
 
-  --ds-hairline: #1f1f1f;
-  --ds-hairline-strong: #2e2e2e;
+  --ds-hairline: #383838;
+  --ds-hairline-strong: #4d4d4d;
+
+  /* Brand primary stays orange — pops on dark gray */
+  --ds-primary-soft: rgba(255, 108, 31, 0.18);
+  --ds-primary-deep: #ffb285;
 
   /* Softs become slightly tinted dark tones for badges */
   --ds-link-bg-soft: rgba(0, 112, 243, 0.18);
-  --ds-success-soft: rgba(0, 112, 243, 0.18);
-  --ds-error-soft: rgba(238, 0, 0, 0.18);
+  --ds-success-soft: rgba(31, 191, 117, 0.18);
+  --ds-error-soft: rgba(229, 72, 77, 0.18);
   --ds-warning-soft: rgba(245, 166, 35, 0.18);
   --ds-violet-soft: rgba(121, 40, 202, 0.22);
   --ds-cyan-soft: rgba(80, 227, 194, 0.18);
 
+  /* Card tints become translucent washes on dark */
+  --ds-card-peach: rgba(255, 108, 31, 0.16);
+  --ds-card-mint: rgba(31, 191, 117, 0.16);
+  --ds-card-lemon: rgba(245, 166, 35, 0.16);
+  --ds-card-rose: rgba(229, 72, 77, 0.16);
+  --ds-card-sky: rgba(0, 112, 243, 0.16);
+  --ds-card-lavender: rgba(121, 40, 202, 0.18);
+  --ds-card-bubblegum: rgba(255, 0, 128, 0.16);
+
   /* Deeps become brighter so soft-bg + deep-text remains legible */
   --ds-link-deep: #79b8ff;
-  --ds-success-deep: #79b8ff;
-  --ds-error-deep: #ff6b6b;
+  --ds-success-deep: #6ee0a0;
+  --ds-error-deep: #ff8086;
   --ds-warning-deep: #f5a623;
   --ds-violet-deep: #c4a5f5;
   --ds-cyan-deep: #6ff0d2;
@@ -251,23 +282,23 @@
   --leading-normal: 1.5;
 }
 
-/* ng-zorro theme */
+/* ng-zorro theme — orange primary */
 :root {
-  --ant-primary-color: var(--ds-ink);
-  --ant-primary-color-hover: var(--ds-ink);
-  --ant-primary-color-active: var(--ds-ink);
-  --ant-primary-color-outline: rgba(23, 23, 23, 0.16);
-  --ant-primary-1: var(--ds-canvas-soft);
-  --ant-primary-2: var(--ds-canvas-soft-2);
-  --ant-primary-3: var(--ds-hairline);
-  --ant-primary-4: var(--ds-hairline-strong);
-  --ant-primary-5: var(--ds-ink);
-  --ant-primary-6: var(--ds-ink);
-  --ant-primary-7: var(--ds-ink);
+  --ant-primary-color: var(--ds-primary);
+  --ant-primary-color-hover: var(--ds-primary-hover);
+  --ant-primary-color-active: var(--ds-primary-active);
+  --ant-primary-color-outline: rgba(255, 108, 31, 0.18);
+  --ant-primary-1: var(--ds-primary-soft);
+  --ant-primary-2: var(--ds-primary-soft);
+  --ant-primary-3: var(--ds-primary);
+  --ant-primary-4: var(--ds-primary);
+  --ant-primary-5: var(--ds-primary);
+  --ant-primary-6: var(--ds-primary);
+  --ant-primary-7: var(--ds-primary-active);
 }
 
 [data-theme='dark'] {
-  --ant-primary-color-outline: rgba(250, 250, 250, 0.16);
+  --ant-primary-color-outline: rgba(255, 108, 31, 0.28);
 }
 
 /* Global Styles */
@@ -294,6 +325,11 @@
 }
 *::-webkit-scrollbar-thumb:hover {
   background: var(--ds-body);
+}
+/* Bottom-right corner where vertical and horizontal scrollbars meet —
+   default browser fill is white, which shows as a distracting square in dark mode. */
+*::-webkit-scrollbar-corner {
+  background: transparent;
 }
 
 html,
@@ -400,10 +436,10 @@ p {
 /* Primary buttons */
 .ant-btn-primary,
 .ant-btn.ant-btn-primary {
-  background: var(--ds-ink);
-  background-color: var(--ds-ink);
-  border: 1px solid var(--ds-ink);
-  border-color: var(--ds-ink);
+  background: var(--ds-primary);
+  background-color: var(--ds-primary);
+  border: 1px solid var(--ds-primary);
+  border-color: var(--ds-primary);
   border-radius: var(--ds-radius-sm);
   color: var(--ds-on-primary);
   font-family: var(--font-sans);
@@ -429,9 +465,9 @@ p {
 .ant-btn.ant-btn-primary:focus,
 .ant-btn-primary:not(:disabled):not(.ant-btn-disabled):hover,
 .ant-btn.ant-btn-primary:not(:disabled):not(.ant-btn-disabled):hover {
-  background: var(--ds-body);
-  background-color: var(--ds-body);
-  border-color: var(--ds-body);
+  background: var(--ds-primary-hover);
+  background-color: var(--ds-primary-hover);
+  border-color: var(--ds-primary-hover);
   color: var(--ds-on-primary);
 }
 
@@ -439,9 +475,9 @@ p {
 .ant-btn.ant-btn-primary:active,
 .ant-btn-primary:not(:disabled):not(.ant-btn-disabled):active,
 .ant-btn.ant-btn-primary:not(:disabled):not(.ant-btn-disabled):active {
-  background: var(--ds-ink);
-  background-color: var(--ds-ink);
-  border-color: var(--ds-ink);
+  background: var(--ds-primary-active);
+  background-color: var(--ds-primary-active);
+  border-color: var(--ds-primary-active);
   color: var(--ds-on-primary);
   transform: translateY(1px);
 }
@@ -503,9 +539,9 @@ p {
   color: var(--ds-on-primary);
 }
 
-/* Primary button */
+/* Primary button — marketing CTA pill */
 .button-primary {
-  background-color: var(--ds-ink);
+  background-color: var(--ds-primary);
   color: var(--ds-on-primary);
   height: 48px;
   border-radius: var(--ds-radius-pill);
@@ -516,7 +552,7 @@ p {
 
 .button-primary:hover {
   color: var(--ds-on-primary);
-  background-color: var(--ds-body);
+  background-color: var(--ds-primary-hover);
 }
 
 .button-secondary {
@@ -535,7 +571,7 @@ p {
 }
 
 .login-button {
-  background-color: var(--ds-ink);
+  background-color: var(--ds-primary);
   color: var(--ds-on-primary);
   height: 48px;
   border: none;
@@ -548,7 +584,7 @@ p {
 .login-button:active,
 .login-button:focus {
   color: var(--ds-on-primary);
-  background-color: var(--ds-body);
+  background-color: var(--ds-primary-hover);
 }
 
 .drop-down-button,
@@ -823,16 +859,16 @@ p {
   color: var(--ds-ink) !important;
 }
 
-/* Modal-footer primary keeps the ink black pill */
+/* Modal-footer primary — orange CTA */
 .ant-modal-footer .ant-btn-primary {
-  background-color: var(--ds-ink) !important;
-  border-color: var(--ds-ink) !important;
+  background-color: var(--ds-primary) !important;
+  border-color: var(--ds-primary) !important;
   color: var(--ds-on-primary) !important;
 }
 
 .ant-modal-footer .ant-btn-primary:hover {
-  background-color: var(--ds-body) !important;
-  border-color: var(--ds-body) !important;
+  background-color: var(--ds-primary-hover) !important;
+  border-color: var(--ds-primary-hover) !important;
   color: var(--ds-on-primary) !important;
 }
 
@@ -867,7 +903,7 @@ p {
 .ant-input-number-focused,
 .ant-select-focused .ant-select-selector,
 .ant-picker-focused {
-  border-color: var(--ds-ink) !important;
+  border-color: var(--ds-primary) !important;
   box-shadow: 0 0 0 3px var(--ant-primary-color-outline) !important;
 }
 
@@ -1081,9 +1117,22 @@ p {
   background: var(--ds-canvas) !important;
 }
 
-/* Empty state */
+/* Empty state — hide the default "No Data" illustration in lists. The skeleton
+   loader covers the initial loading state, and a plain text fallback is shown
+   when data is truly empty after load. */
 .ant-empty-description {
   color: var(--ds-mute) !important;
+}
+
+.ant-table .ant-empty,
+.ant-table .ant-table-placeholder .ant-empty,
+.ant-empty.ant-empty-normal,
+.ant-empty.ant-empty-small {
+  display: none !important;
+}
+
+.ant-table .ant-table-placeholder {
+  background: var(--ds-canvas) !important;
 }
 
 /* Tabs (default chrome — Dashboard overrides further) */
@@ -1103,12 +1152,12 @@ p {
 }
 
 .ant-tabs-ink-bar {
-  background: var(--ds-ink) !important;
+  background: var(--ds-primary) !important;
 }
 
 /* Badge */
 .ant-badge-count {
-  background: var(--ds-ink) !important;
+  background: var(--ds-primary) !important;
   color: var(--ds-on-primary) !important;
   box-shadow: 0 0 0 1px var(--ds-canvas) !important;
 }
@@ -1263,23 +1312,50 @@ p {
 /* Feature table card */
 .feature-table-card {
   background: var(--ds-canvas);
+  border: 1px solid var(--ds-hairline);
   border-radius: var(--ds-radius-md);
   box-shadow: var(--ds-shadow-2);
   padding: 0;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  /* 64px header + 48px outer page padding = 112 desktop. Mobile: 56px header +
-     64px mobile footer + 16px gutters = 136. */
+  /* Desktop: 64px header + 48px outer page padding = 112.
+     Mobile: 56px header + 16px page bottom = 72. */
   height: calc(100vh - 112px);
   min-height: 420px;
 }
 
 @media (max-width: 768px) {
   .feature-table-card {
-    height: calc(100vh - 136px);
-    border-radius: 0;
+    /* Fit precisely within the viewport below the 56px mobile header so the
+       outer page never scrolls — only the table body scrolls internally.
+       Use dvh on supporting browsers to account for mobile browser chrome. */
+    height: calc(100vh - 72px);
+    min-height: 0;
+    max-height: calc(100vh - 72px);
+    border-radius: var(--ds-radius-md);
+    margin: 8px;
   }
+
+  @supports (height: 100dvh) {
+    .feature-table-card {
+      height: calc(100dvh - 72px);
+      max-height: calc(100dvh - 72px);
+    }
+  }
+}
+
+/* On desktop the table columns fit; clip the inner horizontal scroll so the
+   right edge of the card stays clean. Mobile keeps the horizontal scroll. */
+@media (min-width: 992px) {
+  .feature-table-card .ant-table-content,
+  .feature-table-card .ant-table-header {
+    overflow-x: hidden !important;
+  }
+}
+
+.feature-table-card .ant-table-body {
+  overflow-y: auto !important;
 }
 
 /* The nz-table inside fills the card flex-vertically; the inner scroll body
@@ -1371,8 +1447,8 @@ p {
 }
 
 .ant-pagination-item-active {
-  background: var(--ds-ink) !important;
-  border-color: var(--ds-ink) !important;
+  background: var(--ds-primary) !important;
+  border-color: var(--ds-primary) !important;
 }
 
 .ant-pagination-item-active a,
@@ -1381,8 +1457,8 @@ p {
 }
 
 .ant-pagination-item-active:hover {
-  background: var(--ds-body) !important;
-  border-color: var(--ds-body) !important;
+  background: var(--ds-primary-hover) !important;
+  border-color: var(--ds-primary-hover) !important;
 }
 
 .ant-pagination-disabled .ant-pagination-item-link,
@@ -1410,6 +1486,77 @@ p {
   font-size: var(--ds-caption-size);
   letter-spacing: 0.04em;
   text-transform: uppercase;
+}
+
+/* ───── Mobile responsive pagination (applies to every page) ─────
+   Used by nz-table built-in pagination AND standalone nz-pagination
+   (employees, foods, tables, expenses, orders). Wraps onto multiple
+   rows, centers everything, and trims item size so it fits on phones. */
+@media screen and (max-width: 767.98px) {
+  .ant-pagination,
+  .ant-table-pagination.ant-pagination {
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 6px !important;
+    row-gap: 8px !important;
+    padding: 12px 8px !important;
+  }
+
+  .ant-pagination > li,
+  .ant-pagination > .ant-pagination-options,
+  .ant-pagination > .ant-pagination-total-text {
+    margin: 0 !important;
+  }
+
+  .ant-pagination-item,
+  .ant-pagination-prev,
+  .ant-pagination-next,
+  .ant-pagination-jump-prev,
+  .ant-pagination-jump-next,
+  .ant-pagination-prev .ant-pagination-item-link,
+  .ant-pagination-next .ant-pagination-item-link {
+    min-width: 30px !important;
+    height: 30px !important;
+    line-height: 28px !important;
+    font-size: 13px !important;
+  }
+
+  .ant-pagination-options .ant-select-selector {
+    height: 30px !important;
+    font-size: 13px !important;
+  }
+
+  /* Total text goes on its own line above the controls for breathing room. */
+  .ant-pagination-total-text {
+    flex: 0 0 100%;
+    text-align: center;
+    margin: 0 0 4px 0 !important;
+    height: auto !important;
+    line-height: 1.4 !important;
+  }
+}
+
+/* On very narrow phones (≤ 360px), shrink further and stack the size changer
+   onto its own line so the page-number row still fits. */
+@media screen and (max-width: 360px) {
+  .ant-pagination-item,
+  .ant-pagination-prev,
+  .ant-pagination-next,
+  .ant-pagination-prev .ant-pagination-item-link,
+  .ant-pagination-next .ant-pagination-item-link {
+    min-width: 28px !important;
+    height: 28px !important;
+    line-height: 26px !important;
+    font-size: 12px !important;
+  }
+
+  .ant-pagination-options {
+    flex: 0 0 100%;
+    display: flex !important;
+    justify-content: center;
+    margin-top: 4px !important;
+  }
 }
 
 /* nz-table scroll-wrapper backgrounds */
@@ -1446,9 +1593,9 @@ p {
   gap: 6px;
   height: 32px;
   padding: 0 12px;
-  background: var(--ds-ink);
+  background: var(--ds-primary);
   color: var(--ds-on-primary);
-  border: 1px solid var(--ds-ink);
+  border: 1px solid var(--ds-primary);
   border-radius: var(--ds-radius-sm);
   font-family: var(--font-sans);
   font-size: var(--ds-body-sm-size);
@@ -1464,8 +1611,8 @@ p {
 .add-table-button:hover,
 .add-food-button:hover,
 .add-expense-button:hover {
-  background: var(--ds-body);
-  border-color: var(--ds-body);
+  background: var(--ds-primary-hover);
+  border-color: var(--ds-primary-hover);
   color: var(--ds-on-primary);
 }
 
@@ -1503,8 +1650,8 @@ p {
 }
 
 .add-employee-to-table-button:hover {
-  background: var(--ds-canvas-soft);
-  border-color: var(--ds-ink);
+  background: var(--ds-primary-soft);
+  border-color: var(--ds-primary);
   border-style: solid;
 }
 
@@ -1594,7 +1741,7 @@ p {
 .ant-form-item .ant-input-number-focused,
 .ant-form-item .ant-select-focused .ant-select-selector,
 .ant-form-item .ant-picker-focused {
-  border-color: var(--ds-ink) !important;
+  border-color: var(--ds-primary) !important;
   box-shadow: 0 0 0 3px var(--ant-primary-color-outline) !important;
 }
 
@@ -1654,15 +1801,15 @@ p {
 }
 
 .ant-modal-footer .ant-btn-primary {
-  background: var(--ds-ink) !important;
-  border-color: var(--ds-ink) !important;
+  background: var(--ds-primary) !important;
+  border-color: var(--ds-primary) !important;
   color: var(--ds-on-primary) !important;
 }
 
 .ant-modal-footer .ant-btn-primary:hover,
 .ant-modal-footer .ant-btn-primary:focus {
-  background: var(--ds-body) !important;
-  border-color: var(--ds-body) !important;
+  background: var(--ds-primary-hover) !important;
+  border-color: var(--ds-primary-hover) !important;
 }
 
 /* Form modal */
@@ -1709,34 +1856,74 @@ p {
   margin-top: 4px;
 }
 
-/* Avatar uploader row */
+/* Avatar uploader row — flex container with the avatar on the left and a
+   flexible field group on the right. Vertically centered. */
 .ds-form-avatar-row {
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 4px 0 12px 0;
+  gap: var(--ds-space-md);
+  padding: 4px 0 16px 0;
+  margin-bottom: 4px;
   border-bottom: 1px solid var(--ds-hairline);
 }
 
+.ds-form-avatar-row > .ds-avatar-upload,
+.ds-form-avatar-row > .ds-avatar-static {
+  flex: 0 0 96px;
+  align-self: center;
+}
+
+/* Field cluster beside the avatar — sub-grid that wraps to fit available width. */
+.ds-form-avatar-fields {
+  flex: 1 1 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: var(--ds-space-md);
+  align-items: center;
+  min-width: 0;
+}
+
+/* Fixed-column variants for predictable layouts. */
+.ds-form-avatar-fields--3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+.ds-form-avatar-fields--2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+.ds-form-avatar-fields--1 {
+  grid-template-columns: 1fr;
+}
+
+/* Avatar row fields shouldn't carry their default form-item bottom margin. */
+.ds-form-avatar-row .ant-form-item {
+  margin-bottom: 0 !important;
+}
+
+/* Static descriptive block alongside the avatar (legacy usage). */
 .ds-form-avatar-text {
+  flex: 1 1 auto;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 4px;
+  align-self: center;
+  min-width: 0;
 }
 
 .ds-form-avatar-title {
   font-family: var(--font-sans);
-  font-size: var(--ds-body-sm-size);
-  font-weight: 500;
+  font-size: var(--ds-body-md-size);
+  font-weight: 600;
   color: var(--ds-ink);
+  letter-spacing: -0.2px;
   margin: 0;
 }
 
 .ds-form-avatar-hint {
   font-family: var(--font-sans);
-  font-size: var(--ds-caption-size);
+  font-size: var(--ds-body-sm-size);
   color: var(--ds-mute);
   margin: 0;
+  line-height: var(--ds-body-sm-line);
 }
 
 /* The 96px circular avatar slot for picture-card upload */
@@ -1806,7 +1993,7 @@ p {
 
 .ds-avatar-upload .ant-upload.ant-upload-select:hover,
 .ds-avatar-upload .ant-upload.ant-upload-select-picture-card:hover {
-  border-color: var(--ds-ink) !important;
+  border-color: var(--ds-primary) !important;
   border-style: solid !important;
 }
 
@@ -1851,8 +2038,16 @@ p {
   }
   .ds-form-avatar-row {
     flex-direction: column;
-    align-items: flex-start;
-    text-align: left;
+    align-items: stretch;
+  }
+  .ds-form-avatar-row > .ds-avatar-upload,
+  .ds-form-avatar-row > .ds-avatar-static {
+    align-self: center;
+  }
+  .ds-form-avatar-fields,
+  .ds-form-avatar-fields--3,
+  .ds-form-avatar-fields--2 {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -1866,7 +2061,7 @@ p {
 }
 
 .ant-upload.ant-upload-select-picture-card:hover {
-  border-color: var(--ds-ink) !important;
+  border-color: var(--ds-primary) !important;
 }
 
 /* Badge */

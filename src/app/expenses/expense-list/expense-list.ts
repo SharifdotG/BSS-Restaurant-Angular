@@ -36,6 +36,14 @@ export class ExpenseList {
   constructor() {
     effect(() => {
       if (this.expensesService.triggerRefresh()) {
+        if (this.expensesService.gotoLastPage()) {
+          const lastPage = Math.max(
+            1,
+            Math.ceil((this.expensesService.totalExpenses() + 1) / this.pageSize),
+          );
+          this.pageIndex = lastPage;
+          this.expensesService.gotoLastPage.set(false);
+        }
         this.loadDataFromServer(this.pageIndex, this.pageSize);
         this.expensesService.triggerRefresh.set(false);
       }
@@ -56,7 +64,11 @@ export class ExpenseList {
   }
 
   editExpense(id: number): void {
-    this.expensesService.getExpenseById(id);
+    const expense = this.expensesService.listOfExpenses().find((e) => e.id === id);
+    if (!expense) return;
+    this.expensesService.selectedExpense.set(expense);
+    this.expensesService.isEditMode.set(true);
+    this.expensesService.showAddModal.set(true);
   }
 
   deleteExpense(id: number): void {

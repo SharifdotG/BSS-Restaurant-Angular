@@ -47,6 +47,14 @@ export class TableList implements OnInit {
   constructor() {
     effect(() => {
       if (this.tablesService.triggerRefresh()) {
+        if (this.tablesService.gotoLastPage()) {
+          const lastPage = Math.max(
+            1,
+            Math.ceil((this.tablesService.totalTables() + 1) / this.pageSize),
+          );
+          this.pageIndex = lastPage;
+          this.tablesService.gotoLastPage.set(false);
+        }
         this.loadDataFromServer(this.pageIndex, this.pageSize);
         this.tablesService.triggerRefresh.set(false);
       }
@@ -78,7 +86,11 @@ export class TableList implements OnInit {
   }
 
   editTable(id: number): void {
-    this.tablesService.getTableById(id);
+    const table = this.tablesService.listOfTables().find((t) => Number(t.id) === Number(id));
+    if (!table) return;
+    this.tablesService.selectedTable.set(table);
+    this.tablesService.isEditMode.set(true);
+    this.tablesService.showAddModal.set(true);
   }
 
   deleteTable(id: number): void {

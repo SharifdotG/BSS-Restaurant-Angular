@@ -17,6 +17,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
+import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
 
 import { AuthService } from '../../auth/auth.service';
 import { Profile } from '../profile/profile';
@@ -33,13 +34,13 @@ interface SideBarItem {
 }
 
 const SIDE_BAR_ITEMS: readonly SideBarItem[] = [
-  { label: 'Dashboard', icon: 'dashboard', route: 'home', headerTitle: 'Dashboard' },
-  { label: 'Employees', icon: 'idcard', route: 'employees', headerTitle: 'Employee Management' },
-  { label: 'Tables', icon: 'group', route: 'tables', headerTitle: 'Table Management' },
-  { label: 'Foods', icon: 'pie-chart', route: 'foods', headerTitle: 'Food Item Management' },
-  { label: 'New Order', icon: 'plus-square', route: 'new-order', headerTitle: 'Create New Order' },
-  { label: 'Orders', icon: 'ordered-list', route: 'orders', headerTitle: 'Order Management' },
-  { label: 'Expenses', icon: 'dollar', route: 'expenses', headerTitle: 'Expense Management' },
+  { label: 'Dashboard', icon: 'pie-chart', route: 'home', headerTitle: 'Dashboard' },
+  { label: 'Employees', icon: 'team', route: 'employees', headerTitle: 'Employee Management' },
+  { label: 'Tables', icon: 'appstore', route: 'tables', headerTitle: 'Table Management' },
+  { label: 'Foods', icon: 'coffee', route: 'foods', headerTitle: 'Food Item Management' },
+  { label: 'New Order', icon: 'shopping-cart', route: 'new-order', headerTitle: 'Create New Order' },
+  { label: 'Orders', icon: 'profile', route: 'orders', headerTitle: 'Order Management' },
+  { label: 'Expenses', icon: 'wallet', route: 'expenses', headerTitle: 'Expense Management' },
 ];
 
 @Component({
@@ -53,6 +54,7 @@ const SIDE_BAR_ITEMS: readonly SideBarItem[] = [
     NzAvatarModule,
     NzDropDownModule,
     NzBadgeModule,
+    NzTooltipModule,
     Profile,
     Cart,
   ],

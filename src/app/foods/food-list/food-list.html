@@ -3,7 +3,7 @@
     <nz-table
       nzShowSizeChanger
       nzPaginationType="default"
-      [nzScroll]="{ y: 'calc(100% - 56px)', x: '768px' }"
+      [nzScroll]="{ y: 'calc(100% - 56px)', x: '1000px' }"
       [nzWidthConfig]="['120px', 'auto', 'auto', 'auto', 'auto', 'auto', '180px']"
       nzTableLayout="auto"
       [nzData]="listOfFood()"
@@ -19,15 +19,19 @@
       </ng-template>
       <thead>
         <tr>
-          <th nzColumnKey="image"></th>
+          <th class="custom-table-title" nzColumnKey="image"></th>
           <th class="custom-table-title truncate" nzColumnKey="name">Name</th>
           <th class="custom-table-title truncate" nzColumnKey="price">Price</th>
           <th class="custom-table-title truncate" nzColumnKey="designation">Discount Type</th>
           <th class="custom-table-title truncate" nzColumnKey="joindate">Discount</th>
           <th class="custom-table-title truncate" nzColumnKey="phone">Discounted Price</th>
           <th class="custom-table-title-button" nzColumnKey="action">
-            <button class="add-food-button" (click)="foodService.showAddModal.set(true)">
-              <span nz-icon nzType="plus-circle" nzTheme="outline"></span>
+            <button
+              class="add-food-button"
+              aria-label="Add New Food Item"
+              (click)="foodService.showAddModal.set(true)"
+            >
+              <span nz-icon nzType="plus" nzTheme="outline" aria-hidden="true"></span>
               <span> Add Food Item </span>
             </button>
           </th>
@@ -78,6 +82,9 @@
                   <button
                     (click)="editFood(data.id)"
                     class="drop-down-button drop-shadow-md"
+                    nz-tooltip
+                    nzTooltipTitle="Edit food item"
+                    nzTooltipPlacement="top"
                     aria-label="Edit Food"
                   >
                     <span nz-icon nzType="edit" nzTheme="outline"></span>
@@ -85,6 +92,9 @@
                   <button
                     (click)="deleteFood(data.id)"
                     class="drop-down-button drop-shadow-md"
+                    nz-tooltip
+                    nzTooltipTitle="Delete food item"
+                    nzTooltipPlacement="top"
                     aria-label="Delete Food"
                   >
                     <span nz-icon nzType="delete" nzTheme="outline"></span>

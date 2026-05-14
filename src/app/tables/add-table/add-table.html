@@ -22,7 +22,7 @@
       (ngSubmit)="handleOk()"
       class="ds-form"
     >
-      <!-- Image uploader -->
+      <!-- Avatar header band: square thumbnail + table number + seats -->
       <div class="ds-form-avatar-row">
         <nz-upload
           class="ds-avatar-upload"
@@ -35,6 +35,7 @@
           [nzBeforeUpload]="beforeUpload"
           [nzFileType]="'image/png,image/jpeg,image/gif,image/bmp'"
           (nzChange)="onChange($event)"
+          aria-label="Upload table photo"
         >
           <div class="ds-avatar-slot ds-avatar-slot--square">
             @if (previewImage) {
@@ -47,15 +48,7 @@
             }
           </div>
         </nz-upload>
-        <div class="ds-form-avatar-text">
-          <p class="ds-form-avatar-title">Table photo</p>
-          <p class="ds-form-avatar-hint">Optional. PNG, JPG or GIF.</p>
-        </div>
-      </div>
-
-      <p class="ds-form-section-eyebrow">DETAILS</p>
-      <div class="row g-3">
-        <div class="col-12 col-md-6">
+        <div class="ds-form-avatar-fields ds-form-avatar-fields--2">
           <nz-form-item>
             <nz-form-label nzRequired nzNoColon>Table number</nz-form-label>
             <nz-form-control [nzErrorTip]="tableNameErrorTmpl">
@@ -74,8 +67,6 @@
               </ng-template>
             </nz-form-control>
           </nz-form-item>
-        </div>
-        <div class="col-12 col-md-6">
           <nz-form-item>
             <nz-form-label nzRequired nzNoColon>Number of seats</nz-form-label>
             <nz-form-control [nzErrorTip]="numberOfSeatsError">

@@ -13,7 +13,7 @@
       <div class="text-nowrap">
         <div class="logo position-relative">
           <img
-            ngSrc="chef_green.png"
+            ngSrc="chef_orange.png"
             width="32"
             height="32"
             priority
@@ -42,6 +42,9 @@
         type="button"
         (click)="onLogout()"
         class="logout-button align-self-stretch mx-3 mb-3 text-nowrap"
+        nz-tooltip
+        [nzTooltipTitle]="isCollapsed() ? 'Logout' : ''"
+        nzTooltipPlacement="right"
         aria-label="Logout"
       >
         <span nz-icon nzType="poweroff" nzTheme="outline" aria-hidden="true"></span>
@@ -119,40 +122,50 @@
               </li>
             </ul>
           </nz-dropdown-menu>
+
+          <!-- Mobile hamburger — sits to the right of the avatar, opens the nav menu. -->
+          <button
+            type="button"
+            class="header-icon-btn hamburger-btn d-inline-flex d-md-none"
+            nz-dropdown
+            [nzDropdownMenu]="mobileNavMenu"
+            nzTrigger="click"
+            [nzPlacement]="'bottomRight'"
+            aria-label="Open navigation menu"
+          >
+            <span nz-icon nzType="menu" nzTheme="outline" aria-hidden="true"></span>
+          </button>
+          <nz-dropdown-menu #mobileNavMenu="nzDropdownMenu">
+            <ul
+              nz-menu
+              class="mobile-nav-dropdown"
+              role="menu"
+              aria-label="Mobile navigation menu"
+            >
+              @for (menuItem of sideBarItems; track menuItem.route) {
+                <li
+                  nz-menu-item
+                  [nzSelected]="currentRoute() === menuItem.route"
+                  (click)="navigateTo(menuItem)"
+                  role="menuitem"
+                >
+                  <span nz-icon [nzType]="menuItem.icon" aria-hidden="true"></span>
+                  <span>{{ menuItem.label }}</span>
+                </li>
+              }
+              <li nz-menu-divider></li>
+              <li nz-menu-item (click)="onLogout()" role="menuitem">
+                <span nz-icon nzType="logout" nzTheme="outline" aria-hidden="true"></span>
+                <span>Logout</span>
+              </li>
+            </ul>
+          </nz-dropdown-menu>
         </div>
       </div>
     </nz-header>
     <nz-content>
       <router-outlet></router-outlet>
     </nz-content>
-    <nz-footer class="fixed-bottom d-block d-md-none p-0 m-0" style="z-index: 100">
-      <div class="d-flex align-items-center justify-content-center mobile-menu">
-        <ul
-          class="d-flex justify-content-center mobile-menu-items w-100 gap-2"
-          nz-menu
-          nzMode="horizontal"
-          role="menubar"
-          aria-label="Mobile navigation"
-        >
-          @for (menuItem of sideBarItems; track menuItem.route) {
-            <li
-              nz-menu-item
-              [nzSelected]="currentRoute() === menuItem.route"
-              (click)="navigateTo(menuItem)"
-              role="menuitem"
-              [attr.aria-label]="menuItem.label"
-            >
-              <span
-                class="mobile-menu-icons"
-                nz-icon
-                [nzType]="menuItem.icon"
-                aria-hidden="true"
-              ></span>
-            </li>
-          }
-        </ul>
-      </div>
-    </nz-footer>
   </nz-layout>
 </nz-layout>
 

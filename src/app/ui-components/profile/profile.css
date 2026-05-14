@@ -1,0 +1,110 @@
+:host {
+  display: block;
+  color: var(--ds-ink);
+  font-family: var(--font-sans);
+}
+
+.profile-card {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Header band */
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--ds-hairline);
+}
+
+::ng-deep .profile-avatar.ant-avatar {
+  background: var(--ds-card-peach) !important;
+  color: var(--ds-primary) !important;
+  border: 1px solid var(--ds-primary-soft) !important;
+  flex-shrink: 0;
+}
+
+.profile-header-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.profile-eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--ds-caption-size);
+  line-height: var(--ds-caption-line);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ds-mute);
+  margin: 0;
+}
+
+.profile-name {
+  font-family: var(--font-sans);
+  font-size: var(--ds-display-md-size);
+  line-height: var(--ds-display-md-line);
+  letter-spacing: var(--ds-display-md-tracking);
+  font-weight: 600;
+  color: var(--ds-ink);
+  margin: 0;
+  word-break: break-word;
+}
+
+/* Info rows */
+.profile-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.profile-row {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  align-items: baseline;
+  gap: var(--ds-space-md);
+  padding: 14px 0;
+  border-bottom: 1px solid var(--ds-hairline);
+}
+
+.profile-row:last-child {
+  border-bottom: none;
+}
+
+.profile-row-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ds-mute);
+  margin: 0;
+}
+
+.profile-row-value {
+  font-family: var(--font-sans);
+  font-size: var(--ds-body-md-size);
+  line-height: var(--ds-body-md-line);
+  font-weight: 500;
+  color: var(--ds-ink);
+  margin: 0;
+  word-break: break-word;
+}
+
+@media (max-width: 600px) {
+  .profile-header {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    gap: 12px;
+  }
+  .profile-row {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+}

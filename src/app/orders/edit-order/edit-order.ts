@@ -17,6 +17,7 @@ import { NzImageModule } from 'ng-zorro-antd/image';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
 
 import { OrdersService } from '../orders.service';
 import { TablesService } from '../../tables/tables.service';
@@ -36,6 +37,7 @@ import { User } from '../../auth/auth.model';
     NzImageModule,
     NzSelectModule,
     NzFormModule,
+    NzTooltipModule,
   ],
   templateUrl: './edit-order.html',
   styleUrl: './edit-order.css',
@@ -50,6 +52,8 @@ export class EditOrder implements OnInit {
   editItems = signal<EditOrderItem[]>([]);
   phoneNumber = signal<string>('');
   selectedFoodId = signal<number | null>(null);
+  orderStatus = signal<string>('Pending');
+  private originalStatus = '';
   private lastLoadedOrderId: string | null = null;
 
   /** Derived total – recalculates automatically when editItems changes */
@@ -75,6 +79,10 @@ export class EditOrder implements OnInit {
 
   private populateOrderData(order: OrderData): void {
     this.phoneNumber.set((order.orderedBy as User & { phoneNumber?: string })?.phoneNumber ?? '');
+
+    const currentStatus = order.orderStatus ?? 'Pending';
+    this.orderStatus.set(currentStatus);
+    this.originalStatus = currentStatus;
 
     const items: EditOrderItem[] = order.orderItems.map((item: OrderItem, index: number) => ({
       uniqueId: `${item.food.id}-${index}-${Date.now()}`,
@@ -118,6 +126,12 @@ export class EditOrder implements OnInit {
     };
 
     this.ordersService.updateOrder(order.id, updateData);
+
+    // If status changed, push it through the dedicated endpoint.
+    const newStatus = this.orderStatus();
+    if (newStatus && newStatus !== this.originalStatus) {
+      this.ordersService.updateOrderStatus(order.id, newStatus);
+    }
   }
 
   private resolveTableId(order: OrderData): number | null {
@@ -143,6 +157,8 @@ export class EditOrder implements OnInit {
     this.ordersService.showEditModal.set(false);
     this.ordersService.selectedOrder.set(null);
     this.editItems.set([]);
+    this.orderStatus.set('Pending');
+    this.originalStatus = '';
     this.lastLoadedOrderId = null;
   }
 

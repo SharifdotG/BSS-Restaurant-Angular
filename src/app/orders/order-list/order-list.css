@@ -2,6 +2,18 @@
   min-height: calc(100vh - 64px - 32px);
   max-height: calc(100vh - 64px - 32px);
   background: var(--ds-canvas-soft);
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+@media screen and (max-width: 768px) {
+  .order-container {
+    /* On mobile, let the parent nz-content handle scroll so we don't stack
+       a redundant scrollbar against the page scrollbar. */
+    min-height: auto;
+    max-height: none;
+    overflow: visible;
+  }
 }
 
 .order-item-container {
@@ -57,6 +69,10 @@
 .order-card:hover {
   border-color: var(--ds-hairline-strong);
   box-shadow: var(--ds-shadow-3);
+}
+
+.order-card--skeleton {
+  padding: 16px;
 }
 
 /* Card header */
@@ -369,9 +385,39 @@
 
 @media screen and (max-width: 768px) {
   .order-card {
-    min-height: 360px;
+    min-height: auto;
+  }
+  /* Cap the card body to roughly 3 items (~60px each); items beyond that scroll
+     inside the card. */
+  .order-card-body {
+    max-height: 192px;
+    overflow-y: auto;
+    overflow-x: hidden;
   }
   .order-item-container {
     padding: 12px 16px 16px;
+  }
+  /* Pagination spacing on mobile — match what the other pages get from the
+     global .ant-pagination rules; ng-zorro's responsive mode collapses the
+     items into a tight row so we override its compact spacing. */
+  .order-pagination-wrapper {
+    padding: 8px 4px;
+  }
+  .order-pagination-wrapper ::ng-deep .ant-pagination {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 6px !important;
+    row-gap: 8px !important;
+  }
+  .order-pagination-wrapper ::ng-deep .ant-pagination > li,
+  .order-pagination-wrapper ::ng-deep .ant-pagination > .ant-pagination-options {
+    margin: 0 !important;
+  }
+  .order-pagination-wrapper ::ng-deep .ant-pagination-total-text {
+    width: 100%;
+    text-align: center;
+    margin: 0 0 4px 0 !important;
   }
 }

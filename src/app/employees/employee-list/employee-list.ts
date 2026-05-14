@@ -39,6 +39,15 @@ export class EmployeeList implements OnInit {
   constructor() {
     effect(() => {
       if (this.employeeService.triggerRefresh()) {
+        // Honor the "after add, go to the page that contains the new row" hint.
+        if (this.employeeService.gotoLastPage()) {
+          const lastPage = Math.max(
+            1,
+            Math.ceil((this.employeeService.totalEmployees() + 1) / this.pageSize()),
+          );
+          this.pageIndex.set(lastPage);
+          this.employeeService.gotoLastPage.set(false);
+        }
         this.loadDataFromServer(this.pageIndex(), this.pageSize());
       }
     });
@@ -59,7 +68,13 @@ export class EmployeeList implements OnInit {
   }
 
   editEmployee(id: string): void {
-    this.employeeService.getEmployeeById(id);
+    // Use the already-loaded row so the modal opens instantly without re-fetching
+    // the list (which would trigger the skeleton loader).
+    const employee = this.employeeService.listOfEmployees().find((e) => e.id === id);
+    if (!employee) return;
+    this.employeeService.selectedEmployee.set(employee);
+    this.employeeService.isEditMode.set(true);
+    this.employeeService.showAddModal.set(true);
   }
 
   deleteUser(id: string): void {

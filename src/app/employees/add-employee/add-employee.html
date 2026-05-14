@@ -23,7 +23,7 @@
       aria-label="Employee details form"
       class="ds-form"
     >
-      <!-- Avatar uploader — compact 96px circle -->
+      <!-- Avatar header band: avatar + First / Middle / Last name in one row, centered -->
       <div class="ds-form-avatar-row">
         <nz-upload
           class="ds-avatar-upload"
@@ -37,6 +37,7 @@
           nzAccept="image/*"
           [nzFileType]="'image/png,image/jpeg,image/gif,image/bmp'"
           (nzChange)="onChange($event)"
+          aria-label="Upload employee profile photo"
         >
           <div class="ds-avatar-slot">
             @if (previewImage()) {
@@ -49,16 +50,7 @@
             }
           </div>
         </nz-upload>
-        <div class="ds-form-avatar-text">
-          <p class="ds-form-avatar-title">Profile photo</p>
-          <p class="ds-form-avatar-hint">Optional. PNG, JPG or GIF. Click the circle to upload.</p>
-        </div>
-      </div>
-
-      <!-- Personal info -->
-      <p class="ds-form-section-eyebrow">PERSONAL</p>
-      <div class="row g-3">
-        <div class="col-12 col-md-4">
+        <div class="ds-form-avatar-fields ds-form-avatar-fields--3">
           <nz-form-item>
             <nz-form-label nzRequired nzNoColon>First name</nz-form-label>
             <nz-form-control [nzErrorTip]="firstNameErrorTmpl">
@@ -73,8 +65,6 @@
               </ng-template>
             </nz-form-control>
           </nz-form-item>
-        </div>
-        <div class="col-12 col-md-4">
           <nz-form-item>
             <nz-form-label nzNoColon>Middle name</nz-form-label>
             <nz-form-control [nzErrorTip]="middleNameError">
@@ -86,8 +76,6 @@
               </ng-template>
             </nz-form-control>
           </nz-form-item>
-        </div>
-        <div class="col-12 col-md-4">
           <nz-form-item>
             <nz-form-label nzRequired nzNoColon>Last name</nz-form-label>
             <nz-form-control [nzErrorTip]="firstNameErrorTmpl">
@@ -95,6 +83,11 @@
             </nz-form-control>
           </nz-form-item>
         </div>
+      </div>
+
+      <!-- Personal info -->
+      <p class="ds-form-section-eyebrow">PERSONAL</p>
+      <div class="row g-3">
         <div class="col-12 col-md-4">
           <nz-form-item>
             <nz-form-label nzRequired nzNoColon>Gender</nz-form-label>

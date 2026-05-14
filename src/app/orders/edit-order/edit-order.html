@@ -19,7 +19,7 @@
     <form nz-form nzLayout="vertical" class="ds-form">
       <p class="ds-form-section-eyebrow">METADATA</p>
       <div class="row g-3">
-        <div class="col-12 col-md-4">
+        <div class="col-12 col-md-3">
           <nz-form-item>
             <nz-form-label nzNoColon>Order number</nz-form-label>
             <nz-form-control>
@@ -32,7 +32,7 @@
             </nz-form-control>
           </nz-form-item>
         </div>
-        <div class="col-12 col-md-4">
+        <div class="col-12 col-md-3">
           <nz-form-item>
             <nz-form-label nzNoColon>Table number</nz-form-label>
             <nz-form-control>
@@ -45,7 +45,7 @@
             </nz-form-control>
           </nz-form-item>
         </div>
-        <div class="col-12 col-md-4">
+        <div class="col-12 col-md-3">
           <nz-form-item>
             <nz-form-label nzNoColon>Phone number</nz-form-label>
             <nz-form-control>
@@ -57,6 +57,28 @@
                 placeholder="Customer phone number"
                 [ngModelOptions]="{ standalone: true }"
               />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div class="col-12 col-md-3">
+          <nz-form-item>
+            <nz-form-label nzNoColon>Status</nz-form-label>
+            <nz-form-control>
+              <nz-select
+                id="edit-order-status"
+                class="w-100"
+                [ngModel]="orderStatus()"
+                (ngModelChange)="orderStatus.set($event)"
+                [ngModelOptions]="{ standalone: true }"
+                nzPlaceHolder="Order status"
+              >
+                <nz-option nzValue="Pending" nzLabel="Pending"></nz-option>
+                <nz-option nzValue="Confirmed" nzLabel="Confirmed"></nz-option>
+                <nz-option nzValue="Preparing" nzLabel="Preparing"></nz-option>
+                <nz-option nzValue="PreparedToServe" nzLabel="Prepared To Serve"></nz-option>
+                <nz-option nzValue="Served" nzLabel="Served"></nz-option>
+                <nz-option nzValue="Paid" nzLabel="Paid"></nz-option>
+              </nz-select>
             </nz-form-control>
           </nz-form-item>
         </div>
@@ -132,6 +154,9 @@
               type="button"
               class="ds-edit-order-remove"
               (click)="removeItem(i)"
+              nz-tooltip
+              [nzTooltipTitle]="'Remove ' + item.foodName"
+              nzTooltipPlacement="top"
               [attr.aria-label]="'Remove ' + item.foodName + ' from order'"
             >
               <span nz-icon nzType="delete" nzTheme="outline"></span>

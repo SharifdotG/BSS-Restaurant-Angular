@@ -66,6 +66,13 @@ import {
   SunOutline,
   MoonOutline,
   DesktopOutline,
+  AppstoreOutline,
+  ProfileOutline,
+  WalletOutline,
+  SwapOutline,
+  DeleteOutline,
+  DownOutline,
+  SearchOutline,
 } from '@ant-design/icons-angular/icons';
 
 import { routes } from './app.routes';
@@ -126,6 +133,13 @@ const icons: IconDefinition[] = [
   SunOutline,
   MoonOutline,
   DesktopOutline,
+  AppstoreOutline,
+  ProfileOutline,
+  WalletOutline,
+  SwapOutline,
+  DeleteOutline,
+  DownOutline,
+  SearchOutline,
 ];
 
 export const appConfig: ApplicationConfig = {

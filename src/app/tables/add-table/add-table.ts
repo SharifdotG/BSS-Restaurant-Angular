@@ -15,6 +15,7 @@ import {
   NzModalFooterDirective,
 } from 'ng-zorro-antd/modal';
 import { NzUploadChangeParam, NzUploadComponent, NzUploadFile } from 'ng-zorro-antd/upload';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import {
   AbstractControl,
   NonNullableFormBuilder,
@@ -72,6 +73,7 @@ export class AddTable {
   private readonly responsive = inject(BreakpointObserver);
   private readonly baseUrl = inject(API_BASE_URL);
   private readonly fb = inject(NonNullableFormBuilder);
+  private readonly message = inject(NzMessageService);
 
   readonly modalWidth = signal('50vw');
 
@@ -194,9 +196,15 @@ export class AddTable {
       reader.onerror = (error) => reject(error);
     });
 
-  beforeUpload(_file: NzUploadFile, _fileList: NzUploadFile[]): boolean {
+  beforeUpload = (file: NzUploadFile): boolean => {
+    const mime = (file.type ?? '') as string;
+    const allowed = ['image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/bmp', 'image/webp'];
+    if (!allowed.includes(mime)) {
+      this.message.error('Only PNG, JPG, GIF, BMP, or WebP images are allowed.');
+      return false;
+    }
     return true;
-  }
+  };
 
   onChange(event: NzUploadChangeParam): void {
     if (event.type === 'removed') {

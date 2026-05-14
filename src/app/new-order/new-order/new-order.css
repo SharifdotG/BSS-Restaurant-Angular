@@ -5,17 +5,30 @@
 
 @media (max-width: 768px) {
   .new-order-container {
-    height: calc(100vh - 56px - 64px - 32px);
+    /* Bottom mobile nav has been removed — reclaim the space and let the foods
+       grid breathe with more rows. 56px header + 16px page margin = 72. */
+    height: calc(100vh - 72px);
+    min-height: calc(100vh - 72px);
   }
 }
 
-/* Section headers (sticky) */
+/* Section headers (sticky) — Select a Table and Add Food to Cart share the
+   same padding, height, and bottom border so the two column tops align.
+   Horizontal padding matches the foods grid below (16px) so the search bar
+   right-edge aligns with the food card edges. */
 .section-header,
 .foods-toolbar {
   background: var(--ds-canvas);
   border-bottom: 1px solid var(--ds-hairline);
-  padding: 12px 20px;
+  padding: 16px;
+  min-height: 72px;
+  display: flex;
+  align-items: center;
   z-index: 5;
+}
+
+.section-header {
+  justify-content: flex-start;
 }
 
 .foods-toolbar {
@@ -28,9 +41,9 @@
 
 .section-title-text {
   font-family: var(--font-sans);
-  font-size: var(--ds-display-sm-size);
-  line-height: var(--ds-display-sm-line);
-  letter-spacing: var(--ds-display-sm-tracking);
+  font-size: var(--ds-display-md-size);
+  line-height: var(--ds-display-md-line);
+  letter-spacing: var(--ds-display-md-tracking);
   font-weight: 600;
   color: var(--ds-ink);
   display: inline-flex;
@@ -57,50 +70,46 @@
   top: -1px;
 }
 
-/* Tables column (desktop) */
+/* Tables column (desktop) — narrower than Bootstrap's col-xxl-3 default; cards
+   render vertically stacked so the bigger image still fits. */
 .tables-column {
   background: var(--ds-canvas-soft);
   border-right: 1px solid var(--ds-hairline);
+  flex: 0 0 220px !important;
+  max-width: 220px !important;
+  width: 220px !important;
 }
 
 .table-card {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   background: var(--ds-canvas);
   border: 1px solid var(--ds-hairline);
   border-radius: var(--ds-radius-md);
-  padding: 10px 12px;
+  padding: 12px 10px;
   cursor: pointer;
   transition: var(--transition-fast);
   position: relative;
 }
 
 .table-card:hover {
-  border-color: var(--ds-hairline-strong);
+  border-color: var(--ds-primary);
+  background: var(--ds-primary-soft);
 }
 
 .table-card.active {
-  border-color: var(--ds-ink);
-  background: var(--ds-canvas);
-}
-
-.table-card.active::before {
-  content: '';
-  position: absolute;
-  left: -1px;
-  top: 8px;
-  bottom: 8px;
-  width: 2px;
-  background: var(--ds-ink);
-  border-radius: 2px;
+  border-color: var(--ds-primary);
+  background: var(--ds-primary-soft);
+  box-shadow: 0 1px 2px rgba(255, 108, 31, 0.15);
 }
 
 .table-image-container {
   flex: 0 0 auto;
-  height: 44px;
-  width: 44px;
-  border-radius: var(--ds-radius-sm);
+  height: 64px;
+  width: 64px;
+  border-radius: var(--ds-radius-md);
   overflow: hidden;
   border: 1px solid var(--ds-hairline);
   background: var(--ds-canvas-soft);
@@ -113,20 +122,25 @@
 }
 
 .table-card-meta {
-  flex: 1 1 auto;
+  flex: 0 0 auto;
   min-width: 0;
-  text-align: left;
+  text-align: center;
+  width: 100%;
 }
 
 .table-number {
   font-family: var(--font-sans);
-  font-size: var(--ds-body-sm-size);
-  font-weight: 500;
+  font-size: var(--ds-body-md-size);
+  font-weight: 600;
   color: var(--ds-ink);
   letter-spacing: var(--ds-body-sm-tracking);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.table-card.active .table-number {
+  color: var(--ds-primary-deep);
 }
 
 .table-seats {
@@ -136,14 +150,39 @@
   margin-top: 2px;
 }
 
-/* Foods column */
+/* Foods column — clamp horizontal overflow so the Add Food to Cart grid never
+   produces a horizontal scrollbar; sticky toolbar handles its own wrapping. */
 .foods-column {
   background: var(--ds-canvas);
+  overflow-x: hidden !important;
+}
+
+.foods-column .row {
+  margin-left: 0;
+  margin-right: 0;
 }
 
 .foods-search {
   flex: 0 1 320px;
   max-width: 100%;
+  min-width: 0;
+}
+
+/* On mobile, let the search bar fill the row so its right edge sits flush with
+   the foods grid below (instead of stopping short ~20px inset). */
+@media screen and (max-width: 767.98px) {
+  .foods-toolbar {
+    padding: 12px 16px !important;
+  }
+  .foods-search {
+    flex: 1 1 auto;
+    width: 100%;
+    min-width: 0;
+  }
+  .foods-search :host ::ng-deep .ant-input-affix-wrapper,
+  .foods-search .ant-input-affix-wrapper {
+    width: 100%;
+  }
 }
 
 /* Food card */
@@ -182,7 +221,7 @@
   position: absolute;
   top: 10px;
   right: 10px;
-  background: var(--ds-ink);
+  background: var(--ds-primary);
   color: var(--ds-on-primary);
   font-family: var(--font-mono);
   font-size: 11px;
@@ -264,8 +303,8 @@
   padding: 0 12px;
   border-radius: var(--ds-radius-sm);
   color: var(--ds-on-primary);
-  background: var(--ds-ink);
-  border: 1px solid var(--ds-ink);
+  background: var(--ds-primary);
+  border: 1px solid var(--ds-primary);
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -277,8 +316,8 @@
 }
 
 .add-to-cart-button:hover {
-  background: var(--ds-body);
-  border-color: var(--ds-body);
+  background: var(--ds-primary-hover);
+  border-color: var(--ds-primary-hover);
 }
 
 .add-to-cart-button:active {
@@ -361,12 +400,12 @@
 }
 
 .table-card-mobile:hover {
-  border-color: var(--ds-hairline-strong);
+  border-color: var(--ds-primary);
 }
 
 .table-card-mobile.active {
-  border-color: var(--ds-ink);
-  background: var(--ds-canvas);
+  border-color: var(--ds-primary);
+  background: var(--ds-primary-soft);
 }
 
 .table-image-container-mobile {
@@ -455,7 +494,7 @@
 
 :host ::ng-deep .foods-search .ant-input-affix-wrapper-focused,
 :host ::ng-deep .foods-search .ant-input-affix-wrapper:focus-within {
-  border-color: var(--ds-ink);
+  border-color: var(--ds-primary);
   box-shadow: 0 0 0 3px var(--ant-primary-color-outline);
 }
 

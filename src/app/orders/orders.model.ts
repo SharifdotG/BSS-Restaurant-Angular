@@ -89,6 +89,7 @@ export interface PostOrder {
   amount: number;
   phoneNumber: string | null;
   items: PostOrderItem[];
+  orderItems?: CreateOrderItemRequest[];
 }
 
 export interface PostOrderItem {

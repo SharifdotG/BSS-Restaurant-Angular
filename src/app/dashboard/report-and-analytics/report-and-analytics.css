@@ -180,19 +180,20 @@
   border: 1px solid var(--ds-hairline);
   border-radius: var(--ds-radius-md);
   padding: 20px 20px 32px;
-  min-height: 460px;
+  min-height: 560px;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
-  height: 480px;
+  /* overflow visible so the chart's X-axis labels and legend never get clipped */
+  overflow: visible;
+  height: auto;
 }
 
 @media (max-width: 768px) {
   .chart-wrapper {
-    /* Tall enough for the chart + the legend that drops to "Below" on mobile */
-    min-height: 560px;
+    /* Tall enough for the bar chart (520px) + legend below + title + padding. */
+    min-height: 640px;
     height: auto;
-    padding: 14px 14px 28px;
+    padding: 14px 14px 32px;
   }
 }
 
@@ -206,10 +207,11 @@
   letter-spacing: var(--ds-display-sm-tracking);
 }
 
-/* Bar chart fills available width */
+/* Bar chart fills available width — give it a generous minimum so the bottom
+   axis labels and legend never get cut off. */
 ngx-charts-bar-vertical-2d {
   flex: 1 1 auto;
-  min-height: 320px;
+  min-height: 440px;
   width: 100%;
   display: block;
 }
@@ -220,7 +222,7 @@ ngx-charts-pie-chart {
   align-items: center;
   justify-content: center;
   flex: 1 1 auto;
-  min-height: 320px;
+  min-height: 380px;
 }
 
 /* ngx-charts chrome overrides — keep axis/legend on theme */

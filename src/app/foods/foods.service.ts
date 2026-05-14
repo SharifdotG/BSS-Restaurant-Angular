@@ -25,6 +25,8 @@ export class FoodsService {
   readonly showAddModal = signal(false);
   readonly selectedFood = signal<FoodItem | null>(null);
   readonly isEditMode = signal(false);
+  /** Tells the list to navigate to the page that will contain the new row. */
+  readonly gotoLastPage = signal(false);
 
   getListOfFood(sortBy: string, page: string, per_page: string, search: string = ''): void {
     const params = new HttpParams()
@@ -58,6 +60,7 @@ export class FoodsService {
         next: () => {
           this.message.create('success', 'Food Item Added Successfully!');
           this.showAddModal.set(false);
+          this.gotoLastPage.set(true);
           setTimeout(() => {
             this.triggerRefresh.set(true);
           }, 1000);

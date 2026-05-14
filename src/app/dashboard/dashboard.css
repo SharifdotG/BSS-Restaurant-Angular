@@ -147,7 +147,52 @@
 
 .stat-icon .anticon {
   font-size: 18px;
-  color: var(--ds-ink) !important;
+}
+
+/* Restaurant palette: each stat card gets a distinct tint so the dashboard
+   reads as colorful while keeping the Geist chrome consistent. */
+.row > .col-6:nth-child(1) .stat-icon,
+.row > .col-xl-3:nth-child(1) .stat-icon {
+  background: var(--ds-card-peach);
+  border-color: var(--ds-primary-soft);
+  color: var(--ds-primary-deep);
+}
+.row > .col-6:nth-child(1) .stat-icon .anticon,
+.row > .col-xl-3:nth-child(1) .stat-icon .anticon {
+  color: var(--ds-primary-deep) !important;
+}
+
+.row > .col-6:nth-child(2) .stat-icon,
+.row > .col-xl-3:nth-child(2) .stat-icon {
+  background: var(--ds-card-mint);
+  border-color: var(--ds-success-soft);
+  color: var(--ds-success-deep);
+}
+.row > .col-6:nth-child(2) .stat-icon .anticon,
+.row > .col-xl-3:nth-child(2) .stat-icon .anticon {
+  color: var(--ds-success-deep) !important;
+}
+
+.row > .col-6:nth-child(3) .stat-icon,
+.row > .col-xl-3:nth-child(3) .stat-icon {
+  background: var(--ds-card-lemon);
+  border-color: var(--ds-warning-soft);
+  color: var(--ds-warning-deep);
+}
+.row > .col-6:nth-child(3) .stat-icon .anticon,
+.row > .col-xl-3:nth-child(3) .stat-icon .anticon {
+  color: var(--ds-warning-deep) !important;
+}
+
+.row > .col-6:nth-child(4) .stat-icon,
+.row > .col-xl-3:nth-child(4) .stat-icon {
+  background: var(--ds-card-sky);
+  border-color: var(--ds-link-bg-soft);
+  color: var(--ds-link-deep);
+}
+.row > .col-6:nth-child(4) .stat-icon .anticon,
+.row > .col-xl-3:nth-child(4) .stat-icon .anticon {
+  color: var(--ds-link-deep) !important;
 }
 
 .stat-info {

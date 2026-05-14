@@ -19,7 +19,7 @@ export class Login {
   private router = inject(Router);
   private fb = inject(NonNullableFormBuilder);
 
-  readonly chefLogo = '/chef_green.png';
+  readonly chefLogo = '/chef_orange.png';
 
   showPassword = signal(false);
   notificationDismissed = signal(false);

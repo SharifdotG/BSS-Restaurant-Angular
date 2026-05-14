@@ -46,6 +46,9 @@ export class ReportAndAnalytics implements OnInit {
   readonly legendPosition = LegendPosition.Below;
   readonly barLegendPosition = signal(LegendPosition.Right);
   readonly pieChartView = signal<[number, number]>([320, 320]);
+  /** Explicit view size for the bar chart so ngx-charts renders within bounds.
+   *  Mobile gets a taller frame because the legend moves below the bars. */
+  readonly barChartView = signal<[number, number]>([720, 440]);
 
   readonly barColorScheme = computed<Color>(() => {
     const isDark = this.themeService.resolvedTheme() === 'dark';
@@ -136,6 +139,11 @@ export class ReportAndAnalytics implements OnInit {
         const isMobile = state.matches;
         this.barLegendPosition.set(isMobile ? LegendPosition.Below : LegendPosition.Right);
         this.pieChartView.set(isMobile ? [240, 240] : [320, 320]);
+        // Explicit bar-chart canvas so the legend + X-axis labels render fully.
+        // Width gets clamped by the wrapper; height needs to cover bars + legend.
+        const width = isMobile ? Math.min(window.innerWidth - 64, 540) : 720;
+        const height = isMobile ? 520 : 440;
+        this.barChartView.set([width, height]);
       });
 
     // React to theme changes: ngx-charts caches color scales, so re-trigger via signal access

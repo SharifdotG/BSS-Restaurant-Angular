@@ -55,6 +55,9 @@
                         type="button"
                         class="cart-row-remove"
                         (click)="removeFromCart(item.food.id, item.tableId)"
+                        nz-tooltip
+                        [nzTooltipTitle]="'Remove ' + item.food.name"
+                        nzTooltipPlacement="left"
                         [attr.aria-label]="'Remove ' + item.food.name"
                       >
                         <span nz-icon nzType="delete" nzTheme="outline" aria-hidden="true"></span>
