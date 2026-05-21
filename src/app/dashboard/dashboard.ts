@@ -9,12 +9,13 @@ import {
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
 
 import { DashboardService } from './dashboard.service';
 import { ReportAndAnalytics } from '../dashboard/report-and-analytics/report-and-analytics';
+import { FeatureTable } from '../shared/feature-table/feature-table';
+import { FeatureTableColumnDirective } from '../shared/feature-table/feature-table-column.directive';
 
 const STATUS_CONFIG: Record<string, { variant: string; label: string }> = {
   Pending: { variant: 'warning', label: 'Pending' },
@@ -34,10 +35,11 @@ const DEFAULT_STATUS_CONFIG = { variant: 'neutral' };
     DecimalPipe,
     NzSkeletonModule,
     NzIconModule,
-    NzTableModule,
     NzEmptyModule,
     NzTabsModule,
     ReportAndAnalytics,
+    FeatureTable,
+    FeatureTableColumnDirective,
   ],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',

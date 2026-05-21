@@ -1,150 +1,77 @@
 <div class="main-wrapper p-0 p-md-4 pb-md-0">
-  <div class="feature-table-card">
-    <nz-table
-      nzShowSizeChanger
-      nzPaginationType="default"
-      [nzScroll]="{ y: 'calc(100% - 56px)', x: '768px' }"
-      [nzWidthConfig]="['auto', 'auto', 'auto', 'auto', 'auto', '180px']"
-      nzTableLayout="auto"
-      [nzData]="listOfExpenses()"
-      [nzFrontPagination]="false"
-      [nzTotal]="expensesService.totalExpenses()"
-      [nzPageSize]="pageSize"
-      [nzPageIndex]="pageIndex"
-      (nzQueryParams)="onQueryParamsChange($event)"
-      [nzShowTotal]="totalTemplate"
-    >
-      <ng-template #totalTemplate let-range="range" let-total>
-        {{ range[0] }}-{{ range[1] }} of {{ total }} items
-      </ng-template>
-      <thead>
-        <tr>
-          <th class="custom-table-title truncate" nzColumnKey="title" [nzSortFn]="true">Title</th>
-          <th class="custom-table-title truncate" nzColumnKey="category" [nzSortFn]="true">
-            Category
-          </th>
-          <th class="custom-table-title truncate" nzColumnKey="amount" [nzSortFn]="true">Amount</th>
-          <th class="custom-table-title truncate" nzColumnKey="expensedate" [nzSortFn]="true">
-            Date
-          </th>
-          <th class="custom-table-title truncate" nzColumnKey="notes">Notes</th>
-          <th class="custom-table-title-button" nzColumnKey="action">
-            <button
-              class="add-expense-button"
-              aria-label="Add New Expense"
-              (click)="expensesService.showAddModal.set(true)"
-            >
-              <span nz-icon nzType="plus-circle" nzTheme="outline"></span>
-              <span> Add Expense </span>
-            </button>
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        @if (expensesService.isSendingRequest()) {
-          @for (_ of [1, 2, 3, 4, 5]; track $index) {
-            <tr class="custom-table-row">
-              <td colspan="6">
-                <nz-skeleton
-                  [nzActive]="true"
-                  [nzTitle]="false"
-                  [nzParagraph]="{ rows: 1, width: '100%' }"
-                ></nz-skeleton>
-              </td>
-            </tr>
-          }
-        } @else {
-          @for (data of listOfExpenses(); track data.id) {
-            <tr class="custom-table-row">
-              <td>
-                <div class="d-flex justify-content-between pe-3">
-                  <p
-                    [nzTooltipTitle]="data.title"
-                    nzTooltipPlacement="top"
-                    [nzTooltipOverlayStyle]="{ 'min-width': '40px' }"
-                    [nzTooltipTitle]="data.title"
-                    nzTooltipPlacement="top"
-                    nz-tooltip
-                    class="truncate"
-                  >
-                    {{ data.title }}
-                  </p>
-                </div>
-              </td>
-              <td>
-                <div class="d-flex justify-content-between pe-3">
-                  <p
-                    [nzTooltipOverlayStyle]="{ 'min-width': '40px' }"
-                    [nzTooltipTitle]="data.category"
-                    nzTooltipPlacement="top"
-                    nz-tooltip
-                    class="truncate"
-                  >
-                    <span class="category-badge" [attr.data-category]="data.category">{{
-                      data.category
-                    }}</span>
-                  </p>
-                </div>
-              </td>
-              <td>
-                <div class="d-flex justify-content-between pe-3">
-                  <p
-                    [nzTooltipOverlayStyle]="{ 'min-width': '40px' }"
-                    [nzTooltipTitle]="data.amount.toString()"
-                    nzTooltipPlacement="top"
-                    nz-tooltip
-                    class="truncate amount-cell"
-                  >
-                    ৳ {{ data.amount }}
-                  </p>
-                </div>
-              </td>
-              <td>
-                <div class="d-flex justify-content-between pe-3">
-                  <p
-                    [nzTooltipOverlayStyle]="{ 'min-width': '40px' }"
-                    [nzTooltipTitle]="formatDate(data.expenseDate)"
-                    nzTooltipPlacement="top"
-                    nz-tooltip
-                    class="truncate"
-                  >
-                    {{ formatDate(data.expenseDate) }}
-                  </p>
-                </div>
-              </td>
-              <td
-                [nzTooltipOverlayStyle]="{ 'min-width': '40px' }"
-                [nzTooltipTitle]="data.notes"
-                nzTooltipPlacement="top"
-                nz-tooltip
-                class="truncate"
-              >
-                {{ data.notes || '-' }}
-              </td>
-              <td>
-                <div class="d-flex justify-content-center gap-2">
-                  <button
-                    (click)="editExpense(data.id)"
-                    class="drop-down-button drop-shadow-md"
-                    aria-label="Edit Expense"
-                  >
-                    <span nz-icon nzType="edit" nzTheme="outline"></span>
-                  </button>
-                  <button
-                    (click)="deleteExpense(data.id)"
-                    class="drop-down-button drop-shadow-md"
-                    aria-label="Delete Expense"
-                  >
-                    <span nz-icon nzType="delete" nzTheme="outline"></span>
-                  </button>
-                </div>
-              </td>
-            </tr>
-          }
-        }
-      </tbody>
-    </nz-table>
-  </div>
+  <app-feature-table
+    [data]="listOfExpenses()"
+    [loading]="expensesService.isSendingRequest()"
+    [total]="expensesService.totalExpenses()"
+    [pageSize]="pageSize"
+    [pageIndex]="pageIndex"
+    scrollX="768px"
+    addLabel="Add Expense"
+    emptyText="No expenses found."
+    (addClick)="expensesService.showAddModal.set(true)"
+    (queryParamsChange)="onQueryParamsChange($event)"
+  >
+    <ng-template ftColumn="title" ftLabel="Title" ftWidth="auto" let-row>
+      <span class="ft-cell-text" nz-tooltip nzTooltipPlacement="top" [nzTooltipTitle]="row.title">{{
+        row.title
+      }}</span>
+    </ng-template>
+
+    <ng-template ftColumn="category" ftLabel="Category" ftWidth="auto" let-row>
+      <span class="category-badge" [attr.data-category]="row.category">{{ row.category }}</span>
+    </ng-template>
+
+    <ng-template ftColumn="amount" ftLabel="Amount" ftWidth="auto" let-row>
+      <span
+        class="ft-cell-text amount-cell"
+        nz-tooltip
+        nzTooltipPlacement="top"
+        [nzTooltipTitle]="row.amount.toString()"
+      >
+        ৳ {{ row.amount }}
+      </span>
+    </ng-template>
+
+    <ng-template ftColumn="expensedate" ftLabel="Date" ftWidth="auto" let-row>
+      <span
+        class="ft-cell-text"
+        nz-tooltip
+        nzTooltipPlacement="top"
+        [nzTooltipTitle]="formatDate(row.expenseDate)"
+      >
+        {{ formatDate(row.expenseDate) }}
+      </span>
+    </ng-template>
+
+    <ng-template ftColumn="notes" ftLabel="Notes" ftWidth="auto" let-row>
+      <span
+        class="ft-cell-text"
+        nz-tooltip
+        nzTooltipPlacement="top"
+        [nzTooltipTitle]="row.notes"
+        >{{ row.notes || '-' }}</span
+      >
+    </ng-template>
+
+    <ng-template ftColumn="actions" ftWidth="180px" ftAlign="center" let-row>
+      <div class="ft-row-actions">
+        <button
+          (click)="editExpense(row.id)"
+          class="drop-down-button drop-shadow-md"
+          aria-label="Edit Expense"
+        >
+          <span nz-icon nzType="edit" nzTheme="outline"></span>
+        </button>
+        <button
+          (click)="deleteExpense(row.id)"
+          class="drop-down-button drop-shadow-md"
+          aria-label="Delete Expense"
+        >
+          <span nz-icon nzType="delete" nzTheme="outline"></span>
+        </button>
+      </div>
+    </ng-template>
+  </app-feature-table>
 </div>
 
 <app-add-expense></app-add-expense>

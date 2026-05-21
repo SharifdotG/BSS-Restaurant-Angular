@@ -7,9 +7,9 @@
   font-family: var(--font-sans);
 }
 
-/* ----- Visual / Carousel column (mesh-gradient atmosphere) ----- */
+/* ----- Visual / Carousel column ----- */
 .login-visual {
-  background: var(--ds-canvas-soft);
+  background: var(--brand-surface);
   align-items: center;
   justify-content: center;
   padding: 32px;
@@ -17,24 +17,6 @@
   position: relative;
   isolation: isolate;
   border-right: 1px solid var(--ds-hairline);
-}
-
-.login-visual::before {
-  content: '';
-  position: absolute;
-  inset: -20% -10%;
-  background:
-    radial-gradient(circle at 20% 30%, var(--ds-gradient-develop-end) 0%, transparent 45%),
-    radial-gradient(circle at 70% 70%, var(--ds-gradient-preview-start) 0%, transparent 50%),
-    radial-gradient(circle at 90% 20%, var(--ds-highlight-pink) 0%, transparent 40%),
-    radial-gradient(circle at 30% 90%, var(--ds-gradient-ship-end) 0%, transparent 45%);
-  filter: blur(80px) saturate(120%);
-  opacity: 0.3;
-  z-index: -1;
-}
-
-[data-theme='dark'] .login-visual::before {
-  opacity: 0.4;
 }
 
 .login-carousel-wrap {
@@ -78,7 +60,7 @@
   line-height: var(--ds-display-md-line);
   letter-spacing: var(--ds-display-md-tracking);
   font-weight: 600;
-  color: var(--ds-ink);
+  color: var(--ds-on-primary);
   margin: 0;
   max-width: 400px;
 }
@@ -87,7 +69,7 @@
   font-family: var(--font-sans);
   font-size: var(--ds-body-md-size);
   line-height: var(--ds-body-md-line);
-  color: var(--ds-body);
+  color: var(--ds-on-primary);
   max-width: 400px;
   margin-top: 12px;
 }
@@ -111,8 +93,8 @@
 }
 
 ::ng-deep .login-carousel .slick-dots li button {
-  background: var(--ds-hairline-strong) !important;
-  opacity: 0.6;
+  background: var(--ds-ink) !important;
+  opacity: 0.35;
   width: 8px;
   height: 8px;
   border-radius: 50%;
@@ -125,7 +107,7 @@
 
 ::ng-deep .login-carousel .slick-dots li.slick-active button {
   opacity: 1;
-  background: var(--ds-primary) !important;
+  background: var(--ds-ink) !important;
   width: 20px;
   border-radius: 9999px;
 }

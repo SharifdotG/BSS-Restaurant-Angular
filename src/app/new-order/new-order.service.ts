@@ -20,6 +20,8 @@ export class NewOrderService {
   private readonly ordersService = inject(OrdersService);
 
   readonly isSendingRequest = signal(false);
+  readonly isLoadingTables = signal(false);
+  readonly isLoadingFoods = signal(false);
   readonly listOfFood = signal<FoodItem[]>([]);
   readonly totalFood = signal(0);
   readonly totalTable = signal(0);
@@ -51,10 +53,16 @@ export class NewOrderService {
       .set('Search', search);
 
     this.isSendingRequest.set(true);
+    this.isLoadingFoods.set(true);
 
     this.http
       .get<ResponseFoodList>(`${this.baseUrl}/api/Food/datatable/`, { params })
-      .pipe(finalize(() => this.isSendingRequest.set(false)))
+      .pipe(
+        finalize(() => {
+          this.isSendingRequest.set(false);
+          this.isLoadingFoods.set(false);
+        }),
+      )
       .subscribe({
         next: (data) => {
           this.listOfFood.set(data.data);
@@ -67,10 +75,16 @@ export class NewOrderService {
     const params = new HttpParams().set('Sort', sortBy).set('Page', page).set('Per_Page', perPage);
 
     this.isSendingRequest.set(true);
+    this.isLoadingTables.set(true);
 
     this.http
       .get<TableListResponse>(`${this.baseUrl}/api/Table/datatable`, { params })
-      .pipe(finalize(() => this.isSendingRequest.set(false)))
+      .pipe(
+        finalize(() => {
+          this.isSendingRequest.set(false);
+          this.isLoadingTables.set(false);
+        }),
+      )
       .subscribe({
         next: (data) => {
           this.listOfTable.set(data.data);

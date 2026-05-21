@@ -40,7 +40,8 @@ export class EmployeeTooltip {
     const employees = this.employeeList();
     const id = this.employeeId();
     const employee = employees.find((e) => e.id === id);
-    return employee ? `${this.baseUrl}/images/user/${employee.user.image}` : '';
+    const image = employee?.user?.image;
+    return image ? `${this.baseUrl}/images/user/${image}` : '';
   });
 
   removeEmployeeFromTable(): void {

@@ -1,164 +1,97 @@
 <div class="main-wrapper p-0 p-md-4 pb-md-0">
-  <div class="feature-table-card">
-    <!-- Employee Table -->
-    <nz-table
-      nzShowSizeChanger
-      nzPaginationType="default"
-      [nzScroll]="{ y: 'calc(100% - 56px)', x: '1000px' }"
-      [nzWidthConfig]="['120px', 'auto', 'auto', 'auto', 'auto', 'auto', '180px']"
-      nzTableLayout="auto"
-      [nzData]="listOfEmployees()"
-      [nzFrontPagination]="false"
-      [nzTotal]="employeeService.totalEmployees()"
-      [nzPageSize]="pageSize()"
-      [nzPageIndex]="pageIndex()"
-      (nzQueryParams)="onQueryParamsChange($event)"
-      [nzShowTotal]="totalTemplate"
-    >
-      <ng-template #totalTemplate let-range="range" let-total>
-        {{ range[0] }}-{{ range[1] }} of {{ total }} items
-      </ng-template>
-      <thead>
-        <tr>
-          <th class="truncate custom-table-title" nzColumnKey="image"></th>
-          <th class="truncate custom-table-title" nzColumnKey="name">Name</th>
-          <th class="truncate custom-table-title" nzColumnKey="email">Email</th>
-          <th class="truncate custom-table-title" nzColumnKey="designation">Designation</th>
-          <th class="truncate custom-table-title" nzColumnKey="joindate">Join Date</th>
-          <th class="truncate custom-table-title" nzColumnKey="phone">Phone</th>
-          <th class="custom-table-title-button" nzColumnKey="action">
-            <button
-              class="add-employee-button"
-              aria-label="Add New Employee"
-              (click)="employeeService.showAddModal.set(true)"
-            >
-              <span nz-icon nzType="plus" nzTheme="outline" aria-hidden="true"></span>
-              <span> Add Employee </span>
-            </button>
-          </th>
-        </tr>
-      </thead>
+  <app-feature-table
+    [data]="listOfEmployees()"
+    [loading]="employeeService.isSendingRequest()"
+    [total]="employeeService.totalEmployees()"
+    [pageSize]="pageSize()"
+    [pageIndex]="pageIndex()"
+    scrollX="1000px"
+    addLabel="Add Employee"
+    emptyText="No employees found."
+    (addClick)="employeeService.showAddModal.set(true)"
+    (queryParamsChange)="onQueryParamsChange($event)"
+  >
+    <ng-template ftColumn="image" ftWidth="80px" ftAlign="center" let-row>
+      <nz-avatar [nzSize]="36" nzIcon="user" [nzSrc]="getImageUrl(row.user.image)"></nz-avatar>
+    </ng-template>
 
-      <!-- Employee Rows -->
-      <tbody>
-        @if (employeeService.isSendingRequest()) {
-          @for (_ of [1, 2, 3, 4, 5]; track $index) {
-            <tr class="custom-table-row">
-              <td colspan="7">
-                <nz-skeleton
-                  [nzActive]="true"
-                  [nzTitle]="false"
-                  [nzParagraph]="{ rows: 1, width: '100%' }"
-                ></nz-skeleton>
-              </td>
-            </tr>
-          }
-        } @else {
-          @for (data of listOfEmployees(); track data.id) {
-            <tr class="custom-table-row">
-              <td>
-                <div class="d-flex justify-content-center">
-                  <nz-avatar
-                    [nzSize]="52"
-                    nzIcon="user"
-                    [nzSrc]="getImageUrl(data.user.image)"
-                  ></nz-avatar>
-                </div>
-              </td>
-              <td>
-                <div class="d-flex justify-content-between pe-3">
-                  <p
-                    [nzTooltipTitle]="
-                      data.user.firstName + ' ' + data.user.middleName + ' ' + data.user.lastName
-                    "
-                    nzTooltipPlacement="top"
-                    nz-tooltip
-                    class="truncate"
-                  >
-                    {{
-                      data.user.firstName + ' ' + data.user.middleName + ' ' + data.user.lastName
-                    }}
-                  </p>
-                </div>
-              </td>
-              <td>
-                <div class="d-flex justify-content-between pe-3">
-                  <p
-                    [nzTooltipTitle]="data.user.email"
-                    nzTooltipPlacement="top"
-                    nz-tooltip
-                    class="truncate"
-                  >
-                    {{ data.user.email }}
-                  </p>
-                </div>
-              </td>
-              <td>
-                <div class="d-flex justify-content-between pe-3">
-                  <p
-                    [nzTooltipTitle]="data.designation"
-                    nzTooltipPlacement="top"
-                    nz-tooltip
-                    class="truncate"
-                  >
-                    {{ data.designation }}
-                  </p>
-                </div>
-              </td>
-              <td>
-                <div class="d-flex justify-content-between pe-3">
-                  <p
-                    [nzTooltipTitle]="data.joinDate | date: 'MMM dd, yyyy'"
-                    nzTooltipPlacement="top"
-                    nz-tooltip
-                    class="truncate"
-                  >
-                    {{ data.joinDate | date: 'MMM dd, yyyy' }}
-                  </p>
-                </div>
-              </td>
-              <td>
-                <div class="d-flex justify-content-between pe-3">
-                  <p
-                    [nzTooltipTitle]="data.user.phoneNumber"
-                    nzTooltipPlacement="top"
-                    nz-tooltip
-                    class="truncate"
-                  >
-                    {{ data.user.phoneNumber }}
-                  </p>
-                </div>
-              </td>
-              <td>
-                <div class="d-flex justify-content-center gap-2">
-                  <button
-                    (click)="editEmployee(data.id)"
-                    class="drop-down-button drop-shadow-md"
-                    nz-tooltip
-                    nzTooltipTitle="Edit employee"
-                    nzTooltipPlacement="top"
-                    aria-label="Edit Employee"
-                  >
-                    <span nz-icon nzType="edit" nzTheme="outline" aria-hidden="true"></span>
-                  </button>
-                  <button
-                    (click)="deleteUser(data.id)"
-                    class="drop-down-button drop-shadow-md"
-                    nz-tooltip
-                    nzTooltipTitle="Delete employee"
-                    nzTooltipPlacement="top"
-                    aria-label="Delete Employee"
-                  >
-                    <span nz-icon nzType="delete" nzTheme="outline" aria-hidden="true"></span>
-                  </button>
-                </div>
-              </td>
-            </tr>
-          }
-        }
-      </tbody>
-    </nz-table>
-  </div>
+    <ng-template ftColumn="name" ftLabel="Name" ftWidth="auto" let-row>
+      <span
+        class="ft-cell-text"
+        nz-tooltip
+        nzTooltipPlacement="top"
+        [nzTooltipTitle]="row.user.firstName + ' ' + row.user.middleName + ' ' + row.user.lastName"
+      >
+        {{ row.user.firstName + ' ' + row.user.middleName + ' ' + row.user.lastName }}
+      </span>
+    </ng-template>
+
+    <ng-template ftColumn="email" ftLabel="Email" ftWidth="auto" let-row>
+      <span
+        class="ft-cell-text"
+        nz-tooltip
+        nzTooltipPlacement="top"
+        [nzTooltipTitle]="row.user.email"
+        >{{ row.user.email }}</span
+      >
+    </ng-template>
+
+    <ng-template ftColumn="designation" ftLabel="Designation" ftWidth="auto" let-row>
+      <span
+        class="ft-cell-text"
+        nz-tooltip
+        nzTooltipPlacement="top"
+        [nzTooltipTitle]="row.designation"
+        >{{ row.designation }}</span
+      >
+    </ng-template>
+
+    <ng-template ftColumn="joindate" ftLabel="Join Date" ftWidth="auto" let-row>
+      <span
+        class="ft-cell-text"
+        nz-tooltip
+        nzTooltipPlacement="top"
+        [nzTooltipTitle]="row.joinDate | date: 'MMM dd, yyyy'"
+      >
+        {{ row.joinDate | date: 'MMM dd, yyyy' }}
+      </span>
+    </ng-template>
+
+    <ng-template ftColumn="phone" ftLabel="Phone" ftWidth="auto" let-row>
+      <span
+        class="ft-cell-text"
+        nz-tooltip
+        nzTooltipPlacement="top"
+        [nzTooltipTitle]="row.user.phoneNumber"
+        >{{ row.user.phoneNumber }}</span
+      >
+    </ng-template>
+
+    <ng-template ftColumn="actions" ftWidth="180px" ftAlign="center" let-row>
+      <div class="ft-row-actions">
+        <button
+          (click)="editEmployee(row.id)"
+          class="drop-down-button drop-shadow-md"
+          nz-tooltip
+          nzTooltipTitle="Edit employee"
+          nzTooltipPlacement="top"
+          aria-label="Edit Employee"
+        >
+          <span nz-icon nzType="edit" nzTheme="outline" aria-hidden="true"></span>
+        </button>
+        <button
+          (click)="deleteUser(row.id)"
+          class="drop-down-button drop-shadow-md"
+          nz-tooltip
+          nzTooltipTitle="Delete employee"
+          nzTooltipPlacement="top"
+          aria-label="Delete Employee"
+        >
+          <span nz-icon nzType="delete" nzTheme="outline" aria-hidden="true"></span>
+        </button>
+      </div>
+    </ng-template>
+  </app-feature-table>
 </div>
 
 <app-add-employee></app-add-employee>

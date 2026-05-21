@@ -1,0 +1,90 @@
+@let cols = columns();
+@let colSpan = cols.length || 1;
+
+<div class="ft-shell" [class.ft-shell--card]="card()">
+  <nz-table
+    class="ft-table"
+    [nzShowSizeChanger]="showSizeChanger()"
+    nzPaginationType="default"
+    [nzScroll]="scrollConfig()"
+    [nzWidthConfig]="widthConfig()"
+    nzTableLayout="fixed"
+    [nzData]="data()"
+    [nzFrontPagination]="false"
+    [nzShowPagination]="showPagination()"
+    [nzTotal]="total()"
+    [nzPageSize]="pageSize()"
+    [nzPageIndex]="pageIndex()"
+    [nzShowTotal]="totalTpl"
+    (nzQueryParams)="queryParamsChange.emit($event)"
+  >
+    <ng-template #totalTpl let-range="range" let-total>
+      {{ range[0] }}-{{ range[1] }} of {{ total }} items
+    </ng-template>
+
+    <thead>
+      <tr>
+        @for (col of cols; track col.ftColumn()) {
+          <th
+            class="ft-th"
+            [class.ft-th--center]="col.ftAlign() === 'center'"
+            [class.ft-th--right]="col.ftAlign() === 'right'"
+            [class.ft-th--actions]="col.ftColumn() === 'actions'"
+            [nzColumnKey]="col.ftColumn()"
+          >
+            @if (col.ftColumn() === 'actions' && addLabel()) {
+              <button
+                type="button"
+                class="ft-add-btn"
+                (click)="addClick.emit()"
+                [attr.aria-label]="addLabel()"
+              >
+                <span nz-icon nzType="plus" nzTheme="outline" aria-hidden="true"></span>
+                <span>{{ addLabel() }}</span>
+              </button>
+            } @else {
+              {{ col.ftLabel() }}
+            }
+          </th>
+        }
+      </tr>
+    </thead>
+
+    <tbody>
+      @if (loading()) {
+        @for (_ of skeletonRows(); track $index) {
+          <tr class="ft-row ft-row--skeleton">
+            <td [attr.colspan]="colSpan">
+              <nz-skeleton
+                [nzActive]="true"
+                [nzTitle]="false"
+                [nzParagraph]="{ rows: 1, width: '100%' }"
+              ></nz-skeleton>
+            </td>
+          </tr>
+        }
+      } @else {
+        @for (row of data(); track row.id ?? $index) {
+          <tr class="ft-row">
+            @for (col of cols; track col.ftColumn()) {
+              <td
+                class="ft-td"
+                [class.ft-td--center]="col.ftAlign() === 'center'"
+                [class.ft-td--right]="col.ftAlign() === 'right'"
+                [class.ft-td--actions]="col.ftColumn() === 'actions'"
+              >
+                <ng-container
+                  *ngTemplateOutlet="col.template; context: { $implicit: row, row: row }"
+                ></ng-container>
+              </td>
+            }
+          </tr>
+        } @empty {
+          <tr class="ft-row ft-row--empty">
+            <td [attr.colspan]="colSpan" class="ft-empty">{{ emptyText() }}</td>
+          </tr>
+        }
+      }
+    </tbody>
+  </nz-table>
+</div>

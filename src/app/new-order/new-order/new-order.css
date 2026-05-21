@@ -1,51 +1,74 @@
-.new-order-container {
-  height: calc(100vh - 64px - 48px);
+/* --------------------------------------------------------------------------
+   Shell — feature-card chrome, matches the list pages
+   -------------------------------------------------------------------------- */
+
+.new-order-shell {
   background: var(--ds-canvas);
+  border: 1px solid var(--ds-hairline);
+  border-radius: var(--ds-radius-md);
+  box-shadow: var(--ds-shadow-2);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 112px);
+  min-height: 420px;
 }
 
 @media (max-width: 768px) {
-  .new-order-container {
-    /* Bottom mobile nav has been removed — reclaim the space and let the foods
-       grid breathe with more rows. 56px header + 16px page margin = 72. */
+  .new-order-shell {
     height: calc(100vh - 72px);
-    min-height: calc(100vh - 72px);
+    min-height: 0;
+    max-height: calc(100vh - 72px);
+    margin: 8px;
+  }
+  @supports (height: 100dvh) {
+    .new-order-shell {
+      height: calc(100dvh - 72px);
+      max-height: calc(100dvh - 72px);
+    }
   }
 }
 
-/* Section headers (sticky) — Select a Table and Add Food to Cart share the
-   same padding, height, and bottom border so the two column tops align.
-   Horizontal padding matches the foods grid below (16px) so the search bar
-   right-edge aligns with the food card edges. */
+/* --------------------------------------------------------------------------
+   Section headers — eyebrow + title pattern, same as dashboard sections
+   -------------------------------------------------------------------------- */
+
 .section-header,
 .foods-toolbar {
   background: var(--ds-canvas);
   border-bottom: 1px solid var(--ds-hairline);
-  padding: 16px;
+  padding: 16px 20px;
   min-height: 72px;
   display: flex;
   align-items: center;
+  flex-shrink: 0;
   z-index: 5;
 }
 
-.section-header {
-  justify-content: flex-start;
-}
-
 .foods-toolbar {
-  display: flex;
-  align-items: center;
   justify-content: space-between;
   gap: 12px;
   flex-wrap: wrap;
 }
 
-.section-title-text {
+.section-eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--ds-caption-size);
+  line-height: var(--ds-caption-line);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--brand-surface);
+  margin: 0 0 4px 0;
+}
+
+.section-title {
   font-family: var(--font-sans);
-  font-size: var(--ds-display-md-size);
-  line-height: var(--ds-display-md-line);
-  letter-spacing: var(--ds-display-md-tracking);
+  font-size: var(--ds-display-sm-size);
+  line-height: var(--ds-display-sm-line);
+  letter-spacing: var(--ds-display-sm-tracking);
   font-weight: 600;
   color: var(--ds-ink);
+  margin: 0;
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -55,9 +78,9 @@
   display: inline-flex;
   align-items: center;
   height: 22px;
-  background: var(--ds-canvas-soft);
-  color: var(--ds-mute);
-  border: 1px solid var(--ds-hairline);
+  background: var(--ds-primary-soft);
+  color: var(--brand-surface);
+  border: 1px solid var(--ds-primary-soft);
   font-family: var(--font-mono);
   font-size: 11px;
   line-height: 1;
@@ -70,67 +93,84 @@
   top: -1px;
 }
 
-/* Tables column (desktop) — narrower than Bootstrap's col-xxl-3 default; cards
-   render vertically stacked so the bigger image still fits. */
+/* --------------------------------------------------------------------------
+   Tables column — wider, scrollable, vertical stack of compact list rows
+   -------------------------------------------------------------------------- */
+
 .tables-column {
   background: var(--ds-canvas-soft);
   border-right: 1px solid var(--ds-hairline);
-  flex: 0 0 220px !important;
-  max-width: 220px !important;
-  width: 220px !important;
+  flex: 0 0 320px !important;
+  max-width: 320px !important;
+  width: 320px !important;
+  overflow: hidden;
 }
 
-.table-card {
+.tables-list {
+  flex: 1 1 auto;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
+  gap: 6px;
+  padding: 12px 14px;
+}
+
+.tables-column .section-header {
+  background: var(--ds-canvas-soft);
+}
+
+.table-list-item {
+  all: unset;
+  cursor: pointer;
+  display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
+  padding: 8px 12px;
   background: var(--ds-canvas);
   border: 1px solid var(--ds-hairline);
   border-radius: var(--ds-radius-md);
-  padding: 12px 10px;
-  cursor: pointer;
   transition: var(--transition-fast);
-  position: relative;
+  min-height: 52px;
 }
 
-.table-card:hover {
-  border-color: var(--ds-primary);
+.table-list-item:hover {
+  border-color: var(--brand-surface);
   background: var(--ds-primary-soft);
 }
 
-.table-card.active {
-  border-color: var(--ds-primary);
-  background: var(--ds-primary-soft);
-  box-shadow: 0 1px 2px rgba(255, 108, 31, 0.15);
+.table-list-item.active {
+  background: var(--brand-surface);
+  border-color: var(--brand-surface);
 }
 
-.table-image-container {
-  flex: 0 0 auto;
-  height: 64px;
-  width: 64px;
-  border-radius: var(--ds-radius-md);
-  overflow: hidden;
+.table-list-item.active .table-list-item__number,
+.table-list-item.active .table-list-item__seats {
+  color: var(--ds-on-primary);
+}
+
+.table-list-item__thumb {
+  flex: 0 0 36px;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--ds-radius-sm);
+  object-fit: cover;
   border: 1px solid var(--ds-hairline);
   background: var(--ds-canvas-soft);
 }
 
-.table-image {
-  height: 100%;
-  width: 100%;
-  object-fit: cover;
+.table-list-item.active .table-list-item__thumb {
+  border-color: rgba(255, 255, 255, 0.3);
 }
 
-.table-card-meta {
-  flex: 0 0 auto;
+.table-list-item__info {
+  display: flex;
+  flex-direction: column;
   min-width: 0;
-  text-align: center;
-  width: 100%;
 }
 
-.table-number {
+.table-list-item__number {
   font-family: var(--font-sans);
-  font-size: var(--ds-body-md-size);
+  font-size: var(--ds-body-sm-size);
   font-weight: 600;
   color: var(--ds-ink);
   letter-spacing: var(--ds-body-sm-tracking);
@@ -139,27 +179,30 @@
   text-overflow: ellipsis;
 }
 
-.table-card.active .table-number {
-  color: var(--ds-primary-deep);
-}
-
-.table-seats {
+.table-list-item__seats {
   font-family: var(--font-mono);
   font-size: 11px;
   color: var(--ds-mute);
   margin-top: 2px;
 }
 
-/* Foods column — clamp horizontal overflow so the Add Food to Cart grid never
-   produces a horizontal scrollbar; sticky toolbar handles its own wrapping. */
-.foods-column {
-  background: var(--ds-canvas);
-  overflow-x: hidden !important;
+.table-list-item--skeleton {
+  cursor: default;
+  pointer-events: none;
 }
 
-.foods-column .row {
-  margin-left: 0;
-  margin-right: 0;
+/* --------------------------------------------------------------------------
+   Foods column
+   -------------------------------------------------------------------------- */
+
+.foods-column {
+  background: var(--ds-canvas);
+  overflow: hidden;
+}
+
+.foods-grid {
+  flex: 1 1 auto;
+  overflow-y: auto;
 }
 
 .foods-search {
@@ -168,8 +211,15 @@
   min-width: 0;
 }
 
-/* On mobile, let the search bar fill the row so its right edge sits flush with
-   the foods grid below (instead of stopping short ~20px inset). */
+.foods-search-skeleton {
+  flex: 0 1 320px;
+  height: 36px;
+  border-radius: var(--ds-radius-sm);
+  background: var(--ds-canvas-soft);
+  border: 1px solid var(--ds-hairline);
+  max-width: 100%;
+}
+
 @media screen and (max-width: 767.98px) {
   .foods-toolbar {
     padding: 12px 16px !important;
@@ -179,13 +229,12 @@
     width: 100%;
     min-width: 0;
   }
-  .foods-search :host ::ng-deep .ant-input-affix-wrapper,
-  .foods-search .ant-input-affix-wrapper {
-    width: 100%;
-  }
 }
 
-/* Food card */
+/* --------------------------------------------------------------------------
+   Food cards
+   -------------------------------------------------------------------------- */
+
 .food-card-vertical {
   background: var(--ds-canvas);
   border: 1px solid var(--ds-hairline);
@@ -199,7 +248,7 @@
 }
 
 .food-card-vertical:hover {
-  border-color: var(--ds-hairline-strong);
+  border-color: var(--brand-surface);
   box-shadow: var(--ds-shadow-3);
 }
 
@@ -221,7 +270,7 @@
   position: absolute;
   top: 10px;
   right: 10px;
-  background: var(--ds-primary);
+  background: var(--brand-surface);
   color: var(--ds-on-primary);
   font-family: var(--font-mono);
   font-size: 11px;
@@ -303,8 +352,8 @@
   padding: 0 12px;
   border-radius: var(--ds-radius-sm);
   color: var(--ds-on-primary);
-  background: var(--ds-primary);
-  border: 1px solid var(--ds-primary);
+  background: var(--brand-surface);
+  border: 1px solid var(--brand-surface);
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -328,13 +377,77 @@
   font-size: 14px;
 }
 
-/* No-table-selected banner */
+/* --------------------------------------------------------------------------
+   Food card skeleton (matches the live card geometry)
+   -------------------------------------------------------------------------- */
+
+.food-card-skeleton {
+  background: var(--ds-canvas);
+  border: 1px solid var(--ds-hairline);
+  border-radius: var(--ds-radius-md);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  box-shadow: var(--ds-shadow-2);
+}
+
+.food-card-skeleton__image {
+  width: 100%;
+  height: 160px;
+  background: var(--ds-canvas-soft-2);
+}
+
+.food-card-skeleton__body {
+  padding: 14px 16px 16px;
+}
+
+/* --------------------------------------------------------------------------
+   Loading / end-of-list indicators
+   -------------------------------------------------------------------------- */
+
+.list-loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px;
+  color: var(--brand-surface);
+  font-family: var(--font-mono);
+  font-size: var(--ds-caption-size);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.list-loader .anticon {
+  font-size: 16px;
+}
+
+.list-loader--inline {
+  padding: 8px 12px;
+  flex: 0 0 auto;
+}
+
+.list-end {
+  text-align: center;
+  padding: 12px;
+  color: var(--ds-mute);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* --------------------------------------------------------------------------
+   Warning banner (no table selected)
+   -------------------------------------------------------------------------- */
+
 .warning-table-banner {
   background: var(--ds-canvas-soft);
   border: 1px dashed var(--ds-hairline-strong);
   border-radius: var(--ds-radius-lg);
   margin: 16px;
-  height: calc(100% - 32px);
+  flex: 1 1 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -371,7 +484,10 @@
   margin-top: 4px;
 }
 
-/* Mobile / tablet sections */
+/* --------------------------------------------------------------------------
+   Mobile / tablet (< xxl) sections
+   -------------------------------------------------------------------------- */
+
 .top-section {
   background: var(--ds-canvas-soft);
   border-bottom: 1px solid var(--ds-hairline);
@@ -381,9 +497,20 @@
 .bottom-section {
   flex: 1 1 auto;
   background: var(--ds-canvas);
+  overflow-y: auto;
+}
+
+.tables-strip-mobile {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  padding: 12px 16px 16px;
+  overflow-x: auto;
 }
 
 .table-card-mobile {
+  all: unset;
+  cursor: pointer;
   flex: 0 0 auto;
   width: 100px;
   height: 124px;
@@ -391,7 +518,6 @@
   border: 1px solid var(--ds-hairline);
   border-radius: var(--ds-radius-md);
   padding: 8px;
-  cursor: pointer;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -400,12 +526,16 @@
 }
 
 .table-card-mobile:hover {
-  border-color: var(--ds-primary);
+  border-color: var(--brand-surface);
 }
 
 .table-card-mobile.active {
-  border-color: var(--ds-primary);
-  background: var(--ds-primary-soft);
+  border-color: var(--brand-surface);
+  background: var(--brand-surface);
+}
+
+.table-card-mobile.active .table-number-mobile {
+  color: var(--ds-on-primary);
 }
 
 .table-image-container-mobile {
@@ -472,7 +602,10 @@
   }
 }
 
-/* Search input — token-driven */
+/* --------------------------------------------------------------------------
+   Search input — token-driven
+   -------------------------------------------------------------------------- */
+
 .search-icon {
   font-size: 16px;
   color: var(--ds-mute);
@@ -494,8 +627,7 @@
 
 :host ::ng-deep .foods-search .ant-input-affix-wrapper-focused,
 :host ::ng-deep .foods-search .ant-input-affix-wrapper:focus-within {
-  border-color: var(--ds-primary);
-  box-shadow: 0 0 0 3px var(--ant-primary-color-outline);
+  border-color: var(--brand-surface);
 }
 
 :host ::ng-deep .foods-search .ant-input {

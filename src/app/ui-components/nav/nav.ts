@@ -10,7 +10,6 @@ import { NgOptimizedImage } from '@angular/common';
 import { Router, NavigationEnd, RouterOutlet, ActivatedRoute } from '@angular/router';
 import { filter } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -66,7 +65,6 @@ export class Nav implements OnInit {
   private readonly baseUrl = inject(API_BASE_URL);
   private readonly router = inject(Router);
   private readonly activatedRoute = inject(ActivatedRoute);
-  private readonly responsive = inject(BreakpointObserver);
   readonly authService = inject(AuthService);
   readonly newOrderService = inject(NewOrderService);
   readonly themeService = inject(ThemeService);
@@ -94,7 +92,7 @@ export class Nav implements OnInit {
     (document.activeElement as HTMLElement | null)?.blur?.();
   }
 
-  isCollapsed = signal(true);
+  isCollapsed = signal(false);
   currentRoute = signal('home');
 
   readonly headerTitle = computed(() => {
@@ -114,11 +112,6 @@ export class Nav implements OnInit {
         takeUntilDestroyed(),
       )
       .subscribe(() => this.updateCurrentRoute());
-
-    this.responsive
-      .observe([Breakpoints.Large])
-      .pipe(takeUntilDestroyed())
-      .subscribe((result) => this.isCollapsed.set(!result.matches));
   }
 
   ngOnInit(): void {
@@ -142,13 +135,5 @@ export class Nav implements OnInit {
 
   onLogout(): void {
     this.authService.logout();
-  }
-
-  showSider(): void {
-    this.isCollapsed.set(false);
-  }
-
-  hideSider(): void {
-    this.isCollapsed.set(true);
   }
 }

@@ -1,128 +1,159 @@
 <div class="main-wrapper p-0 p-md-4 pb-md-0">
-  <div class="feature-table-card new-order-container">
-    <div class="container-fluid h-100">
-      @if (
-        newOrderService.isSendingRequest() &&
-        newOrderService.listOfFood().length === 0 &&
-        newOrderService.listOfTable().length === 0
-      ) {
-        <div class="row h-100 p-3" role="status" aria-label="Loading new order">
-          <div class="col-12 col-xxl-3 d-none d-xxl-block">
-            @for (_ of [1, 2, 3, 4]; track $index) {
-              <div class="border-1 rounded-md shadow-sm p-3 mb-3">
+  <div class="new-order-shell">
+    @if (
+      newOrderService.isSendingRequest() &&
+      newOrderService.listOfFood().length === 0 &&
+      newOrderService.listOfTable().length === 0
+    ) {
+      <!-- SKELETON — mirrors the live layout: list rows in the left column, food grid on the right -->
+      <div class="row h-100 g-0" role="status" aria-label="Loading new order">
+        <!-- Tables column skeleton (desktop) -->
+        <aside class="col-xxl-auto tables-column d-none d-xxl-flex flex-column">
+          <div class="section-header">
+            <div>
+              <h3 class="section-title">Select a Table</h3>
+            </div>
+          </div>
+          <div class="tables-list">
+            @for (_ of [1, 2, 3, 4, 5, 6, 7, 8]; track $index) {
+              <div class="table-list-item table-list-item--skeleton">
                 <nz-skeleton
                   [nzActive]="true"
-                  [nzAvatar]="{ size: 'large', shape: 'square' }"
+                  [nzAvatar]="{ size: 'default', shape: 'square' }"
                   [nzTitle]="{ width: '60%' }"
-                  [nzParagraph]="{ rows: 1 }"
+                  [nzParagraph]="{ rows: 1, width: ['40%'] }"
                 ></nz-skeleton>
               </div>
             }
           </div>
-          <div class="col-12 col-xxl">
-            <div class="row g-3">
-              @for (_ of [1, 2, 3, 4, 5, 6]; track $index) {
-                <div class="col-12 col-md-6 col-xl-4">
-                  <div class="border-1 rounded-md shadow-sm p-3">
+        </aside>
+
+        <!-- Foods column skeleton -->
+        <section class="col-xxl foods-column d-flex flex-column">
+          <div class="foods-toolbar">
+            <div>
+              <h3 class="section-title">Add Food to Cart</h3>
+            </div>
+            <div class="foods-search-skeleton"></div>
+          </div>
+          <div class="row g-3 p-3 pt-2">
+            @for (_ of [1, 2, 3, 4, 5, 6, 7, 8]; track $index) {
+              <div class="col-12 col-sm-6 col-md-4 col-xxl-3">
+                <div class="food-card-skeleton">
+                  <div class="food-card-skeleton__image"></div>
+                  <div class="food-card-skeleton__body">
                     <nz-skeleton
                       [nzActive]="true"
-                      [nzAvatar]="{ size: 'large', shape: 'square' }"
-                      [nzTitle]="{ width: '60%' }"
-                      [nzParagraph]="{ rows: 2 }"
+                      [nzTitle]="{ width: '70%' }"
+                      [nzParagraph]="{ rows: 2, width: ['100%', '60%'] }"
                     ></nz-skeleton>
                   </div>
                 </div>
-              }
-            </div>
+              </div>
+            }
           </div>
-        </div>
-      } @else {
-        <!-- DESKTOP (xxl+) -->
-        <div class="d-none d-xxl-flex row h-100 g-0">
-          <!-- Tables column -->
-          <aside
-            class="col-xxl-3 h-100 overflow-auto search-results tables-column"
-            infiniteScroll
-            [infiniteScrollDistance]="2"
-            [infiniteScrollThrottle]="50"
-            (scrolled)="onTableScroll()"
-            [scrollWindow]="false"
-          >
-            <div class="sticky-top section-header">
-              <div class="section-title-text">
+        </section>
+      </div>
+    } @else {
+      <!-- DESKTOP (xxl+) -->
+      <div class="d-none d-xxl-flex row h-100 g-0">
+        <!-- Tables column -->
+        <aside
+          class="col-xxl-auto tables-column d-flex flex-column"
+          infiniteScroll
+          [infiniteScrollDistance]="2"
+          [infiniteScrollThrottle]="50"
+          (scrolled)="onTableScroll()"
+          [scrollWindow]="false"
+        >
+          <div class="section-header">
+            <div>
+              <h3 class="section-title">
                 Select a Table
                 <span class="section-count">{{ newOrderService.totalTable() }}</span>
-              </div>
+              </h3>
             </div>
-            <div class="d-flex flex-column gap-2 p-3">
-              @for (table of newOrderService.listOfTable(); track table.id) {
-                <div
-                  class="table-card"
-                  (click)="onTableSelect(table)"
-                  [class.active]="table.id.toString() === newOrderService.selectedTableId()"
-                  role="button"
-                  [attr.aria-label]="'Select table ' + table.tableNumber"
-                  tabindex="0"
-                  (keydown.enter)="onTableSelect(table)"
-                  (keydown.space)="onTableSelect(table); $event.preventDefault()"
-                >
-                  <div class="table-image-container">
-                    <img
-                      nz-image
-                      nzDisablePreview
-                      class="table-image"
-                      [nzSrc]="getTableImage(table.image)"
-                      [alt]="'Table ' + table.tableNumber"
-                      [nzFallback]="fallbackImage"
-                    />
-                  </div>
-                  <div class="table-card-meta">
-                    <div class="table-number">{{ table.tableNumber }}</div>
-                    <div class="table-seats">{{ table.numberOfSeats }} Seats</div>
-                  </div>
+          </div>
+          <div class="tables-list">
+            @for (table of newOrderService.listOfTable(); track table.id) {
+              <button
+                type="button"
+                class="table-list-item"
+                (click)="onTableSelect(table)"
+                [class.active]="table.id.toString() === newOrderService.selectedTableId()"
+                [attr.aria-label]="'Select table ' + table.tableNumber"
+              >
+                <img
+                  class="table-list-item__thumb"
+                  [src]="getTableImage(table.image)"
+                  [alt]="'Table ' + table.tableNumber"
+                  loading="lazy"
+                  (error)="onTableImageError($event)"
+                />
+                <div class="table-list-item__info">
+                  <div class="table-list-item__number">{{ table.tableNumber }}</div>
+                  <div class="table-list-item__seats">{{ table.numberOfSeats }} seats</div>
                 </div>
-              }
-            </div>
-          </aside>
+              </button>
+            }
 
-          <!-- Foods column -->
-          <section
-            class="col-xxl h-100 overflow-auto search-results position-relative foods-column"
-            infiniteScroll
-            [infiniteScrollDistance]="2"
-            [infiniteScrollThrottle]="50"
-            (scrolled)="onFoodScroll()"
-            [scrollWindow]="false"
-          >
-            @if (!newOrderService.selectedTableId()) {
-              <div class="warning-table-banner">
-                <div class="warning-banner-image">
-                  <img src="select_table.svg" alt="Select a table illustration" />
-                </div>
-                <div class="warning-banner-text">Select a table to start ordering</div>
-                <div class="warning-banner-subtext">Pick any table from the list on the left.</div>
+            @if (
+              newOrderService.isLoadingTables() && newOrderService.listOfTable().length > 0
+            ) {
+              <div class="list-loader" role="status" aria-label="Loading more tables">
+                <span nz-icon nzType="loading" nzTheme="outline"></span>
+                <span>Loading more tables…</span>
               </div>
-            } @else {
-              <div class="sticky-top foods-toolbar">
-                <div class="section-title-text">
+            } @else if (
+              newOrderService.listOfTable().length > 0 &&
+              newOrderService.listOfTable().length >= newOrderService.totalTable()
+            ) {
+              <div class="list-end" aria-hidden="true">— end of list —</div>
+            }
+          </div>
+        </aside>
+
+        <!-- Foods column -->
+        <section
+          class="col-xxl foods-column d-flex flex-column"
+          infiniteScroll
+          [infiniteScrollDistance]="2"
+          [infiniteScrollThrottle]="50"
+          (scrolled)="onFoodScroll()"
+          [scrollWindow]="false"
+        >
+          @if (!newOrderService.selectedTableId()) {
+            <div class="warning-table-banner">
+              <div class="warning-banner-image">
+                <img src="select_table.svg" alt="Select a table illustration" />
+              </div>
+              <div class="warning-banner-text">Select a table to start ordering</div>
+              <div class="warning-banner-subtext">Pick any table from the list on the left.</div>
+            </div>
+          } @else {
+            <div class="foods-toolbar">
+              <div>
+                <h3 class="section-title">
                   Add Food to Cart
                   <span class="section-count">{{ newOrderService.totalFood() }}</span>
-                </div>
-                <div class="foods-search">
-                  <nz-input-group [nzPrefix]="searchPrefix" nzSize="large">
-                    <input
-                      placeholder="Search Food"
-                      nz-input
-                      [ngModel]="searchFoodInput()"
-                      (ngModelChange)="onSearchFoodInputChange($event)"
-                      aria-label="Search food items"
-                    />
-                  </nz-input-group>
-                  <ng-template #searchPrefix>
-                    <span nz-icon nzType="search" nzTheme="outline" class="search-icon"></span>
-                  </ng-template>
-                </div>
+                </h3>
               </div>
+              <div class="foods-search">
+                <nz-input-group [nzPrefix]="searchPrefix" nzSize="large">
+                  <input
+                    placeholder="Search Food"
+                    nz-input
+                    [ngModel]="searchFoodInput()"
+                    (ngModelChange)="onSearchFoodInputChange($event)"
+                    aria-label="Search food items"
+                  />
+                </nz-input-group>
+                <ng-template #searchPrefix>
+                  <span nz-icon nzType="search" nzTheme="outline" class="search-icon"></span>
+                </ng-template>
+              </div>
+            </div>
+            <div class="foods-grid">
               <div class="row g-3 p-3 pt-2">
                 @for (food of newOrderService.listOfFood(); track food.id) {
                   <div class="col-12 col-sm-6 col-md-4 col-xxl-3">
@@ -175,92 +206,110 @@
                   </div>
                 }
               </div>
-            }
-          </section>
-        </div>
 
-        <!-- MOBILE / TABLET (< xxl) -->
-        <div class="d-flex d-xxl-none flex-column h-100">
-          <!-- Tables strip -->
-          <div
-            class="top-section search-results"
-            infiniteScroll
-            [infiniteScrollDistance]="2"
-            [infiniteScrollThrottle]="50"
-            (scrolled)="onTableScroll()"
-            [scrollWindow]="false"
-          >
-            <div class="section-header">
-              <div class="section-title-text">
-                Select a Table
-                <span class="section-count">{{ newOrderService.totalTable() }}</span>
-              </div>
-            </div>
-            <div class="d-flex flex-row gap-3 p-3 overflow-auto tables-strip-mobile">
-              @for (table of newOrderService.listOfTable(); track table.id) {
-                <div
-                  class="table-card-mobile"
-                  (click)="onTableSelect(table)"
-                  [class.active]="table.id.toString() === newOrderService.selectedTableId()"
-                  role="button"
-                  [attr.aria-label]="'Select table ' + table.tableNumber"
-                  tabindex="0"
-                  (keydown.enter)="onTableSelect(table)"
-                  (keydown.space)="onTableSelect(table); $event.preventDefault()"
-                >
-                  <div class="table-image-container-mobile">
-                    <img
-                      nzDisablePreview
-                      nz-image
-                      class="table-image"
-                      [nzSrc]="getTableImage(table.image)"
-                      [alt]="'Table ' + table.tableNumber"
-                      [nzFallback]="fallbackImage"
-                    />
-                  </div>
-                  <div class="table-number-mobile">{{ table.tableNumber }}</div>
+              @if (
+                newOrderService.isLoadingFoods() && newOrderService.listOfFood().length > 0
+              ) {
+                <div class="list-loader" role="status" aria-label="Loading more foods">
+                  <span nz-icon nzType="loading" nzTheme="outline"></span>
+                  <span>Loading more items…</span>
                 </div>
               }
             </div>
-          </div>
+          }
+        </section>
+      </div>
 
-          <!-- Foods grid -->
-          <div
-            class="bottom-section overflow-auto search-results"
-            infiniteScroll
-            [infiniteScrollDistance]="2"
-            [infiniteScrollThrottle]="50"
-            (scrolled)="onFoodScroll()"
-            [scrollWindow]="false"
-          >
-            @if (!newOrderService.selectedTableId()) {
-              <div class="warning-table-banner">
-                <div class="warning-banner-image">
-                  <img src="select_table.svg" alt="Select a table illustration" />
+      <!-- MOBILE / TABLET (< xxl) -->
+      <div class="d-flex d-xxl-none flex-column h-100">
+        <!-- Tables strip -->
+        <div
+          class="top-section"
+          infiniteScroll
+          [infiniteScrollDistance]="2"
+          [infiniteScrollThrottle]="50"
+          (scrolled)="onTableScroll()"
+          [scrollWindow]="false"
+        >
+          <div class="section-header">
+            <div>
+              <h3 class="section-title">
+                Select a Table
+                <span class="section-count">{{ newOrderService.totalTable() }}</span>
+              </h3>
+            </div>
+          </div>
+          <div class="tables-strip-mobile">
+            @for (table of newOrderService.listOfTable(); track table.id) {
+              <button
+                type="button"
+                class="table-card-mobile"
+                (click)="onTableSelect(table)"
+                [class.active]="table.id.toString() === newOrderService.selectedTableId()"
+                [attr.aria-label]="'Select table ' + table.tableNumber"
+              >
+                <div class="table-image-container-mobile">
+                  <img
+                    class="table-image"
+                    [src]="getTableImage(table.image)"
+                    [alt]="'Table ' + table.tableNumber"
+                    loading="lazy"
+                    (error)="onTableImageError($event)"
+                  />
                 </div>
-                <div class="warning-banner-text">Select a table to start ordering</div>
+                <div class="table-number-mobile">{{ table.tableNumber }}</div>
+              </button>
+            }
+            @if (
+              newOrderService.isLoadingTables() && newOrderService.listOfTable().length > 0
+            ) {
+              <div class="list-loader list-loader--inline" role="status" aria-label="Loading more tables">
+                <span nz-icon nzType="loading" nzTheme="outline"></span>
               </div>
-            } @else {
-              <div class="sticky-top foods-toolbar">
-                <div class="section-title-text d-none d-md-block">
+            }
+          </div>
+        </div>
+
+        <!-- Foods grid -->
+        <div
+          class="bottom-section"
+          infiniteScroll
+          [infiniteScrollDistance]="2"
+          [infiniteScrollThrottle]="50"
+          (scrolled)="onFoodScroll()"
+          [scrollWindow]="false"
+        >
+          @if (!newOrderService.selectedTableId()) {
+            <div class="warning-table-banner">
+              <div class="warning-banner-image">
+                <img src="select_table.svg" alt="Select a table illustration" />
+              </div>
+              <div class="warning-banner-text">Select a table to start ordering</div>
+            </div>
+          } @else {
+            <div class="foods-toolbar">
+              <div class="d-none d-md-block">
+                <h3 class="section-title">
                   Add Food to Cart
                   <span class="section-count">{{ newOrderService.totalFood() }}</span>
-                </div>
-                <div class="foods-search w-100 w-md-auto">
-                  <nz-input-group [nzPrefix]="searchPrefixMobile" nzSize="large">
-                    <input
-                      placeholder="Search Food"
-                      nz-input
-                      [ngModel]="searchFoodInput()"
-                      (ngModelChange)="onSearchFoodInputChange($event)"
-                      aria-label="Search food items"
-                    />
-                  </nz-input-group>
-                  <ng-template #searchPrefixMobile>
-                    <span nz-icon nzType="search" nzTheme="outline" class="search-icon"></span>
-                  </ng-template>
-                </div>
+                </h3>
               </div>
+              <div class="foods-search w-100 w-md-auto">
+                <nz-input-group [nzPrefix]="searchPrefixMobile" nzSize="large">
+                  <input
+                    placeholder="Search Food"
+                    nz-input
+                    [ngModel]="searchFoodInput()"
+                    (ngModelChange)="onSearchFoodInputChange($event)"
+                    aria-label="Search food items"
+                  />
+                </nz-input-group>
+                <ng-template #searchPrefixMobile>
+                  <span nz-icon nzType="search" nzTheme="outline" class="search-icon"></span>
+                </ng-template>
+              </div>
+            </div>
+            <div class="foods-grid">
               <div class="row g-3 p-3 pt-2">
                 @for (food of newOrderService.listOfFood(); track food.id) {
                   <div class="col-12 col-sm-6 col-xl-4">
@@ -313,10 +362,19 @@
                   </div>
                 }
               </div>
-            }
-          </div>
+
+              @if (
+                newOrderService.isLoadingFoods() && newOrderService.listOfFood().length > 0
+              ) {
+                <div class="list-loader" role="status" aria-label="Loading more foods">
+                  <span nz-icon nzType="loading" nzTheme="outline"></span>
+                  <span>Loading more items…</span>
+                </div>
+              }
+            </div>
+          }
         </div>
-      }
-    </div>
+      </div>
+    }
   </div>
 </div>

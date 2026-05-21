@@ -1,0 +1,330 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+/* --------------------------------------------------------------------------
+   Shell
+   -------------------------------------------------------------------------- */
+
+.ft-shell {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 0;
+}
+
+.ft-shell--card {
+  background: var(--ds-canvas);
+  border: 1px solid var(--ds-hairline);
+  border-radius: var(--ds-radius-md);
+  box-shadow: var(--ds-shadow-2);
+  overflow: hidden;
+  /* Desktop: 64px header + 48px outer page padding = 112. */
+  height: calc(100vh - 112px);
+  min-height: 420px;
+}
+
+@media (max-width: 768px) {
+  .ft-shell--card {
+    height: calc(100vh - 72px);
+    min-height: 0;
+    max-height: calc(100vh - 72px);
+    margin: 8px;
+  }
+
+  @supports (height: 100dvh) {
+    .ft-shell--card {
+      height: calc(100dvh - 72px);
+      max-height: calc(100dvh - 72px);
+    }
+  }
+}
+
+.ft-table {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.ft-shell ::ng-deep .ant-table-wrapper,
+.ft-shell ::ng-deep nz-table {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.ft-shell ::ng-deep .ant-spin-nested-loading,
+.ft-shell ::ng-deep .ant-spin-container {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.ft-shell ::ng-deep .ant-table {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  background: var(--ds-canvas) !important;
+}
+
+.ft-shell ::ng-deep .ant-table-container {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.ft-shell ::ng-deep .ant-table-body {
+  flex: 1 1 auto;
+  overflow-y: auto !important;
+}
+
+/* On desktop the columns fit the card so force the inner table to fill the
+   container width — ng-zorro otherwise renders it at the `nzScroll.x` value
+   and leaves an ugly empty strip on the right of wide cards. On mobile we
+   keep the table at its natural `nzScroll.x` width so the horizontal scroll
+   still works and columns don't collapse. */
+@media (min-width: 992px) {
+  .ft-shell ::ng-deep .ant-table-body table,
+  .ft-shell ::ng-deep .ant-table-header table,
+  .ft-shell ::ng-deep .ant-table-content > table {
+    width: 100% !important;
+    min-width: 100%;
+  }
+
+  .ft-shell ::ng-deep .ant-table-content,
+  .ft-shell ::ng-deep .ant-table-header {
+    overflow-x: hidden !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Orange header
+   -------------------------------------------------------------------------- */
+
+.ft-shell ::ng-deep .ant-table-thead > tr > th.ft-th {
+  background: var(--brand-surface) !important;
+  color: var(--ds-on-primary) !important;
+  font-family: var(--font-mono) !important;
+  font-size: var(--ds-body-sm-size) !important;
+  line-height: var(--ds-body-sm-line) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  font-weight: 400 !important;
+  border-bottom: none !important;
+  padding: 14px 16px !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ft-shell ::ng-deep .ant-table-thead > tr > th.ft-th--center {
+  text-align: center !important;
+}
+
+.ft-shell ::ng-deep .ant-table-thead > tr > th.ft-th--right {
+  text-align: right !important;
+}
+
+.ft-shell ::ng-deep .ant-table-thead > tr > th.ft-th--actions {
+  padding: 8px 12px !important;
+  text-align: center !important;
+}
+
+/* Hide the default ng-zorro column divider — it doesn't read on orange. */
+.ft-shell ::ng-deep .ant-table-thead > tr > th.ft-th::before {
+  background: rgba(255, 255, 255, 0.2) !important;
+  height: 1em !important;
+  opacity: 1 !important;
+}
+
+/* Match the scrollbar gutter cell and fixed-header wrapper to the orange band
+   so the right edge stays flush instead of showing a canvas-coloured stripe. */
+.ft-shell ::ng-deep .ant-table-thead > tr > th.ant-table-cell-scrollbar,
+.ft-shell ::ng-deep .ant-table-cell.ant-table-cell-scrollbar {
+  background: var(--brand-surface) !important;
+  border-bottom: none !important;
+  box-shadow: none !important;
+}
+
+.ft-shell ::ng-deep .ant-table-header.nz-table-hide-scrollbar,
+.ft-shell ::ng-deep .ant-table-header.ant-table-hide-scrollbar,
+.ft-shell ::ng-deep .ant-table.ant-table-fixed-header,
+.ft-shell ::ng-deep .ant-table.ant-table-fixed-header .ant-table-header,
+.ft-shell ::ng-deep .ant-table-fixed-column .ant-table-header,
+.ft-shell ::ng-deep .ant-table-header {
+  background: var(--brand-surface) !important;
+  scrollbar-color: var(--brand-surface) var(--brand-surface);
+}
+
+.ft-shell ::ng-deep .ant-table-header.nz-table-hide-scrollbar::-webkit-scrollbar,
+.ft-shell ::ng-deep .ant-table-header.ant-table-hide-scrollbar::-webkit-scrollbar {
+  background-color: var(--brand-surface) !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+.ft-shell ::ng-deep .ant-table-header.nz-table-hide-scrollbar::-webkit-scrollbar-track,
+.ft-shell ::ng-deep .ant-table-header.ant-table-hide-scrollbar::-webkit-scrollbar-track,
+.ft-shell ::ng-deep .ant-table-header.nz-table-hide-scrollbar::-webkit-scrollbar-thumb,
+.ft-shell ::ng-deep .ant-table-header.ant-table-hide-scrollbar::-webkit-scrollbar-thumb,
+.ft-shell ::ng-deep .ant-table-header.nz-table-hide-scrollbar::-webkit-scrollbar-corner,
+.ft-shell ::ng-deep .ant-table-header.ant-table-hide-scrollbar::-webkit-scrollbar-corner {
+  background-color: var(--brand-surface) !important;
+}
+
+/* --------------------------------------------------------------------------
+   Body — compact rows, theme-aware
+   -------------------------------------------------------------------------- */
+
+.ft-shell ::ng-deep .ant-table-tbody > tr > td.ft-td {
+  background: var(--ds-canvas) !important;
+  color: var(--ds-ink) !important;
+  font-family: var(--font-sans) !important;
+  font-size: var(--ds-body-sm-size) !important;
+  line-height: var(--ds-body-sm-line) !important;
+  letter-spacing: var(--ds-body-sm-tracking) !important;
+  padding: 8px 14px !important;
+  border-bottom: 1px solid var(--ds-hairline) !important;
+  vertical-align: middle;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ft-shell ::ng-deep .ant-table-tbody > tr > td.ft-td--center {
+  text-align: center !important;
+}
+
+.ft-shell ::ng-deep .ant-table-tbody > tr > td.ft-td--right {
+  text-align: right !important;
+}
+
+.ft-shell ::ng-deep .ant-table-tbody > tr > td.ft-td--actions {
+  padding: 6px 12px !important;
+  text-align: center !important;
+}
+
+.ft-shell ::ng-deep .ant-table-tbody > tr:hover > td.ft-td {
+  background: var(--ds-canvas-soft) !important;
+}
+
+.ft-shell ::ng-deep .ant-table-tbody > tr:last-child > td.ft-td {
+  border-bottom: none !important;
+}
+
+.ft-shell ::ng-deep .ant-table-tbody > tr.ft-row--skeleton > td {
+  padding: 10px 14px !important;
+}
+
+.ft-shell ::ng-deep .ant-table-tbody > tr.ft-row--empty > td.ft-empty {
+  text-align: center;
+  color: var(--ds-mute) !important;
+  font-size: var(--ds-body-sm-size) !important;
+  padding: 32px 14px !important;
+  border-bottom: none !important;
+}
+
+/* --------------------------------------------------------------------------
+   Add button (rendered in the actions header cell)
+   -------------------------------------------------------------------------- */
+
+.ft-add-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 12px;
+  background: var(--ds-on-primary);
+  color: var(--brand-surface);
+  border: 1px solid var(--ds-on-primary);
+  border-radius: var(--ds-radius-sm);
+  font-family: var(--font-sans);
+  font-size: var(--ds-body-sm-size);
+  font-weight: 600;
+  letter-spacing: 0;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  text-transform: none;
+}
+
+.ft-add-btn:hover {
+  background: var(--ds-canvas-soft);
+  color: var(--brand-surface);
+}
+
+.ft-add-btn:active {
+  transform: translateY(1px);
+}
+
+.ft-add-btn .anticon {
+  font-size: 14px;
+}
+
+/* --------------------------------------------------------------------------
+   Pagination — fixed at the bottom of the card, no surface stripe
+   -------------------------------------------------------------------------- */
+
+.ft-shell ::ng-deep .ant-table-pagination.ant-pagination {
+  flex: 0 0 auto;
+  border-top: 1px solid var(--ds-hairline);
+  margin: 0 !important;
+  padding: 8px 14px !important;
+  background: var(--ds-canvas) !important;
+}
+
+/* --------------------------------------------------------------------------
+   Embedded mode (no card wrap) — used by dashboard overview
+   -------------------------------------------------------------------------- */
+
+.ft-shell:not(.ft-shell--card) ::ng-deep .ant-table {
+  background: transparent !important;
+}
+
+.ft-shell:not(.ft-shell--card) ::ng-deep .ant-table-body,
+.ft-shell:not(.ft-shell--card) ::ng-deep .ant-table-content,
+.ft-shell:not(.ft-shell--card) ::ng-deep .ant-table-container {
+  background: transparent !important;
+}
+
+.ft-shell:not(.ft-shell--card) ::ng-deep .ant-table-tbody > tr > td.ft-td {
+  background: transparent !important;
+}
+
+.ft-shell:not(.ft-shell--card) ::ng-deep .ant-table-tbody > tr:hover > td.ft-td {
+  background: var(--ds-canvas-soft) !important;
+}
+
+/* --------------------------------------------------------------------------
+   Mobile — tighten chrome and make sure the inner horizontal scroll feels
+   right with touch. On phones the columns keep their natural `nzScroll.x`
+   width (the desktop full-width override above is intentionally not applied
+   here) so the table doesn't collapse and content stays legible.
+   -------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+  .ft-shell ::ng-deep .ant-table-thead > tr > th.ft-th {
+    padding: 10px 12px !important;
+    font-size: 13px !important;
+    line-height: 18px !important;
+  }
+
+  .ft-shell ::ng-deep .ant-table-tbody > tr > td.ft-td {
+    padding: 8px 12px !important;
+  }
+
+  .ft-shell ::ng-deep .ant-table-pagination.ant-pagination {
+    padding: 8px 10px !important;
+  }
+
+  /* Touch-friendly horizontal scroll inside the body. */
+  .ft-shell ::ng-deep .ant-table-body,
+  .ft-shell ::ng-deep .ant-table-content {
+    -webkit-overflow-scrolling: touch;
+  }
+}

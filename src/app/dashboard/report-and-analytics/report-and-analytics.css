@@ -35,7 +35,7 @@
   line-height: var(--ds-caption-line);
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: var(--ds-mute);
+  color: var(--brand-surface);
   margin: 0 0 4px 0;
 }
 
@@ -58,7 +58,7 @@
 /* nz-select inside report */
 .period-selectors ::ng-deep .ant-select-selector {
   border-radius: var(--ds-radius-sm) !important;
-  border-color: var(--ds-hairline) !important;
+  border-color: var(--ds-primary-soft) !important;
   background: var(--ds-canvas) !important;
   height: 32px !important;
   font-family: var(--font-sans) !important;
@@ -71,14 +71,15 @@
   line-height: 30px !important;
 }
 
-.period-selectors ::ng-deep .ant-select:hover .ant-select-selector {
-  border-color: var(--ds-hairline-strong) !important;
+.period-selectors ::ng-deep .ant-select:hover .ant-select-selector,
+.period-selectors ::ng-deep .ant-select-focused .ant-select-selector {
+  border-color: var(--brand-surface) !important;
 }
 
 /* ----- Stat cards (Vercel card-marketing chrome) ----- */
 .stat-card {
   background: var(--ds-canvas);
-  border: 1px solid var(--ds-hairline);
+  border: 1px solid var(--ds-primary-soft);
   border-radius: var(--ds-radius-md);
   padding: 20px;
   display: flex;
@@ -89,37 +90,30 @@
 }
 
 .stat-card:hover {
-  border-color: var(--ds-hairline-strong);
+  border-color: var(--brand-surface);
 }
 
+/* All stat icons share the brand-surface treatment — orange tile with white
+   glyph — matching the dashboard overview cards. */
 .stat-icon {
   width: 40px;
   height: 40px;
   border-radius: var(--ds-radius-sm);
-  background: var(--ds-canvas-soft);
-  border: 1px solid var(--ds-hairline);
+  background: var(--brand-surface);
+  border: 1px solid var(--brand-surface);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  color: var(--ds-ink);
+  color: var(--ds-on-primary);
 }
 
-.stat-icon .anticon {
-  font-size: 18px;
-  color: var(--ds-ink) !important;
-}
-
-.stat-icon.icon-error .anticon {
-  color: var(--ds-error) !important;
-}
-
-.stat-icon.icon-success .anticon {
-  color: var(--ds-link) !important;
-}
-
+.stat-icon .anticon,
+.stat-icon.icon-error .anticon,
+.stat-icon.icon-success .anticon,
 .stat-icon.icon-violet .anticon {
-  color: var(--ds-violet) !important;
+  font-size: 18px;
+  color: var(--ds-on-primary) !important;
 }
 
 .stat-info {
@@ -177,7 +171,7 @@
 /* ----- Chart wrappers ----- */
 .chart-wrapper {
   background: var(--ds-canvas-soft);
-  border: 1px solid var(--ds-hairline);
+  border: 1px solid var(--ds-primary-soft);
   border-radius: var(--ds-radius-md);
   padding: 20px 20px 32px;
   min-height: 560px;

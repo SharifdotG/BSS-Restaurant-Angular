@@ -1,27 +1,28 @@
 import { Component, OnInit, effect, inject, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { EmployeesService } from '../employees.service';
-import { NzTableModule, NzTableQueryParams } from 'ng-zorro-antd/table';
+import { NzTableQueryParams } from 'ng-zorro-antd/table';
 import { NzAvatarComponent } from 'ng-zorro-antd/avatar';
 import { NzIconDirective } from 'ng-zorro-antd/icon';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzTooltipDirective } from 'ng-zorro-antd/tooltip';
-import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 import { AddEmployee } from '../add-employee/add-employee';
 import { API_BASE_URL } from '../../app.config';
 import { ChangeDetectionStrategy } from '@angular/core';
+import { FeatureTable } from '../../shared/feature-table/feature-table';
+import { FeatureTableColumnDirective } from '../../shared/feature-table/feature-table-column.directive';
 
 @Component({
   selector: 'app-employee-list',
   providers: [NzModalService],
   imports: [
-    NzTableModule,
     NzAvatarComponent,
     NzIconDirective,
     AddEmployee,
     NzTooltipDirective,
-    NzSkeletonModule,
     DatePipe,
+    FeatureTable,
+    FeatureTableColumnDirective,
   ],
   templateUrl: './employee-list.html',
   styleUrl: './employee-list.css',
@@ -33,7 +34,7 @@ export class EmployeeList implements OnInit {
   imageBaseUrl = inject(API_BASE_URL) + '/images/user/';
   private modal = inject(NzModalService);
 
-  pageSize = signal(10);
+  pageSize = signal(15);
   pageIndex = signal(1);
 
   constructor() {

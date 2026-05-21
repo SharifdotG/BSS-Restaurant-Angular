@@ -24,6 +24,10 @@
   --ds-primary-soft: #ffe0c7;
   --ds-primary-deep: #b3460f;
 
+  /* Brand surface — solid orange used for full-bleed brand backgrounds
+     (login carousel, dashboard greeting band, stat-card icon tiles, sider). */
+  --brand-surface: #ff6c1f;
+
   /* Ink — still used for body text on light surfaces and for dark polarity bands */
   --ds-ink: #1a1a1a;
   --ds-on-primary: #ffffff;
@@ -175,6 +179,10 @@
   /* Brand primary stays orange — pops on dark gray */
   --ds-primary-soft: rgba(255, 108, 31, 0.18);
   --ds-primary-deep: #ffb285;
+
+  /* Brand surface — deeper, less luminous orange on dark theme so full-bleed
+     brand panels don't sear against the gray canvas. */
+  --brand-surface: #b3460f;
 
   /* Softs become slightly tinted dark tones for badges */
   --ds-link-bg-soft: rgba(0, 112, 243, 0.18);
@@ -587,12 +595,51 @@ p {
   background-color: var(--ds-primary-hover);
 }
 
+/* Cell content helpers used inside <app-feature-table> column templates. */
+.ft-cell-text {
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.ft-row-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+}
+
+/* Row-action buttons inside a feature-table actions cell adopt the brand
+   surface so they read as the primary affordance on the row. */
+.ft-td--actions .drop-down-button {
+  background: var(--brand-surface);
+  border-color: var(--brand-surface);
+  color: var(--ds-on-primary);
+}
+
+.ft-td--actions .drop-down-button span {
+  color: var(--ds-on-primary);
+}
+
+.ft-td--actions .drop-down-button:hover {
+  background: var(--ds-primary-hover);
+  border-color: var(--ds-primary-hover);
+}
+
+.ft-td--actions .drop-down-button:hover span {
+  color: var(--ds-on-primary);
+}
+
 .drop-down-button,
 .edit-button {
   background-color: var(--ds-canvas);
   border-radius: var(--ds-radius-sm);
-  height: 36px;
-  width: 36px;
+  height: 32px;
+  width: 32px;
   border: 1px solid var(--ds-hairline);
   transition: var(--transition-base);
   color: var(--ds-ink);
@@ -601,7 +648,7 @@ p {
 .drop-down-button span,
 .edit-button span {
   color: var(--ds-ink);
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 500;
   letter-spacing: 1px;
   transition: color var(--transition-fast);
@@ -1637,8 +1684,8 @@ p {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 52px;
-  height: 52px;
+  width: 36px;
+  height: 36px;
   background: var(--ds-canvas);
   color: var(--ds-ink);
   border: 1px dashed var(--ds-hairline-strong);
@@ -1656,7 +1703,7 @@ p {
 }
 
 .add-employee-to-table-button .anticon {
-  font-size: 18px;
+  font-size: 14px;
   color: var(--ds-ink);
 }
 

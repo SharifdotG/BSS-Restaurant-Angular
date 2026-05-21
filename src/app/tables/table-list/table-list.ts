@@ -1,30 +1,29 @@
 import { ChangeDetectionStrategy, Component, OnInit, effect, inject } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { NzTableModule, NzTableQueryParams } from 'ng-zorro-antd/table';
+import { NzTableQueryParams } from 'ng-zorro-antd/table';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 import { TablesService } from '../tables.service';
 import { AssignEmployee } from '../assign-employee/assign-employee';
 import { AddTable } from '../add-table/add-table';
 import { EmployeeTooltip } from '../employee-tooltip/employee-tooltip';
 import { API_BASE_URL } from '../../app.config';
+import { FeatureTable } from '../../shared/feature-table/feature-table';
+import { FeatureTableColumnDirective } from '../../shared/feature-table/feature-table-column.directive';
 
 @Component({
   selector: 'app-table-list',
   imports: [
-    NzTableModule,
     NzAvatarModule,
     NzIconModule,
     NzTooltipModule,
-    NzSkeletonModule,
     AddTable,
     AssignEmployee,
     EmployeeTooltip,
+    FeatureTable,
+    FeatureTableColumnDirective,
   ],
   providers: [NzModalService],
   templateUrl: './table-list.html',
@@ -34,14 +33,12 @@ import { API_BASE_URL } from '../../app.config';
 export class TableList implements OnInit {
   readonly tablesService = inject(TablesService);
   private readonly modal = inject(NzModalService);
-  private readonly responsive = inject(BreakpointObserver);
 
   readonly listOfTables = this.tablesService.listOfTables;
   readonly listOfEmployees = this.tablesService.listOfEmployees;
   readonly imageBaseUrl = inject(API_BASE_URL) + '/images/table/';
 
-  tableWidthConfig = ['120px', '140px', '110px', '160px', 'auto', '180px'];
-  pageSize = 10;
+  pageSize = 15;
   pageIndex = 1;
 
   constructor() {
@@ -59,15 +56,6 @@ export class TableList implements OnInit {
         this.tablesService.triggerRefresh.set(false);
       }
     });
-
-    this.responsive
-      .observe([Breakpoints.Large, Breakpoints.XLarge])
-      .pipe(takeUntilDestroyed())
-      .subscribe((result) => {
-        this.tableWidthConfig = result.matches
-          ? ['120px', '160px', '130px', '180px', 'auto', '180px']
-          : ['120px', '100px', '70px', '110px', 'auto', '180px'];
-      });
   }
 
   ngOnInit(): void {

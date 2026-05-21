@@ -1,112 +1,65 @@
 <div class="main-wrapper p-0 p-md-4 pb-md-0">
-  <div class="feature-table-card">
-    <nz-table
-      nzShowSizeChanger
-      nzPaginationType="default"
-      [nzScroll]="{ y: 'calc(100% - 56px)', x: '1000px' }"
-      [nzWidthConfig]="['120px', 'auto', 'auto', 'auto', 'auto', 'auto', '180px']"
-      nzTableLayout="auto"
-      [nzData]="listOfFood()"
-      [nzFrontPagination]="false"
-      [nzTotal]="foodService.totalFood()"
-      [nzPageSize]="pageSize"
-      [nzPageIndex]="pageIndex"
-      (nzQueryParams)="onQueryParamsChange($event)"
-      [nzShowTotal]="totalTemplate"
-    >
-      <ng-template #totalTemplate let-range="range" let-total>
-        {{ range[0] }}-{{ range[1] }} of {{ total }} items
-      </ng-template>
-      <thead>
-        <tr>
-          <th class="custom-table-title" nzColumnKey="image"></th>
-          <th class="custom-table-title truncate" nzColumnKey="name">Name</th>
-          <th class="custom-table-title truncate" nzColumnKey="price">Price</th>
-          <th class="custom-table-title truncate" nzColumnKey="designation">Discount Type</th>
-          <th class="custom-table-title truncate" nzColumnKey="joindate">Discount</th>
-          <th class="custom-table-title truncate" nzColumnKey="phone">Discounted Price</th>
-          <th class="custom-table-title-button" nzColumnKey="action">
-            <button
-              class="add-food-button"
-              aria-label="Add New Food Item"
-              (click)="foodService.showAddModal.set(true)"
-            >
-              <span nz-icon nzType="plus" nzTheme="outline" aria-hidden="true"></span>
-              <span> Add Food Item </span>
-            </button>
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        @if (foodService.isSendingRequest()) {
-          @for (_ of [1, 2, 3, 4, 5]; track $index) {
-            <tr class="custom-table-row">
-              <td colspan="7">
-                <nz-skeleton
-                  [nzActive]="true"
-                  [nzTitle]="false"
-                  [nzParagraph]="{ rows: 1, width: '100%' }"
-                ></nz-skeleton>
-              </td>
-            </tr>
-          }
-        } @else {
-          @for (data of listOfFood(); track data.id) {
-            <tr class="custom-table-row">
-              <td>
-                <div class="d-flex justify-content-center">
-                  <nz-avatar
-                    [nzSize]="52"
-                    nzIcon="warning"
-                    [nzSrc]="getImageUrl(data.image)"
-                  ></nz-avatar>
-                </div>
-              </td>
-              <td class="truncate">
-                {{ data.name }}
-              </td>
-              <td class="truncate">
-                {{ data.price }}
-              </td>
-              <td class="truncate">
-                {{ data.discountType }}
-              </td>
-              <td class="truncate">
-                {{ getDiscountDisplay(data) }}
-              </td>
-              <td class="truncate">
-                {{ data.discountPrice }}
-              </td>
-              <td>
-                <div class="d-flex justify-content-center gap-2">
-                  <button
-                    (click)="editFood(data.id)"
-                    class="drop-down-button drop-shadow-md"
-                    nz-tooltip
-                    nzTooltipTitle="Edit food item"
-                    nzTooltipPlacement="top"
-                    aria-label="Edit Food"
-                  >
-                    <span nz-icon nzType="edit" nzTheme="outline"></span>
-                  </button>
-                  <button
-                    (click)="deleteFood(data.id)"
-                    class="drop-down-button drop-shadow-md"
-                    nz-tooltip
-                    nzTooltipTitle="Delete food item"
-                    nzTooltipPlacement="top"
-                    aria-label="Delete Food"
-                  >
-                    <span nz-icon nzType="delete" nzTheme="outline"></span>
-                  </button>
-                </div>
-              </td>
-            </tr>
-          }
-        }
-      </tbody>
-    </nz-table>
-  </div>
+  <app-feature-table
+    [data]="listOfFood()"
+    [loading]="foodService.isSendingRequest()"
+    [total]="foodService.totalFood()"
+    [pageSize]="pageSize"
+    [pageIndex]="pageIndex"
+    scrollX="1000px"
+    addLabel="Add Food Item"
+    emptyText="No food items found."
+    (addClick)="foodService.showAddModal.set(true)"
+    (queryParamsChange)="onQueryParamsChange($event)"
+  >
+    <ng-template ftColumn="image" ftWidth="80px" ftAlign="center" let-row>
+      <nz-avatar [nzSize]="36" nzIcon="warning" [nzSrc]="getImageUrl(row.image)"></nz-avatar>
+    </ng-template>
+
+    <ng-template ftColumn="name" ftLabel="Name" ftWidth="auto" let-row>
+      <span class="ft-cell-text">{{ row.name }}</span>
+    </ng-template>
+
+    <ng-template ftColumn="price" ftLabel="Price" ftWidth="auto" let-row>
+      <span class="ft-cell-text">{{ row.price }}</span>
+    </ng-template>
+
+    <ng-template ftColumn="discountType" ftLabel="Discount Type" ftWidth="auto" let-row>
+      <span class="ft-cell-text">{{ row.discountType }}</span>
+    </ng-template>
+
+    <ng-template ftColumn="discount" ftLabel="Discount" ftWidth="auto" let-row>
+      <span class="ft-cell-text">{{ getDiscountDisplay(row) }}</span>
+    </ng-template>
+
+    <ng-template ftColumn="discountPrice" ftLabel="Discounted Price" ftWidth="auto" let-row>
+      <span class="ft-cell-text">{{ row.discountPrice }}</span>
+    </ng-template>
+
+    <ng-template ftColumn="actions" ftWidth="180px" ftAlign="center" let-row>
+      <div class="ft-row-actions">
+        <button
+          (click)="editFood(row.id)"
+          class="drop-down-button drop-shadow-md"
+          nz-tooltip
+          nzTooltipTitle="Edit food item"
+          nzTooltipPlacement="top"
+          aria-label="Edit Food"
+        >
+          <span nz-icon nzType="edit" nzTheme="outline"></span>
+        </button>
+        <button
+          (click)="deleteFood(row.id)"
+          class="drop-down-button drop-shadow-md"
+          nz-tooltip
+          nzTooltipTitle="Delete food item"
+          nzTooltipPlacement="top"
+          aria-label="Delete Food"
+        >
+          <span nz-icon nzType="delete" nzTheme="outline"></span>
+        </button>
+      </div>
+    </ng-template>
+  </app-feature-table>
 </div>
 
 <app-add-food></app-add-food>

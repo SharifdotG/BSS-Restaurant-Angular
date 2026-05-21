@@ -1,28 +1,27 @@
 import { ChangeDetectionStrategy, Component, OnInit, effect, inject } from '@angular/core';
-import { NzTableModule, NzTableQueryParams } from 'ng-zorro-antd/table';
+import { NzTableQueryParams } from 'ng-zorro-antd/table';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
-import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 
 import { FoodsService } from '../../foods/foods.service';
 import { FoodItem } from '../../foods/foods.interface';
 import { AddFood } from '../add-food/add-food';
 import { API_BASE_URL } from '../../app.config';
+import { FeatureTable } from '../../shared/feature-table/feature-table';
+import { FeatureTableColumnDirective } from '../../shared/feature-table/feature-table-column.directive';
 
 @Component({
   selector: 'app-food-list',
   providers: [NzModalService],
   imports: [
-    NzTableModule,
     NzAvatarModule,
     NzIconModule,
     NzTooltipModule,
-    NzButtonModule,
-    NzSkeletonModule,
     AddFood,
+    FeatureTable,
+    FeatureTableColumnDirective,
   ],
   templateUrl: './food-list.html',
   styleUrl: './food-list.css',
@@ -32,7 +31,7 @@ export class FoodList implements OnInit {
   foodService: FoodsService = inject(FoodsService);
   private modal = inject(NzModalService);
 
-  pageSize = 10;
+  pageSize = 15;
   pageIndex = 1;
   imageBaseUrl = inject(API_BASE_URL) + '/images/food/';
 

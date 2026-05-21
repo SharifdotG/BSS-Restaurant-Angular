@@ -51,6 +51,7 @@ export class AddFood {
   // Local component state using signals
   readonly modalWidth = signal('80vw');
   readonly discType = signal('');
+  readonly isDiscountNone = signal(true);
   readonly image = signal('');
   readonly imageB64 = signal('');
   readonly fileList = signal<NzUploadFile[]>([]);
@@ -110,11 +111,14 @@ export class AddFood {
       .pipe(takeUntilDestroyed())
       .subscribe((value) => {
         if (value === 'None') {
+          this.isDiscountNone.set(true);
+          this.discType.set('');
           this.validateForm.controls.discountAmount.disable();
           this.validateForm.controls.discountAmount.setValue('0');
           this.validateForm.controls.discountedPrice.disable();
           this.validateForm.controls.discountedPrice.setValue('0');
         } else {
+          this.isDiscountNone.set(false);
           this.discType.set(value === 'Flat' ? ' ৳' : ' %');
           this.validateForm.controls.discountAmount.enable();
           this.validateForm.controls.discountedPrice.enable();

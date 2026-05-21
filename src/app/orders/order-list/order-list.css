@@ -17,9 +17,7 @@
 }
 
 .order-item-container {
-  padding: 16px 24px 24px;
-  max-width: 1400px;
-  margin: 0 auto;
+  padding: 16px 0 24px;
 }
 
 /* Filter row */

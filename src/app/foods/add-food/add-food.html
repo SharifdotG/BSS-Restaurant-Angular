@@ -107,7 +107,7 @@
           </nz-form-item>
         </div>
         <div class="col-12 col-md-4">
-          <nz-form-item>
+          <nz-form-item [class.is-field-disabled]="isDiscountNone()">
             <nz-form-label nzNoColon>
               Discount amount<span class="ds-form-label-unit">{{ discType() }}</span>
             </nz-form-label>
@@ -125,7 +125,7 @@
           </nz-form-item>
         </div>
         <div class="col-12 col-md-4">
-          <nz-form-item>
+          <nz-form-item [class.is-field-disabled]="isDiscountNone()">
             <nz-form-label nzNoColon>Final price (৳)</nz-form-label>
             <nz-form-control>
               <input nz-input formControlName="discountedPrice" placeholder="0" />

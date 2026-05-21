@@ -2,9 +2,7 @@ import { Component, ChangeDetectionStrategy, inject, signal } from '@angular/cor
 import { FormsModule } from '@angular/forms';
 import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzImageModule } from 'ng-zorro-antd/image';
 import { NzInputModule } from 'ng-zorro-antd/input';
-import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { Subject, debounceTime } from 'rxjs';
@@ -22,9 +20,7 @@ import { CartItem } from '../../orders/orders.model';
     InfiniteScrollDirective,
     NzSkeletonModule,
     NzIconModule,
-    NzImageModule,
     NzInputModule,
-    NzButtonModule,
     NzTooltipModule,
   ],
   templateUrl: './new-order.html',
@@ -78,6 +74,15 @@ export class NewOrder {
   /** Fallback for `<img (error)>` so a missing food image renders the data-URL
    *  placeholder instead of a broken-image icon. */
   onFoodImageError(event: Event): void {
+    const img = event.target as HTMLImageElement | null;
+    if (!img) return;
+    if (img.src !== this.fallbackImage) {
+      img.src = this.fallbackImage;
+    }
+  }
+
+  /** Same fallback for table thumbnails in the redesigned list rows. */
+  onTableImageError(event: Event): void {
     const img = event.target as HTMLImageElement | null;
     if (!img) return;
     if (img.src !== this.fallbackImage) {

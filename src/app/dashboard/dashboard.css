@@ -1,14 +1,6 @@
-.dashboard-root {
-  padding: 24px;
-  max-width: 1400px;
-  margin: 0 auto;
-}
-
-@media (max-width: 768px) {
-  .dashboard-root {
-    padding: 16px 12px;
-  }
-}
+/* Container padding comes from main-wrapper (.p-md-4); no extra max-width
+   centering so the gap to the sidebar stays constant in both collapsed and
+   expanded states, matching the other feature pages. */
 
 /* ----- Tabs (the Vercel `tab-ghost` pill row) ----- */
 .dashboard-tabs ::ng-deep .ant-tabs-nav {
@@ -43,13 +35,13 @@
 }
 
 .dashboard-tabs ::ng-deep .ant-tabs-tab.ant-tabs-tab-active {
-  background: var(--ds-canvas-soft) !important;
-  border-color: var(--ds-hairline) !important;
+  background: var(--brand-surface) !important;
+  border-color: var(--brand-surface) !important;
 }
 
 .dashboard-tabs ::ng-deep .ant-tabs-tab-active .ant-tabs-tab-btn,
 .dashboard-tabs ::ng-deep .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
-  color: var(--ds-ink) !important;
+  color: var(--ds-on-primary) !important;
   font-weight: 600 !important;
   text-shadow: none !important;
 }
@@ -59,10 +51,10 @@
   display: none !important;
 }
 
-/* ----- Greeting band (mesh-gradient backdrop) ----- */
+/* ----- Greeting band ----- */
 .greeting-band {
-  background: var(--ds-canvas);
-  border: 1px solid var(--ds-hairline);
+  background: var(--brand-surface);
+  border: 1px solid var(--brand-surface);
   border-radius: var(--ds-radius-lg);
   padding: 32px 28px;
   margin-bottom: 24px;
@@ -79,7 +71,8 @@
   line-height: var(--ds-caption-line);
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: var(--ds-mute);
+  color: var(--ds-on-primary);
+  opacity: 0.85;
   margin: 0 0 12px 0;
 }
 
@@ -89,7 +82,7 @@
   line-height: var(--ds-display-lg-line);
   letter-spacing: var(--ds-display-lg-tracking);
   font-weight: 600;
-  color: var(--ds-ink);
+  color: var(--ds-on-primary);
   margin: 0 0 8px 0;
 }
 
@@ -97,7 +90,7 @@
   font-family: var(--font-sans);
   font-size: var(--ds-body-md-size);
   line-height: var(--ds-body-md-line);
-  color: var(--ds-body);
+  color: var(--ds-on-primary);
   margin: 0;
 }
 
@@ -132,67 +125,23 @@
   box-shadow: var(--ds-shadow-3);
 }
 
+/* All stat card icons share the orange theme color */
 .stat-icon {
   width: 40px;
   height: 40px;
   border-radius: var(--ds-radius-sm);
-  background: var(--ds-canvas-soft);
-  border: 1px solid var(--ds-hairline);
+  background: var(--brand-surface);
+  border: 1px solid var(--brand-surface);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  color: var(--ds-ink);
+  color: var(--ds-on-primary);
 }
 
 .stat-icon .anticon {
   font-size: 18px;
-}
-
-/* Restaurant palette: each stat card gets a distinct tint so the dashboard
-   reads as colorful while keeping the Geist chrome consistent. */
-.row > .col-6:nth-child(1) .stat-icon,
-.row > .col-xl-3:nth-child(1) .stat-icon {
-  background: var(--ds-card-peach);
-  border-color: var(--ds-primary-soft);
-  color: var(--ds-primary-deep);
-}
-.row > .col-6:nth-child(1) .stat-icon .anticon,
-.row > .col-xl-3:nth-child(1) .stat-icon .anticon {
-  color: var(--ds-primary-deep) !important;
-}
-
-.row > .col-6:nth-child(2) .stat-icon,
-.row > .col-xl-3:nth-child(2) .stat-icon {
-  background: var(--ds-card-mint);
-  border-color: var(--ds-success-soft);
-  color: var(--ds-success-deep);
-}
-.row > .col-6:nth-child(2) .stat-icon .anticon,
-.row > .col-xl-3:nth-child(2) .stat-icon .anticon {
-  color: var(--ds-success-deep) !important;
-}
-
-.row > .col-6:nth-child(3) .stat-icon,
-.row > .col-xl-3:nth-child(3) .stat-icon {
-  background: var(--ds-card-lemon);
-  border-color: var(--ds-warning-soft);
-  color: var(--ds-warning-deep);
-}
-.row > .col-6:nth-child(3) .stat-icon .anticon,
-.row > .col-xl-3:nth-child(3) .stat-icon .anticon {
-  color: var(--ds-warning-deep) !important;
-}
-
-.row > .col-6:nth-child(4) .stat-icon,
-.row > .col-xl-3:nth-child(4) .stat-icon {
-  background: var(--ds-card-sky);
-  border-color: var(--ds-link-bg-soft);
-  color: var(--ds-link-deep);
-}
-.row > .col-6:nth-child(4) .stat-icon .anticon,
-.row > .col-xl-3:nth-child(4) .stat-icon .anticon {
-  color: var(--ds-link-deep) !important;
+  color: var(--ds-on-primary);
 }
 
 .stat-info {
@@ -283,34 +232,6 @@
 }
 
 /* ----- Recent orders table ----- */
-.table-scroll-wrapper {
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  margin: 0 -24px -24px -24px;
-}
-
-.table-scroll-wrapper ::ng-deep nz-table {
-  min-width: 560px;
-}
-
-.table-scroll-wrapper ::ng-deep .ant-table {
-  background: transparent !important;
-}
-
-.table-scroll-wrapper ::ng-deep .ant-table-thead > tr > th {
-  background: var(--ds-canvas-soft) !important;
-  padding: 12px 24px !important;
-}
-
-.table-scroll-wrapper ::ng-deep .ant-table-tbody > tr > td {
-  padding: 14px 24px !important;
-  border-bottom: 1px solid var(--ds-hairline) !important;
-}
-
-.table-scroll-wrapper ::ng-deep .ant-table-tbody > tr:last-child > td {
-  border-bottom: none !important;
-}
-
 .cell-strong {
   font-family: var(--font-mono);
   font-size: var(--ds-body-sm-size);
@@ -321,18 +242,6 @@
 .cell-mute {
   color: var(--ds-mute) !important;
   font-size: var(--ds-body-sm-size) !important;
-}
-
-@media (max-width: 768px) {
-  .table-scroll-wrapper {
-    margin: 0 -16px -16px -16px;
-  }
-  .table-scroll-wrapper ::ng-deep .ant-table-thead > tr > th {
-    padding: 10px 16px !important;
-  }
-  .table-scroll-wrapper ::ng-deep .ant-table-tbody > tr > td {
-    padding: 12px 16px !important;
-  }
 }
 
 /* ----- Top selling items list ----- */

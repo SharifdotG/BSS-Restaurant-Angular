@@ -1,5 +1,21 @@
 /* Add/Edit Food modal — chrome inherited from src/styles.css global rules. */
 
+/* When the discount type is "None", visually gray out the dependent
+   "Discount amount" and "Final price" fields so it's clear they are
+   inactive — the underlying controls are already disabled programmatically. */
+:host ::ng-deep .is-field-disabled .ant-form-item-label > label,
+:host ::ng-deep .is-field-disabled .ds-form-label-unit {
+  color: var(--ds-mute) !important;
+}
+
+:host ::ng-deep .is-field-disabled .ant-input[disabled],
+:host ::ng-deep .is-field-disabled input[disabled] {
+  background: var(--ds-canvas-soft) !important;
+  color: var(--ds-mute) !important;
+  border-color: var(--ds-hairline) !important;
+  cursor: not-allowed;
+}
+
 .form-wrapper {
   padding: 4px 0;
 }

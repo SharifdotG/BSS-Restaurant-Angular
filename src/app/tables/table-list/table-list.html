@@ -1,156 +1,98 @@
 <div class="main-wrapper p-0 p-md-4 pb-md-0">
-  <div class="feature-table-card">
-    <nz-table
-      nzShowSizeChanger
-      nzPaginationType="default"
-      [nzScroll]="{ y: 'calc(100% - 56px)', x: '900px' }"
-      [nzWidthConfig]="tableWidthConfig"
-      nzTableLayout="auto"
-      [nzData]="listOfTables()"
-      [nzFrontPagination]="false"
-      [nzTotal]="tablesService.totalTables()"
-      [nzPageSize]="pageSize"
-      [nzPageIndex]="pageIndex"
-      (nzQueryParams)="onQueryParamsChange($event)"
-      [nzShowTotal]="totalTemplate"
-    >
-      <ng-template #totalTemplate let-range="range" let-total>
-        {{ range[0] }}-{{ range[1] }} of {{ total }} items
-      </ng-template>
-      <thead>
-        <tr>
-          <th class="custom-table-title" nzColumnKey="image"></th>
-          <th class="custom-table-title truncate" nzColumnKey="name">Table Number</th>
-          <th class="custom-table-title truncate" nzColumnKey="seats">Total Seats</th>
-          <th class="custom-table-title truncate" nzColumnKey="bookingstatus">Booking Status</th>
-          <th class="custom-table-title truncate" nzColumnKey="employees">Assigned Employees</th>
-          <th class="custom-table-title-button" nzColumnKey="action">
-            <button
-              (click)="tablesService.showAddModal.set(true)"
-              class="add-table-button"
-              type="button"
-              aria-label="Add New Table"
-            >
-              <span nz-icon nzType="plus" nzTheme="outline" aria-hidden="true"></span>
-              <span> Add New Table </span>
-            </button>
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        @if (tablesService.isAnyLoading()) {
-          @for (_ of [1, 2, 3, 4, 5]; track $index) {
-            <tr class="custom-table-row">
-              <td colspan="6">
-                <nz-skeleton
-                  [nzActive]="true"
-                  [nzTitle]="false"
-                  [nzParagraph]="{ rows: 1, width: '100%' }"
-                ></nz-skeleton>
-              </td>
-            </tr>
-          }
-        } @else {
-          @for (data of listOfTables(); track data.id) {
-            <tr class="custom-table-row">
-              <td>
-                <div class="d-flex justify-content-center">
-                  <nz-avatar
-                    [nzSize]="52"
-                    nzIcon="warning"
-                    [nzSrc]="getImageUrl(data.image)"
-                  ></nz-avatar>
-                </div>
-              </td>
-              <td class="truncate">
-                {{ data.tableNumber }}
-              </td>
-              <td>
-                {{ data.numberOfSeats }}
-              </td>
-              <td class="truncate">
-                <span
-                  class="ds-badge"
-                  [class.ds-badge--success]="!data.isOccupied"
-                  [class.ds-badge--warning]="data.isOccupied"
-                >
-                  {{ !data.isOccupied ? 'Available' : 'Not Available' }}
-                </span>
-              </td>
-              <td>
-                <div class="d-flex gap-1 flex-wrap">
-                  @for (employee of data.employees; track employee.employeeId) {
-                    <app-employee-tooltip
-                      [tableName]="data.tableNumber"
-                      [employeeName]="employee.name"
-                      [employeeId]="employee.employeeId"
-                      [employeeTableId]="employee.employeeTableId.toString()"
-                      [employeeList]="listOfEmployees()"
-                    >
-                    </app-employee-tooltip>
-                  }
-                  <button
-                    (click)="
-                      showAssignModal(
-                        String(data.id),
-                        data.tableNumber,
-                        data.image,
-                        data.numberOfSeats
-                      )
-                    "
-                    class="add-employee-to-table-button"
-                    type="button"
-                    nz-tooltip
-                    [nzTooltipTitle]="'Assign employees to ' + data.tableNumber"
-                    nzTooltipPlacement="top"
-                    [attr.aria-label]="'Assign employees to table ' + data.tableNumber"
-                  >
-                    <span
-                      class="add-employee-to-table-button-icon"
-                      nz-icon
-                      nzType="plus"
-                      nzTheme="outline"
-                      aria-hidden="true"
-                    ></span>
-                  </button>
-                </div>
-              </td>
-              <td>
-                <div class="d-flex justify-content-center gap-2">
-                  <button
-                    (click)="editTable(data.id)"
-                    class="drop-down-button drop-shadow-md"
-                    type="button"
-                    nz-tooltip
-                    [nzTooltipTitle]="'Edit table ' + data.tableNumber"
-                    nzTooltipPlacement="top"
-                    aria-label="Edit Table {{ data.tableNumber }}"
-                  >
-                    <span nz-icon nzType="edit" nzTheme="outline" aria-hidden="true"></span>
-                  </button>
-                  <button
-                    (click)="deleteTable(data.id)"
-                    class="drop-down-button drop-shadow-md"
-                    type="button"
-                    nz-tooltip
-                    [nzTooltipTitle]="'Delete table ' + data.tableNumber"
-                    nzTooltipPlacement="top"
-                    aria-label="Delete Table {{ data.tableNumber }}"
-                  >
-                    <span nz-icon nzType="delete" nzTheme="outline" aria-hidden="true"></span>
-                  </button>
-                </div>
-              </td>
-            </tr>
-          } @empty {
-            <tr>
-              <td colspan="6" class="text-center text-muted py-4">No tables found.</td>
-            </tr>
-          }
+  <app-feature-table
+    [data]="listOfTables()"
+    [loading]="tablesService.isAnyLoading()"
+    [total]="tablesService.totalTables()"
+    [pageSize]="pageSize"
+    [pageIndex]="pageIndex"
+    scrollX="900px"
+    addLabel="Add New Table"
+    emptyText="No tables found."
+    (addClick)="tablesService.showAddModal.set(true)"
+    (queryParamsChange)="onQueryParamsChange($event)"
+  >
+    <ng-template ftColumn="image" ftWidth="80px" ftAlign="center" let-row>
+      <nz-avatar [nzSize]="36" nzIcon="warning" [nzSrc]="getImageUrl(row.image)"></nz-avatar>
+    </ng-template>
+
+    <ng-template ftColumn="tableNumber" ftLabel="Table Number" ftWidth="auto" let-row>
+      <span class="ft-cell-text">{{ row.tableNumber }}</span>
+    </ng-template>
+
+    <ng-template ftColumn="seats" ftLabel="Total Seats" ftWidth="auto" let-row>
+      <span class="ft-cell-text">{{ row.numberOfSeats }}</span>
+    </ng-template>
+
+    <ng-template ftColumn="bookingStatus" ftLabel="Booking Status" ftWidth="auto" let-row>
+      <span
+        class="ds-badge"
+        [class.ds-badge--success]="!row.isOccupied"
+        [class.ds-badge--warning]="row.isOccupied"
+      >
+        {{ !row.isOccupied ? 'Available' : 'Not Available' }}
+      </span>
+    </ng-template>
+
+    <ng-template ftColumn="employees" ftLabel="Assigned Employees" ftWidth="auto" let-row>
+      <div class="d-flex gap-1 flex-wrap align-items-center">
+        @for (employee of row.employees; track employee.employeeId) {
+          <app-employee-tooltip
+            [tableName]="row.tableNumber"
+            [employeeName]="employee.name"
+            [employeeId]="employee.employeeId"
+            [employeeTableId]="employee.employeeTableId.toString()"
+            [employeeList]="listOfEmployees()"
+          ></app-employee-tooltip>
         }
-      </tbody>
-    </nz-table>
-  </div>
+        <button
+          (click)="
+            showAssignModal(String(row.id), row.tableNumber, row.image, row.numberOfSeats)
+          "
+          class="add-employee-to-table-button"
+          type="button"
+          nz-tooltip
+          [nzTooltipTitle]="'Assign employees to ' + row.tableNumber"
+          nzTooltipPlacement="top"
+          [attr.aria-label]="'Assign employees to table ' + row.tableNumber"
+        >
+          <span
+            class="add-employee-to-table-button-icon"
+            nz-icon
+            nzType="plus"
+            nzTheme="outline"
+            aria-hidden="true"
+          ></span>
+        </button>
+      </div>
+    </ng-template>
+
+    <ng-template ftColumn="actions" ftWidth="180px" ftAlign="center" let-row>
+      <div class="ft-row-actions">
+        <button
+          (click)="editTable(row.id)"
+          class="drop-down-button drop-shadow-md"
+          type="button"
+          nz-tooltip
+          [nzTooltipTitle]="'Edit table ' + row.tableNumber"
+          nzTooltipPlacement="top"
+          aria-label="Edit Table {{ row.tableNumber }}"
+        >
+          <span nz-icon nzType="edit" nzTheme="outline" aria-hidden="true"></span>
+        </button>
+        <button
+          (click)="deleteTable(row.id)"
+          class="drop-down-button drop-shadow-md"
+          type="button"
+          nz-tooltip
+          [nzTooltipTitle]="'Delete table ' + row.tableNumber"
+          nzTooltipPlacement="top"
+          aria-label="Delete Table {{ row.tableNumber }}"
+        >
+          <span nz-icon nzType="delete" nzTheme="outline" aria-hidden="true"></span>
+        </button>
+      </div>
+    </ng-template>
+  </app-feature-table>
 </div>
 <app-add-table></app-add-table>
 <app-assign-employee></app-assign-employee>
