@@ -109,12 +109,17 @@
             <span class="cart-summary-label">Total</span>
             <span class="cart-summary-value" aria-live="polite">৳{{ subtotal() }}</span>
           </div>
-          <button type="button" (click)="confirmOrder()" class="cart-cta">
-            Place {{ newOrderService.cartTableCount() }}
-            @if (newOrderService.cartTableCount() === 1) {
-              order
+          <button type="button" (click)="confirmOrder()" class="cart-cta" [disabled]="isPlacingOrder()">
+            @if (isPlacingOrder()) {
+              <span nz-icon nzType="loading" nzTheme="outline" style="margin-right: 8px;"></span>
+              Placing order...
             } @else {
-              orders
+              Place {{ newOrderService.cartTableCount() }}
+              @if (newOrderService.cartTableCount() === 1) {
+                order
+              } @else {
+                orders
+              }
             }
           </button>
         </div>

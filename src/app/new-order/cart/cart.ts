@@ -127,9 +127,13 @@ export class Cart {
     this.newOrderService.showCart.set(false);
   }
 
+  readonly isPlacingOrder = signal(false);
+
   confirmOrder(): void {
     const groups = this.cartGroups();
     if (!groups.length) return;
+
+    this.isPlacingOrder.set(true);
 
     const now = new Date();
     const dateStr = [
@@ -187,6 +191,7 @@ export class Cart {
         }
         pending -= 1;
         if (pending === 0) {
+          this.isPlacingOrder.set(false);
           if (!anyFailed) {
             this.newOrderService.selectedTableId.set('');
             this.closeCart();

@@ -1,4 +1,4 @@
-<div class="main-wrapper p-0 p-md-4 pb-md-0">
+<div class="main-wrapper p-3 p-md-4 pb-md-0">
   <div class="new-order-shell">
     @if (
       newOrderService.isSendingRequest() &&
@@ -6,7 +6,7 @@
       newOrderService.listOfTable().length === 0
     ) {
       <!-- SKELETON — mirrors the live layout: list rows in the left column, food grid on the right -->
-      <div class="row h-100 g-0" role="status" aria-label="Loading new order">
+      <div class="row g-0" style="flex: 1; min-height: 0; overflow: hidden; flex-wrap: nowrap;" role="status" aria-label="Loading new order">
         <!-- Tables column skeleton (desktop) -->
         <aside class="col-xxl-auto tables-column d-none d-xxl-flex flex-column">
           <div class="section-header">
@@ -56,15 +56,10 @@
       </div>
     } @else {
       <!-- DESKTOP (xxl+) -->
-      <div class="d-none d-xxl-flex row h-100 g-0">
+      <div class="d-none d-xxl-flex row g-0" style="flex: 1; min-height: 0; overflow: hidden; flex-wrap: nowrap;">
         <!-- Tables column -->
         <aside
           class="col-xxl-auto tables-column d-flex flex-column"
-          infiniteScroll
-          [infiniteScrollDistance]="2"
-          [infiniteScrollThrottle]="50"
-          (scrolled)="onTableScroll()"
-          [scrollWindow]="false"
         >
           <div class="section-header">
             <div>
@@ -74,7 +69,14 @@
               </h3>
             </div>
           </div>
-          <div class="tables-list">
+          <div
+            class="tables-list"
+            infiniteScroll
+            [infiniteScrollDistance]="2"
+            [infiniteScrollThrottle]="50"
+            (scrolled)="onTableScroll()"
+            [scrollWindow]="false"
+          >
             @for (table of newOrderService.listOfTable(); track table.id) {
               <button
                 type="button"
@@ -116,11 +118,6 @@
         <!-- Foods column -->
         <section
           class="col-xxl foods-column d-flex flex-column"
-          infiniteScroll
-          [infiniteScrollDistance]="2"
-          [infiniteScrollThrottle]="50"
-          (scrolled)="onFoodScroll()"
-          [scrollWindow]="false"
         >
           @if (!newOrderService.selectedTableId()) {
             <div class="warning-table-banner">
@@ -153,7 +150,14 @@
                 </ng-template>
               </div>
             </div>
-            <div class="foods-grid">
+            <div
+              class="foods-grid"
+              infiniteScroll
+              [infiniteScrollDistance]="2"
+              [infiniteScrollThrottle]="50"
+              (scrolled)="onFoodScroll()"
+              [scrollWindow]="false"
+            >
               <div class="row g-3 p-3 pt-2">
                 @for (food of newOrderService.listOfFood(); track food.id) {
                   <div class="col-12 col-sm-6 col-md-4 col-xxl-3">
@@ -221,16 +225,9 @@
       </div>
 
       <!-- MOBILE / TABLET (< xxl) -->
-      <div class="d-flex d-xxl-none flex-column h-100">
+      <div class="d-flex d-xxl-none flex-column" style="flex: 1; min-height: 0; overflow: hidden;">
         <!-- Tables strip -->
-        <div
-          class="top-section"
-          infiniteScroll
-          [infiniteScrollDistance]="2"
-          [infiniteScrollThrottle]="50"
-          (scrolled)="onTableScroll()"
-          [scrollWindow]="false"
-        >
+        <div class="top-section">
           <div class="section-header">
             <div>
               <h3 class="section-title">
@@ -239,7 +236,15 @@
               </h3>
             </div>
           </div>
-          <div class="tables-strip-mobile">
+          <div
+            class="tables-strip-mobile"
+            infiniteScroll
+            [infiniteScrollDistance]="2"
+            [infiniteScrollThrottle]="50"
+            (scrolled)="onTableScroll()"
+            [scrollWindow]="false"
+            [horizontal]="true"
+          >
             @for (table of newOrderService.listOfTable(); track table.id) {
               <button
                 type="button"

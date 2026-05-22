@@ -93,8 +93,6 @@
   border-color: var(--brand-surface);
 }
 
-/* All stat icons share the brand-surface treatment — orange tile with white
-   glyph — matching the dashboard overview cards. */
 .stat-icon {
   width: 40px;
   height: 40px;

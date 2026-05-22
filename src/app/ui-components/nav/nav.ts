@@ -17,6 +17,7 @@ import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
+import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 
 import { AuthService } from '../../auth/auth.service';
 import { Profile } from '../profile/profile';
@@ -54,6 +55,7 @@ const SIDE_BAR_ITEMS: readonly SideBarItem[] = [
     NzDropDownModule,
     NzBadgeModule,
     NzTooltipModule,
+    NzDrawerModule,
     Profile,
     Cart,
   ],
@@ -93,6 +95,7 @@ export class Nav implements OnInit {
   }
 
   isCollapsed = signal(false);
+  isMobileNavOpen = signal(false);
   currentRoute = signal('home');
 
   readonly headerTitle = computed(() => {
@@ -130,6 +133,7 @@ export class Nav implements OnInit {
 
   navigateTo(item: SideBarItem): void {
     this.currentRoute.set(item.route);
+    this.isMobileNavOpen.set(false);
     this.router.navigate(['dashboard', item.route]);
   }
 

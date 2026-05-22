@@ -110,8 +110,6 @@ export class NewOrder {
     };
 
     this.newOrderService.cartFood.update((items) => {
-      // Multi-table cart: an item is only "the same" if it shares BOTH food.id AND tableId.
-      // This allows the same food to be added independently to two different tables.
       const existingItem = items.find(
         (item) => item.food.id === food.id && item.tableId === tableId,
       );

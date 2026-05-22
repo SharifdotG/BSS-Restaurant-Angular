@@ -3,10 +3,6 @@
   width: 100%;
 }
 
-/* --------------------------------------------------------------------------
-   Shell
-   -------------------------------------------------------------------------- */
-
 .ft-shell {
   display: flex;
   flex-direction: column;
@@ -20,7 +16,6 @@
   border-radius: var(--ds-radius-md);
   box-shadow: var(--ds-shadow-2);
   overflow: hidden;
-  /* Desktop: 64px header + 48px outer page padding = 112. */
   height: calc(100vh - 112px);
   min-height: 420px;
 }
@@ -84,28 +79,24 @@
   overflow-y: auto !important;
 }
 
-/* On desktop the columns fit the card so force the inner table to fill the
-   container width — ng-zorro otherwise renders it at the `nzScroll.x` value
-   and leaves an ugly empty strip on the right of wide cards. On mobile we
-   keep the table at its natural `nzScroll.x` width so the horizontal scroll
-   still works and columns don't collapse. */
-@media (min-width: 992px) {
-  .ft-shell ::ng-deep .ant-table-body table,
-  .ft-shell ::ng-deep .ant-table-header table,
-  .ft-shell ::ng-deep .ant-table-content > table {
-    width: 100% !important;
-    min-width: 100%;
-  }
-
-  .ft-shell ::ng-deep .ant-table-content,
-  .ft-shell ::ng-deep .ant-table-header {
-    overflow-x: hidden !important;
-  }
+.ft-shell ::ng-deep .ant-table-body table,
+.ft-shell ::ng-deep .ant-table-header table,
+.ft-shell ::ng-deep .ant-table-content > table {
+  min-width: 100% !important;
 }
 
-/* --------------------------------------------------------------------------
-   Orange header
-   -------------------------------------------------------------------------- */
+.ft-shell ::ng-deep .ant-table-container {
+  background: var(--ds-canvas);
+  border-bottom: 1px solid var(--ds-hairline);
+}
+
+.ft-shell ::ng-deep .ant-table-header {
+  background: var(--brand-surface) !important;
+}
+
+.ft-shell ::ng-deep .ant-table-tbody {
+  background: var(--ds-canvas);
+}
 
 .ft-shell ::ng-deep .ant-table-thead > tr > th.ft-th {
   background: var(--brand-surface) !important;
@@ -136,15 +127,12 @@
   text-align: center !important;
 }
 
-/* Hide the default ng-zorro column divider — it doesn't read on orange. */
 .ft-shell ::ng-deep .ant-table-thead > tr > th.ft-th::before {
   background: rgba(255, 255, 255, 0.2) !important;
   height: 1em !important;
   opacity: 1 !important;
 }
 
-/* Match the scrollbar gutter cell and fixed-header wrapper to the orange band
-   so the right edge stays flush instead of showing a canvas-coloured stripe. */
 .ft-shell ::ng-deep .ant-table-thead > tr > th.ant-table-cell-scrollbar,
 .ft-shell ::ng-deep .ant-table-cell.ant-table-cell-scrollbar {
   background: var(--brand-surface) !important;
@@ -177,10 +165,6 @@
 .ft-shell ::ng-deep .ant-table-header.ant-table-hide-scrollbar::-webkit-scrollbar-corner {
   background-color: var(--brand-surface) !important;
 }
-
-/* --------------------------------------------------------------------------
-   Body — compact rows, theme-aware
-   -------------------------------------------------------------------------- */
 
 .ft-shell ::ng-deep .ant-table-tbody > tr > td.ft-td {
   background: var(--ds-canvas) !important;
@@ -230,10 +214,6 @@
   border-bottom: none !important;
 }
 
-/* --------------------------------------------------------------------------
-   Add button (rendered in the actions header cell)
-   -------------------------------------------------------------------------- */
-
 .ft-add-btn {
   display: inline-flex;
   align-items: center;
@@ -267,10 +247,6 @@
   font-size: 14px;
 }
 
-/* --------------------------------------------------------------------------
-   Pagination — fixed at the bottom of the card, no surface stripe
-   -------------------------------------------------------------------------- */
-
 .ft-shell ::ng-deep .ant-table-pagination.ant-pagination {
   flex: 0 0 auto;
   border-top: 1px solid var(--ds-hairline);
@@ -278,10 +254,6 @@
   padding: 8px 14px !important;
   background: var(--ds-canvas) !important;
 }
-
-/* --------------------------------------------------------------------------
-   Embedded mode (no card wrap) — used by dashboard overview
-   -------------------------------------------------------------------------- */
 
 .ft-shell:not(.ft-shell--card) ::ng-deep .ant-table {
   background: transparent !important;
@@ -301,12 +273,6 @@
   background: var(--ds-canvas-soft) !important;
 }
 
-/* --------------------------------------------------------------------------
-   Mobile — tighten chrome and make sure the inner horizontal scroll feels
-   right with touch. On phones the columns keep their natural `nzScroll.x`
-   width (the desktop full-width override above is intentionally not applied
-   here) so the table doesn't collapse and content stays legible.
-   -------------------------------------------------------------------------- */
 @media (max-width: 768px) {
   .ft-shell ::ng-deep .ant-table-thead > tr > th.ft-th {
     padding: 10px 12px !important;
@@ -322,7 +288,6 @@
     padding: 8px 10px !important;
   }
 
-  /* Touch-friendly horizontal scroll inside the body. */
   .ft-shell ::ng-deep .ant-table-body,
   .ft-shell ::ng-deep .ant-table-content {
     -webkit-overflow-scrolling: touch;

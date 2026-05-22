@@ -12,8 +12,6 @@
 ::ng-deep .ant-layout-sider {
   background: var(--brand-surface) !important;
   border-right: 1px solid var(--brand-surface);
-  /* Slower collapse animation so the width transition reads smoothly.
-     `flex` is on the list because ng-zorro animates it alongside width. */
   transition:
     width 420ms cubic-bezier(0.2, 0, 0, 1),
     min-width 420ms cubic-bezier(0.2, 0, 0, 1),
@@ -126,8 +124,6 @@
   color: var(--ds-on-primary) !important;
 }
 
-/* Selected: inverted — white pill with orange text + icon so it pops on the orange sider.
-   Strip ng-zorro's default 3px #1890ff right border on selected items. */
 ::ng-deep .ds-side-menu .ant-menu-item.ant-menu-item-selected,
 ::ng-deep .ds-side-menu .ant-menu-item-selected {
   background: var(--ds-on-primary) !important;
@@ -136,7 +132,7 @@
   border-right: 0 !important;
 }
 
-::ng-deep .ds-side-menu.ant-menu-inline .ant-menu-item-selected::after,
+::ng-deep .ds-side-menu .ant-menu-item-selected::after,
 ::ng-deep .ds-side-menu .ant-menu-item-selected::after {
   border-right: 0 !important;
   display: none !important;
@@ -171,7 +167,6 @@
   padding: 0;
 }
 
-/* Logout button (sider) — white pill with orange text so it reads on the orange sider */
 .logout-button {
   background: var(--ds-on-primary);
   color: var(--brand-surface);
@@ -514,8 +509,6 @@
     min-height: 36px;
   }
 
-  /* Ensure every header item (title, icon buttons, avatar, hamburger) lines up
-     on the same vertical centerline by giving each a uniform 36px box. */
   .header-inner .header-title-block,
   .header-inner .trigger,
   .header-inner .header-icon-btn,
@@ -571,6 +564,50 @@
 ::ng-deep .anticon-menu-fold,
 ::ng-deep .anticon-menu-unfold {
   font-size: 16px;
+}
+
+::ng-deep .ant-drawer-content {
+  background-color: var(--brand-surface) !important;
+  color: var(--ds-on-primary) !important;
+}
+
+::ng-deep .ant-drawer-header {
+  background-color: var(--brand-surface) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+::ng-deep .ant-drawer-title {
+  color: var(--ds-on-primary) !important;
+}
+
+::ng-deep .ant-drawer-close {
+  color: var(--ds-on-primary) !important;
+}
+
+::ng-deep .mobile-nav-drawer-menu.ant-menu {
+  background: var(--brand-surface) !important;
+  border-right: none !important;
+}
+
+::ng-deep .mobile-nav-drawer-menu .ant-menu-item {
+  color: var(--ds-on-primary) !important;
+  border-radius: var(--ds-radius-sm) !important;
+  margin: 6px 8px !important;
+  width: calc(100% - 16px) !important;
+  transition: background-color var(--transition-fast) !important;
+}
+
+::ng-deep .mobile-nav-drawer-menu .ant-menu-item:hover {
+  background: rgba(255, 255, 255, 0.15) !important;
+}
+
+::ng-deep .mobile-nav-drawer-menu .ant-menu-item-selected {
+  background-color: var(--ds-on-primary) !important;
+  color: var(--brand-surface) !important;
+}
+
+::ng-deep .mobile-nav-drawer-menu .ant-menu-item-selected .anticon {
+  color: var(--brand-surface) !important;
 }
 
 /* Dropdown menu items */

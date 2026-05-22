@@ -104,6 +104,7 @@
           </div>
           <nz-avatar
             nz-dropdown
+            nzTrigger="click"
             [nzDropdownMenu]="menu"
             [nzSize]="36"
             nzIcon="user"
@@ -129,39 +130,45 @@
           <button
             type="button"
             class="header-icon-btn hamburger-btn d-inline-flex d-md-none"
-            nz-dropdown
-            [nzDropdownMenu]="mobileNavMenu"
-            nzTrigger="click"
-            [nzPlacement]="'bottomRight'"
+            (click)="isMobileNavOpen.set(true)"
             aria-label="Open navigation menu"
           >
             <span nz-icon nzType="menu" nzTheme="outline" aria-hidden="true"></span>
           </button>
-          <nz-dropdown-menu #mobileNavMenu="nzDropdownMenu">
-            <ul
-              nz-menu
-              class="mobile-nav-dropdown"
-              role="menu"
-              aria-label="Mobile navigation menu"
-            >
-              @for (menuItem of sideBarItems; track menuItem.route) {
-                <li
-                  nz-menu-item
-                  [nzSelected]="currentRoute() === menuItem.route"
-                  (click)="navigateTo(menuItem)"
-                  role="menuitem"
-                >
-                  <span nz-icon [nzType]="menuItem.icon" aria-hidden="true"></span>
-                  <span>{{ menuItem.label }}</span>
+          <nz-drawer
+            [nzVisible]="isMobileNavOpen()"
+            nzPlacement="right"
+            [nzWidth]="'50%'"
+            nzTitle="Menu"
+            (nzOnClose)="isMobileNavOpen.set(false)"
+            [nzBodyStyle]="{ padding: '0' }"
+          >
+            <ng-container *nzDrawerContent>
+              <ul
+                nz-menu
+                nzMode="inline"
+                class="mobile-nav-drawer-menu"
+                role="menu"
+                aria-label="Mobile navigation menu"
+              >
+                @for (menuItem of sideBarItems; track menuItem.route) {
+                  <li
+                    nz-menu-item
+                    [nzSelected]="currentRoute() === menuItem.route"
+                    (click)="navigateTo(menuItem)"
+                    role="menuitem"
+                  >
+                    <span nz-icon [nzType]="menuItem.icon" aria-hidden="true"></span>
+                    <span>{{ menuItem.label }}</span>
+                  </li>
+                }
+                <li nz-menu-item (click)="onLogout()" role="menuitem">
+                  <span nz-icon nzType="poweroff" nzTheme="outline" aria-hidden="true"></span>
+                  <span>Logout</span>
                 </li>
-              }
-              <li nz-menu-divider></li>
-              <li nz-menu-item (click)="onLogout()" role="menuitem">
-                <span nz-icon nzType="logout" nzTheme="outline" aria-hidden="true"></span>
-                <span>Logout</span>
-              </li>
-            </ul>
-          </nz-dropdown-menu>
+              </ul>
+            </ng-container>
+          </nz-drawer>
         </div>
       </div>
     </nz-header>

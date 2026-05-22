@@ -8,8 +8,6 @@
 
 @media screen and (max-width: 768px) {
   .order-container {
-    /* On mobile, let the parent nz-content handle scroll so we don't stack
-       a redundant scrollbar against the page scrollbar. */
     min-height: auto;
     max-height: none;
     overflow: visible;
@@ -50,7 +48,6 @@
   margin: 0;
 }
 
-/* Card shell */
 .order-card {
   background: var(--ds-canvas);
   border: 1px solid var(--ds-hairline);
@@ -73,13 +70,14 @@
   padding: 16px;
 }
 
-/* Card header */
 .order-card-header {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   gap: 8px;
-  padding: 14px 16px 8px;
+  padding: 14px 16px 14px;
+  background: var(--brand-surface);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .order-card-meta {
@@ -91,7 +89,7 @@
   font-family: var(--font-mono);
   font-size: var(--ds-body-sm-size);
   font-weight: 500;
-  color: var(--ds-ink);
+  color: var(--ds-on-primary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -100,7 +98,8 @@
 .order-time {
   font-family: var(--font-sans);
   font-size: var(--ds-caption-size);
-  color: var(--ds-mute);
+  color: var(--ds-on-primary);
+  opacity: 0.85;
   margin-top: 2px;
 }
 
@@ -110,12 +109,11 @@
   flex: 0 0 auto;
 }
 
-/* Status + Table chip row */
 .order-card-chips {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 0 16px 10px;
+  padding: 12px 16px 10px;
   flex-wrap: wrap;
 }
 
@@ -260,7 +258,7 @@
   justify-content: space-between;
   padding: 12px 16px;
   border-top: 1px solid var(--ds-hairline);
-  background: var(--ds-canvas-soft);
+  background: var(--ds-canvas);
 }
 
 .footer-stat {
@@ -395,9 +393,6 @@
   .order-item-container {
     padding: 12px 16px 16px;
   }
-  /* Pagination spacing on mobile — match what the other pages get from the
-     global .ant-pagination rules; ng-zorro's responsive mode collapses the
-     items into a tight row so we override its compact spacing. */
   .order-pagination-wrapper {
     padding: 8px 4px;
   }
