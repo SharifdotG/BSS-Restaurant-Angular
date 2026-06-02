@@ -14,7 +14,6 @@ import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
-import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
 import { NzDrawerModule } from 'ng-zorro-antd/drawer';
@@ -38,7 +37,12 @@ const SIDE_BAR_ITEMS: readonly SideBarItem[] = [
   { label: 'Employees', icon: 'team', route: 'employees', headerTitle: 'Employee Management' },
   { label: 'Tables', icon: 'appstore', route: 'tables', headerTitle: 'Table Management' },
   { label: 'Foods', icon: 'coffee', route: 'foods', headerTitle: 'Food Item Management' },
-  { label: 'New Order', icon: 'shopping-cart', route: 'new-order', headerTitle: 'Create New Order' },
+  {
+    label: 'New Order',
+    icon: 'shopping-cart',
+    route: 'new-order',
+    headerTitle: 'Create New Order',
+  },
   { label: 'Orders', icon: 'profile', route: 'orders', headerTitle: 'Order Management' },
   { label: 'Expenses', icon: 'wallet', route: 'expenses', headerTitle: 'Expense Management' },
 ];
@@ -52,7 +56,6 @@ const SIDE_BAR_ITEMS: readonly SideBarItem[] = [
     NzMenuModule,
     NzIconModule,
     NzAvatarModule,
-    NzDropDownModule,
     NzBadgeModule,
     NzTooltipModule,
     NzDrawerModule,

@@ -52,6 +52,7 @@ export class Dashboard implements OnInit {
 
   private failedImageIds = signal<Set<number>>(new Set());
   readonly failedImages = this.failedImageIds.asReadonly();
+  readonly todayDisplay = new Date();
 
   readonly availableTables = computed(() => {
     const stats = this.dashboardService.dashboardStats();

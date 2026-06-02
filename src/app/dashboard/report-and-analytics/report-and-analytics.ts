@@ -44,7 +44,7 @@ export class ReportAndAnalytics implements OnInit {
   protected readonly themeService = inject(ThemeService);
 
   readonly legendPosition = LegendPosition.Below;
-  readonly barLegendPosition = signal(LegendPosition.Right);
+  readonly barLegendPosition = signal(LegendPosition.Below);
   readonly pieChartView = signal<[number, number]>([320, 320]);
   /** Explicit view size for the bar chart so ngx-charts renders within bounds.
    *  Mobile gets a taller frame because the legend moves below the bars. */
@@ -133,17 +133,40 @@ export class ReportAndAnalytics implements OnInit {
 
   constructor() {
     this.breakpoint
-      .observe(['(max-width: 768px)'])
+      .observe(['(max-width: 768px)', '(max-width: 1200px)'])
       .pipe(takeUntilDestroyed())
-      .subscribe((state) => {
-        const isMobile = state.matches;
-        this.barLegendPosition.set(isMobile ? LegendPosition.Below : LegendPosition.Right);
-        this.pieChartView.set(isMobile ? [240, 240] : [320, 320]);
-        // Explicit bar-chart canvas so the legend + X-axis labels render fully.
-        // Width gets clamped by the wrapper; height needs to cover bars + legend.
-        const width = isMobile ? Math.min(window.innerWidth - 64, 540) : 720;
-        const height = isMobile ? 520 : 440;
-        this.barChartView.set([width, height]);
+      .subscribe(() => {
+        const isMobile = window.innerWidth <= 768;
+        const isNarrowDesktop = window.innerWidth > 768 && window.innerWidth <= 1200;
+        // Legend always below prevents overlap on any screen width
+        // Mobile: compact explicit size
+        if (isMobile) {
+          const width = Math.min(window.innerWidth - 64, 540);
+          this.barChartView.set([width, 520]);
+          this.pieChartView.set([240, 240]);
+        } else {
+          // Desktop: compute width to fill the col-xl-8 column
+          // Sidebar expanded (240px), main-wrapper padding (48px),
+          // report-section padding (48px), g-3 gap (12px), chart-wrapper padding (40px)
+          const sidebarWidth = 240;
+          const mainPad = 48;
+          const sectionPad = 48;
+          const rowGap = 12;
+          const chartPad = 40;
+          const barColRatio = 8 / 12;
+          const available =
+            (window.innerWidth - sidebarWidth - mainPad - sectionPad - rowGap) * barColRatio -
+            chartPad;
+          const width = Math.max(540, Math.floor(available));
+          const height = isNarrowDesktop ? 520 : 440;
+          this.barChartView.set([width, height]);
+          // Pie chart also fills its column
+          const pieAvailable =
+            (window.innerWidth - sidebarWidth - mainPad - sectionPad - rowGap) * (4 / 12) -
+            chartPad;
+          const pieSize = Math.max(240, Math.min(Math.floor(pieAvailable), 380));
+          this.pieChartView.set([pieSize, pieSize]);
+        }
       });
 
     // React to theme changes: ngx-charts caches color scales, so re-trigger via signal access

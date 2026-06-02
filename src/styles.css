@@ -937,6 +937,41 @@ p {
   color: var(--ds-mute) !important;
 }
 
+/* Period selector - match select host height to the selector */
+.period-selectors .ant-select-single.ant-select-sm {
+  height: 32px !important;
+}
+
+/* Period selector arrow vertical centering */
+.period-selectors .ant-select-arrow {
+  position: absolute !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  margin: auto 0 !important;
+  margin-block: auto !important;
+  height: 12px !important;
+  width: 12px !important;
+  right: 11px !important;
+  inset-inline-end: 11px !important;
+  transform: none !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  line-height: 1 !important;
+}
+
+.period-selectors .ant-select-arrow .anticon {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  line-height: 1 !important;
+  vertical-align: middle !important;
+}
+
+.period-selectors .ant-select-arrow .anticon > svg {
+  vertical-align: middle !important;
+}
+
 /* Input-number stepper buttons */
 .ant-input-number-handler-wrap {
   background: var(--ds-canvas) !important;
@@ -1064,10 +1099,25 @@ p {
   box-shadow: none !important;
 }
 
-/* Container that ng-zorro paints behind the scroll viewport */
+/* Remove ng-zorro scroll shadows that obstruct table content */
+.ant-table-container::before,
 .ant-table-container::after,
+.ant-table-content::before,
 .ant-table-content::after {
-  background: var(--ds-canvas) !important;
+  display: none !important;
+}
+
+/* Hide scrollbars on table body and content containers (keep scroll functional) */
+.ant-table-body,
+.ant-table-content {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.ant-table-body::-webkit-scrollbar,
+.ant-table-content::-webkit-scrollbar {
+  width: 0 !important;
+  height: 0 !important;
+  display: none !important;
 }
 
 .ant-table-body,
@@ -1469,15 +1519,9 @@ p {
     flex-wrap: wrap !important;
     justify-content: center !important;
     align-items: center !important;
-    gap: 6px !important;
+    gap: 0 !important;
     row-gap: 8px !important;
     padding: 12px 8px !important;
-  }
-
-  .ant-pagination > li,
-  .ant-pagination > .ant-pagination-options,
-  .ant-pagination > .ant-pagination-total-text {
-    margin: 0 !important;
   }
 
   .ant-pagination-item,
@@ -1498,13 +1542,36 @@ p {
     font-size: 13px !important;
   }
 
-  /* Total text goes on its own line above the controls for breathing room. */
-  .ant-pagination-total-text {
-    flex: 0 0 100%;
-    text-align: center;
-    margin: 0 0 4px 0 !important;
+  /* Total text always on its own row with bottom margin for gap. */
+  .ant-pagination > .ant-pagination-total-text {
+    flex: 1 1 100% !important;
+    width: 100% !important;
+    min-width: 100% !important;
+    text-align: center !important;
+    margin: 0 0 8px 0 !important;
     height: auto !important;
     line-height: 1.4 !important;
+  }
+
+  /* Reset margins on all pagination items, then add horizontal gaps
+     between non-total-text items (total text gets its own margin above). */
+  .ant-pagination > li {
+    margin: 0 !important;
+  }
+
+  .ant-pagination > li:not(.ant-pagination-total-text) {
+    margin-inline: 4px !important;
+  }
+}
+
+/* At narrow-to-medium widths, drop options to its own row so buttons
+   and page-size dropdown never compete for space. */
+@media screen and (max-width: 600px) {
+  .ant-pagination-options {
+    flex: 0 0 100%;
+    display: flex !important;
+    justify-content: center;
+    margin-top: 4px !important;
   }
 }
 
@@ -1518,13 +1585,6 @@ p {
     height: 28px !important;
     line-height: 26px !important;
     font-size: 12px !important;
-  }
-
-  .ant-pagination-options {
-    flex: 0 0 100%;
-    display: flex !important;
-    justify-content: center;
-    margin-top: 4px !important;
   }
 }
 
@@ -1825,6 +1885,41 @@ p {
   margin-top: 4px;
 }
 
+/* Form modals — select arrow & date-picker icon vertical centering (+ hide clear) */
+.ant-modal-wrap.ds-form-modal .ant-select-single.ant-select {
+  height: 40px !important;
+}
+
+.ant-modal-wrap.ds-form-modal .ant-select-arrow,
+.ant-modal-wrap.ds-form-modal .ant-picker .ant-picker-suffix {
+  position: absolute !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  margin: auto 0 !important;
+  height: 12px !important;
+  width: 12px !important;
+  right: 11px !important;
+  inset-inline-end: 11px !important;
+  transform: none !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  line-height: 1 !important;
+}
+
+.ant-modal-wrap.ds-form-modal .ant-select-arrow .anticon,
+.ant-modal-wrap.ds-form-modal .ant-picker .ant-picker-suffix .anticon {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  line-height: 1 !important;
+  vertical-align: middle !important;
+}
+
+.ant-modal-wrap.ds-form-modal .ant-picker-clear {
+  display: none !important;
+}
+
 /* Avatar uploader row — flex container with the avatar on the left and a
    flexible field group on the right. Vertically centered. */
 .ds-form-avatar-row {
@@ -2095,4 +2190,3 @@ p {
   cursor: not-allowed !important;
   opacity: 0.7;
 }
-

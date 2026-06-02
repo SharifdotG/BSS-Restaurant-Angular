@@ -382,18 +382,15 @@
 }
 
 ::ng-deep .user-avatar.ant-avatar {
-  background: var(--ds-canvas-soft) !important;
-  color: var(--ds-ink) !important;
-  border: 1px solid var(--ds-hairline);
+  border: 2px solid var(--ds-hairline);
   cursor: pointer;
-  font-family: var(--font-sans);
-  transition: var(--transition-base);
-  outline: none !important;
+  background: var(--ds-canvas-soft-2) !important;
+  color: var(--ds-mute) !important;
 }
 
 ::ng-deep .user-avatar.ant-avatar:hover {
   border-color: var(--ds-hairline-strong);
-  background: var(--ds-canvas-soft-2) !important;
+  filter: brightness(1.2);
 }
 
 /* Drop sticky focus ring after the dropdown / modal closes */
@@ -417,11 +414,12 @@
   color: var(--ds-ink);
 }
 
-/* On mobile, when nz-content contains a feature-table-card, prevent the outer
+/* On mobile, when nz-content contains a feature-table card, prevent the outer
    page from scrolling so only the table body scrolls internally. */
 @media screen and (max-width: 768px) {
-  ::ng-deep nz-content:has(.feature-table-card) {
+  ::ng-deep nz-content:has(.ft-shell--card) {
     overflow: hidden;
+    padding: 8px;
   }
 }
 
@@ -507,6 +505,12 @@
     display: flex !important;
     align-items: center !important;
     min-height: 36px;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .header-inner > div:last-child {
+    overflow: visible;
   }
 
   .header-inner .header-title-block,
@@ -557,6 +561,32 @@
 
   .user-meta {
     display: none !important;
+  }
+}
+
+/* Ultra-narrow screens — prevent layout overflow, shrink title, keep hamburger visible */
+@media screen and (max-width: 400px) {
+  .header-title {
+    font-size: 13px;
+    line-height: 16px;
+    white-space: normal;
+    display: -webkit-box;
+    line-clamp: 2;
+    box-orient: vertical;
+    word-break: break-word;
+    overflow: hidden;
+  }
+
+  .header-title-block {
+    height: 32px;
+  }
+
+  .header-cluster {
+    gap: 2px;
+  }
+
+  .hamburger-btn {
+    margin-left: 0;
   }
 }
 

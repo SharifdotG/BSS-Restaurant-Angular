@@ -16,13 +16,30 @@
     </ng-template>
 
     <ng-template ftColumn="name" ftLabel="Name" ftWidth="auto" let-row>
-      <span
-        class="ft-cell-text"
-        nz-tooltip
-        nzTooltipPlacement="top"
-        [nzTooltipTitle]="row.user.firstName + ' ' + row.user.middleName + ' ' + row.user.lastName"
-      >
-        {{ row.user.firstName + ' ' + row.user.middleName + ' ' + row.user.lastName }}
+      <span class="ft-cell-text-wrapper">
+        <span
+          class="ft-cell-text"
+          nz-tooltip
+          nzTooltipPlacement="top"
+          [nzTooltipTitle]="
+            row.user.firstName + ' ' + row.user.middleName + ' ' + row.user.lastName
+          "
+        >
+          {{ row.user.firstName + ' ' + row.user.middleName + ' ' + row.user.lastName }}
+        </span>
+        <button
+          type="button"
+          class="star-btn"
+          [class.star-btn--filled]="employeeService.isFavourite(row.user.id)"
+          (click)="$event.stopPropagation(); employeeService.toggleFavourite(row.user.id)"
+          aria-label="Toggle favourite"
+        >
+          <span
+            nz-icon
+            nzType="star"
+            [nzTheme]="employeeService.isFavourite(row.user.id) ? 'fill' : 'outline'"
+          ></span>
+        </button>
       </span>
     </ng-template>
 

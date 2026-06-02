@@ -43,7 +43,7 @@
       } @else if (dashboardService.dashboardStats(); as stats) {
         <!-- Greeting band -->
         <div class="greeting-band">
-          <p class="greeting-eyebrow">OVERVIEW · TODAY</p>
+          <p class="greeting-eyebrow">TODAY · {{ todayDisplay | date: 'MMMM d, yyyy h:mm a' }}</p>
           <h2 class="greeting-headline">{{ greeting() }}</h2>
           <p class="greeting-body">
             {{ stats.todaysOrders }} orders today across {{ stats.occupiedTables }}/{{
@@ -121,34 +121,34 @@
                 <app-feature-table
                   [data]="stats.recentOrders"
                   [card]="false"
-                  [scrollX]="null"
+                  scrollX="700px"
                   [scrollY]="null"
                   [showPagination]="false"
                   emptyText="No recent orders"
                 >
                   <ng-template ftColumn="orderNumber" ftLabel="Order #" ftWidth="auto" let-row>
                     <span class="cell-strong">{{ row.orderNumber }}</span>
-                    </ng-template>
-                    <ng-template ftColumn="tableNumber" ftLabel="Table" ftWidth="auto" let-row>
-                      {{ row.tableNumber }}
-                    </ng-template>
-                    <ng-template ftColumn="amount" ftLabel="Amount" ftWidth="auto" let-row>
-                      ৳{{ row.amount | number: '1.0-0' }}
-                    </ng-template>
-                    <ng-template ftColumn="status" ftLabel="Status" ftWidth="auto" let-row>
-                      <span
-                        class="ds-badge"
-                        [class]="
-                          'ds-badge ds-badge--' +
-                          (statusConfig[row.orderStatus]?.variant ?? defaultStatusConfig.variant)
-                        "
-                      >
-                        {{ statusConfig[row.orderStatus]?.label ?? row.orderStatus }}
-                      </span>
-                    </ng-template>
-                    <ng-template ftColumn="time" ftLabel="Time" ftWidth="auto" let-row>
-                      <span class="cell-mute">{{ row.orderTime | date: 'MMM d, h:mm a' }}</span>
-                    </ng-template>
+                  </ng-template>
+                  <ng-template ftColumn="tableNumber" ftLabel="Table" ftWidth="auto" let-row>
+                    {{ row.tableNumber }}
+                  </ng-template>
+                  <ng-template ftColumn="amount" ftLabel="Amount" ftWidth="auto" let-row>
+                    ৳{{ row.amount | number: '1.0-0' }}
+                  </ng-template>
+                  <ng-template ftColumn="status" ftLabel="Status" ftWidth="auto" let-row>
+                    <span
+                      class="ds-badge"
+                      [class]="
+                        'ds-badge ds-badge--' +
+                        (statusConfig[row.orderStatus]?.variant ?? defaultStatusConfig.variant)
+                      "
+                    >
+                      {{ statusConfig[row.orderStatus]?.label ?? row.orderStatus }}
+                    </span>
+                  </ng-template>
+                  <ng-template ftColumn="time" ftLabel="Time" ftWidth="auto" let-row>
+                    <span class="cell-mute">{{ row.orderTime | date: 'MMM d, h:mm a' }}</span>
+                  </ng-template>
                 </app-feature-table>
               } @else {
                 <nz-empty nzNotFoundContent="No recent orders"></nz-empty>

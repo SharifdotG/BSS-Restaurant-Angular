@@ -103,28 +103,15 @@
             <span class="user-email">{{ authService.currentUserProfile().email }}</span>
           </div>
           <nz-avatar
-            nz-dropdown
-            nzTrigger="click"
-            [nzDropdownMenu]="menu"
+            (click)="openProfile($event)"
             [nzSize]="36"
             nzIcon="user"
             [nzSrc]="userImageUrl()"
             class="user-avatar"
-            aria-label="User menu"
-            aria-haspopup="true"
+            aria-label="Open profile"
+            role="button"
+            tabindex="0"
           ></nz-avatar>
-          <nz-dropdown-menu #menu="nzDropdownMenu">
-            <ul nz-menu nzSelectable="false" role="menu" aria-label="User menu options">
-              <li (click)="openProfile($event)" nz-menu-item role="menuitem">
-                <span nz-icon nzType="user" nzTheme="outline" aria-hidden="true"></span>
-                Profile
-              </li>
-              <li (click)="onLogout()" nz-menu-item role="menuitem">
-                <span nz-icon nzType="logout" nzTheme="outline" aria-hidden="true"></span>
-                Logout
-              </li>
-            </ul>
-          </nz-dropdown-menu>
 
           <!-- Mobile hamburger — sits to the right of the avatar, opens the nav menu. -->
           <button

@@ -25,7 +25,7 @@
     height: calc(100vh - 72px);
     min-height: 0;
     max-height: calc(100vh - 72px);
-    margin: 8px;
+    margin: 0;
   }
 
   @supports (height: 100dvh) {
@@ -235,8 +235,9 @@
 }
 
 .ft-add-btn:hover {
-  background: var(--ds-canvas-soft);
+  background: var(--ds-on-primary);
   color: var(--brand-surface);
+  opacity: 0.85;
 }
 
 .ft-add-btn:active {

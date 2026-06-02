@@ -1,9 +1,5 @@
 .order-container {
-  min-height: calc(100vh - 64px - 32px);
-  max-height: calc(100vh - 64px - 32px);
   background: var(--ds-canvas-soft);
-  overflow-x: hidden;
-  overflow-y: auto;
 }
 
 @media screen and (max-width: 768px) {
@@ -15,7 +11,7 @@
 }
 
 .order-item-container {
-  padding: 16px 0 24px;
+  padding: 0 0 24px;
 }
 
 /* Filter row */

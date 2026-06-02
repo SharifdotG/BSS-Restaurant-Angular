@@ -6,9 +6,14 @@
       newOrderService.listOfTable().length === 0
     ) {
       <!-- SKELETON — mirrors the live layout: list rows in the left column, food grid on the right -->
-      <div class="row g-0" style="flex: 1; min-height: 0; overflow: hidden; flex-wrap: nowrap;" role="status" aria-label="Loading new order">
+      <div
+        class="row g-0"
+        style="flex: 1; min-height: 0; overflow: hidden; flex-wrap: nowrap"
+        role="status"
+        aria-label="Loading new order"
+      >
         <!-- Tables column skeleton (desktop) -->
-        <aside class="col-xxl-auto tables-column d-none d-xxl-flex flex-column">
+        <aside class="col-xl-auto tables-column d-none d-xl-flex flex-column">
           <div class="section-header">
             <div>
               <h3 class="section-title">Select a Table</h3>
@@ -29,7 +34,7 @@
         </aside>
 
         <!-- Foods column skeleton -->
-        <section class="col-xxl foods-column d-flex flex-column">
+        <section class="col-xl foods-column d-flex flex-column">
           <div class="foods-toolbar">
             <div>
               <h3 class="section-title">Add Food to Cart</h3>
@@ -55,12 +60,13 @@
         </section>
       </div>
     } @else {
-      <!-- DESKTOP (xxl+) -->
-      <div class="d-none d-xxl-flex row g-0" style="flex: 1; min-height: 0; overflow: hidden; flex-wrap: nowrap;">
+      <!-- DESKTOP (xl+) -->
+      <div
+        class="d-none d-xl-flex row g-0"
+        style="flex: 1; min-height: 0; overflow: hidden; flex-wrap: nowrap"
+      >
         <!-- Tables column -->
-        <aside
-          class="col-xxl-auto tables-column d-flex flex-column"
-        >
+        <aside class="col-xl-auto tables-column d-flex flex-column">
           <div class="section-header">
             <div>
               <h3 class="section-title">
@@ -99,9 +105,7 @@
               </button>
             }
 
-            @if (
-              newOrderService.isLoadingTables() && newOrderService.listOfTable().length > 0
-            ) {
+            @if (newOrderService.isLoadingTables() && newOrderService.listOfTable().length > 0) {
               <div class="list-loader" role="status" aria-label="Loading more tables">
                 <span nz-icon nzType="loading" nzTheme="outline"></span>
                 <span>Loading more tables…</span>
@@ -116,9 +120,7 @@
         </aside>
 
         <!-- Foods column -->
-        <section
-          class="col-xxl foods-column d-flex flex-column"
-        >
+        <section class="col-xl foods-column d-flex flex-column">
           @if (!newOrderService.selectedTableId()) {
             <div class="warning-table-banner">
               <div class="warning-banner-image">
@@ -211,9 +213,7 @@
                 }
               </div>
 
-              @if (
-                newOrderService.isLoadingFoods() && newOrderService.listOfFood().length > 0
-              ) {
+              @if (newOrderService.isLoadingFoods() && newOrderService.listOfFood().length > 0) {
                 <div class="list-loader" role="status" aria-label="Loading more foods">
                   <span nz-icon nzType="loading" nzTheme="outline"></span>
                   <span>Loading more items…</span>
@@ -224,8 +224,8 @@
         </section>
       </div>
 
-      <!-- MOBILE / TABLET (< xxl) -->
-      <div class="d-flex d-xxl-none flex-column" style="flex: 1; min-height: 0; overflow: hidden;">
+      <!-- MOBILE / TABLET (< xl) -->
+      <div class="d-flex d-xl-none flex-column" style="flex: 1; min-height: 0; overflow: hidden">
         <!-- Tables strip -->
         <div class="top-section">
           <div class="section-header">
@@ -265,10 +265,12 @@
                 <div class="table-number-mobile">{{ table.tableNumber }}</div>
               </button>
             }
-            @if (
-              newOrderService.isLoadingTables() && newOrderService.listOfTable().length > 0
-            ) {
-              <div class="list-loader list-loader--inline" role="status" aria-label="Loading more tables">
+            @if (newOrderService.isLoadingTables() && newOrderService.listOfTable().length > 0) {
+              <div
+                class="list-loader list-loader--inline"
+                role="status"
+                aria-label="Loading more tables"
+              >
                 <span nz-icon nzType="loading" nzTheme="outline"></span>
               </div>
             }
@@ -368,9 +370,7 @@
                 }
               </div>
 
-              @if (
-                newOrderService.isLoadingFoods() && newOrderService.listOfFood().length > 0
-              ) {
+              @if (newOrderService.isLoadingFoods() && newOrderService.listOfFood().length > 0) {
                 <div class="list-loader" role="status" aria-label="Loading more foods">
                   <span nz-icon nzType="loading" nzTheme="outline"></span>
                   <span>Loading more items…</span>

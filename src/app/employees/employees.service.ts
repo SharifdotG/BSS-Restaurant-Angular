@@ -28,6 +28,44 @@ export class EmployeesService {
    *  will contain the newly-added row. */
   gotoLastPage = signal(false);
 
+  /** IDs of employees marked as favourite (stored client-side only). */
+  private readonly STORAGE_KEY = 'bss-favourite-employees';
+  private readonly favouriteIds = signal<Set<string>>(new Set(this.loadFavourites()));
+
+  private loadFavourites(): string[] {
+    try {
+      const raw = localStorage.getItem(this.STORAGE_KEY);
+      return raw ? (JSON.parse(raw) as string[]) : [];
+    } catch {
+      return [];
+    }
+  }
+
+  private persistFavourites(ids: Set<string>): void {
+    try {
+      localStorage.setItem(this.STORAGE_KEY, JSON.stringify([...ids]));
+    } catch {
+      /* storage blocked — ignore */
+    }
+  }
+
+  isFavourite(id: string): boolean {
+    return this.favouriteIds().has(id);
+  }
+
+  toggleFavourite(id: string): void {
+    this.favouriteIds.update((ids) => {
+      const next = new Set(ids);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
+      this.persistFavourites(next);
+      return next;
+    });
+  }
+
   getListOfEmployees(sortBy: string, page: string, perPage: string, search: string): void {
     this.isSendingRequest.set(true);
 

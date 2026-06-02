@@ -16,3 +16,58 @@ td {
 .custom-table-title-button {
   padding: 8px 12px;
 }
+
+/* Name cell: truncatable text + star icon */
+.ft-cell-text-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+}
+
+.ft-cell-text-wrapper .ft-cell-text {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.star-btn {
+  flex: 0 0 auto;
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  width: 20px;
+  height: 20px;
+  font-size: 16px;
+  line-height: 1;
+  color: var(--ds-mute);
+  transition:
+    color 0.15s ease,
+    transform 0.15s ease;
+  border-radius: var(--ds-radius-full);
+}
+
+.star-btn:hover {
+  color: var(--ds-warning);
+  transform: scale(1.15);
+}
+
+.star-btn:active {
+  transform: scale(0.95);
+}
+
+.star-btn--filled {
+  color: var(--ds-warning);
+}
+
+.star-btn .anticon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: inherit;
+}
